@@ -9,8 +9,13 @@ class PrototypeScene extends Phaser.Scene {
   }
 
   create () {
-    this.add.image(200, 200, 'BlueBox')
+    const BlueBox = this.add.image(200, 200, 'BlueBox').setInteractive()
     this.add.image(300, 300, 'RedBox')
+
+    BlueBox.on('pointerdown', function(pointer){
+      //clicking... probably
+      console.log('clicked!')
+    })
   }
 }
 

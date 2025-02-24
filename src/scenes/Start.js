@@ -29,9 +29,9 @@ class StartScene extends Phaser.Scene {
     ])
 
     // DEBUG: Fake loading lots of data
-    for (let i = 0; i < 300; i++) {
-      this.load.image('sky' + i, 'assets/skies/space3.png')
-    }
+    // for (let i = 0; i < 300; i++) {
+    //   this.load.image('sky' + i, 'assets/skies/space3.png')
+    // }
   }
 
   create () {
