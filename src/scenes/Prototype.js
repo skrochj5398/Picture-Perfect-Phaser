@@ -1,4 +1,4 @@
-import Phaser, { AUTO } from 'phaser'
+import Phaser from 'phaser'
 
 import CONFIG from '../config.js'
 
@@ -13,10 +13,6 @@ class PrototypeScene extends Phaser.Scene {
 
 
   create () {
-<<<<<<< Updated upstream
-    this.add.image(200, 200, 'BlueBox')
-    this.add.image(300, 300, 'RedBox')
-=======
    const BlueBox = this.add.image(200, 200, 'BlueBox').setInteractive()
     this.add.image(300, 300, 'RedBox')
     const cowFarm = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'CowFarm')
@@ -32,7 +28,6 @@ class PrototypeScene extends Phaser.Scene {
       //clicking... probably
       console.log('clicked!')
     })
->>>>>>> Stashed changes
   }
 
   
