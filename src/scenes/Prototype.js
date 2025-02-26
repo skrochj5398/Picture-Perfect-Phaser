@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-import Phaser, { AUTO } from 'phaser'
+import Phaser from 'phaser'
 import Util from '../util'
 import ss from '../models/PrototypeModel'
 =======
@@ -20,12 +19,17 @@ class PrototypeScene extends Phaser.Scene {
 
 
   create () {
-<<<<<<< HEAD
     ss.silhouetteOne = this.add.image(300, 300, 'RedBox')
     ss.stickerOne = this.add.image(200, 200, 'BlueBox').setInteractive()
     
 
     ss.stickerOne.on('pointerdown', this.handleBlueBoxPointerDown)
+
+    const cowFarm = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'CowFarm')
+    cowFarm.setScale(
+      CONFIG.DEFAULT_WIDTH / cowFarm.width ,
+      CONFIG.DEFAULT_HEIGHT / cowFarm.height
+    )
   }
 
   handleBlueBoxPointerDown (pointer) {
@@ -67,6 +71,8 @@ class PrototypeScene extends Phaser.Scene {
     })
 >>>>>>> JudgeXiong
   }
+
+  
 
 }
 
