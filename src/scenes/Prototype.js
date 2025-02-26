@@ -1,6 +1,7 @@
-import Phaser from 'phaser'
+import Phaser, { AUTO } from 'phaser'
 import Util from '../util'
 import ss from '../models/PrototypeModel'
+import CONFIG from '../config.js'
 
 class PrototypeScene extends Phaser.Scene {
 
@@ -8,7 +9,10 @@ class PrototypeScene extends Phaser.Scene {
     //this is where to load images or in StartScene
     this.load.image('BlueBox', 'assets/BlueBox.png')
     this.load.image('RedBox', 'assets/RedBox.png')
+    this.load.image('CowFarm', 'assets/wivenhoe_park,_essex_1942.9.10.png')
+    this.load.image('BuffaloSticker', 'assets/Buffalo Sticker.png')
   }
+
 
   create () {
     ss.silhouetteOne = this.add.image(300, 300, 'RedBox')
