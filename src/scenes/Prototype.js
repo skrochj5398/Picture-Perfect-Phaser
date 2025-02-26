@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 import Phaser, { AUTO } from 'phaser'
 import Util from '../util'
 import ss from '../models/PrototypeModel'
+=======
+import Phaser from 'phaser'
+
+>>>>>>> JudgeXiong
 import CONFIG from '../config.js'
 
 class PrototypeScene extends Phaser.Scene {
@@ -15,6 +20,7 @@ class PrototypeScene extends Phaser.Scene {
 
 
   create () {
+<<<<<<< HEAD
     ss.silhouetteOne = this.add.image(300, 300, 'RedBox')
     ss.stickerOne = this.add.image(200, 200, 'BlueBox').setInteractive()
     
@@ -43,6 +49,23 @@ class PrototypeScene extends Phaser.Scene {
     //move the image to RedBox
     console.log(silhouette.x, silhouette.y)
     sticker.setPosition(silhouette.x, silhouette.y)
+=======
+   const BlueBox = this.add.image(200, 200, 'BlueBox').setInteractive()
+    this.add.image(300, 300, 'RedBox')
+    const cowFarm = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'CowFarm')
+    cowFarm.setScale(
+      CONFIG.DEFAULT_WIDTH / cowFarm.width ,
+      CONFIG.DEFAULT_HEIGHT / cowFarm.height
+    )
+
+    this.add.image(200, 750, 'BuffaloSticker')
+
+
+    BlueBox.on('pointerdown', function(pointer){
+      //clicking... probably
+      console.log('clicked!')
+    })
+>>>>>>> JudgeXiong
   }
 
 }
