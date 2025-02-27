@@ -15,18 +15,20 @@ class PrototypeScene extends Phaser.Scene {
 
 
   create () {
-    ss.silhouetteOne = this.add.image(300, 300, 'RedBox')
-    ss.stickerOne = this.add.image(200, 200, 'BlueBox').setInteractive()
-    
 
-    ss.stickerOne.on('pointerdown', this.handleBlueBoxPointerDown)
 
     const cowFarm = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'CowFarm')
     cowFarm.setScale(
       CONFIG.DEFAULT_WIDTH / cowFarm.width ,
       CONFIG.DEFAULT_HEIGHT / cowFarm.height
     )
-    this.add.image(200, 750, 'BuffaloSticker')
+    
+
+    ss.silhouetteOne = this.add.image(300, 300, 'RedBox')
+    ss.stickerOne = this.add.image(200, 750, 'BuffaloSticker').setInteractive()
+    
+
+    ss.stickerOne.on('pointerdown', this.handleBlueBoxPointerDown)
   }
 
   handleBlueBoxPointerDown (pointer) {
