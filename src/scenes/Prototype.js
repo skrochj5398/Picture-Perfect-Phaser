@@ -11,7 +11,7 @@ class PrototypeScene extends Phaser.Scene {
     this.load.image('RedBox', 'assets/RedBox.png')
     this.load.image('CowFarm', 'assets/wivenhoe_park,_essex_1942.9.10.png')
     this.load.image('BuffaloSticker', 'assets/Buffalo Sticker.png')
-    this.load.image('inventory', 'assets/Picture_Perfect_Inventory_Frame.png')
+    this.load.image('Inventory', 'assets/Picture_Perfect_Inventory_Claire.png')
   }
 
 
@@ -25,7 +25,7 @@ class PrototypeScene extends Phaser.Scene {
     )
     
 
-    ss.silhouetteOne = this.add.image(500, 500, 'inventory')
+    ss.silhouetteOne = this.add.image(1000, 1003, 'Inventory').setScale(0.6)
     ss.stickerOne = this.add.image(200, 750, 'BuffaloSticker').setInteractive()
     
 
