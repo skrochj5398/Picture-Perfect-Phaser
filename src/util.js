@@ -14,7 +14,7 @@ class Util {
     console.log('clicked!')
     //move the image to RedBox
     console.log(silhouette.x, silhouette.y)
-    sticker.setPosition(silhouette.x, silhouette.y)
+    sticker.setPosition(silhouette.x, silhouette.y+17)
   }
 }
 

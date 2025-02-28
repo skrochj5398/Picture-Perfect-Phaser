@@ -11,7 +11,7 @@ class PrototypeScene extends Phaser.Scene {
     this.load.image('RedBox', 'assets/RedBox.png')
     this.load.image('CowFarm', 'assets/wivenhoe_park,_essex_1942.9.10.png')
     this.load.image('BuffaloSticker', 'assets/Buffalo Sticker.png')
-    this.load.image('Inventory', 'assets/Picture_Perfect_Inventory_Claire.png')
+    this.load.image('Inventory', 'assets/Picture_Perfect_Inventory_3Slot_S_Claire.png')
   }
 
 
@@ -25,7 +25,7 @@ class PrototypeScene extends Phaser.Scene {
     )
     
 
-    ss.silhouetteOne = this.add.image(1000, 1003, 'Inventory').setScale(0.6)
+    ss.silhouetteOne = this.add.image(1000, 970, 'Inventory').setScale(0.8)
     ss.stickerOne = this.add.image(200, 750, 'BuffaloSticker').setInteractive()
     
 
@@ -37,25 +37,6 @@ class PrototypeScene extends Phaser.Scene {
     //doesn't work cuz scope or something
     //this.handlePointerDown(pointer, this.BlueBox, this.RedBox)
   } 
-
-  /**
-   * use to handle 'pointerdown' events on the sticker object passed.
-   * the silhouette object should be where to move it to
-   * the pointer gets automatically passed to the event function, so when the function is added
-   * it should be declared inline and call this function with the appropriate variables
-   * @param {Phaser.Input.Pointer} pointer 
-   * @param {Phaser.image} sticker 
-   * @param {Phaser.image} silhouette 
-   */
-  handlePointerDown (pointer, sticker, silhouette) {
-    //clicking... probably
-    console.log('clicked!')
-    //move the image to RedBox
-    console.log(silhouette.x, silhouette.y)
-    sticker.setPosition(silhouette.x, silhouette.y)
-  }
-
-  
 
 }
 
