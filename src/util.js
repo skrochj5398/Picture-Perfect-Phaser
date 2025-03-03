@@ -18,12 +18,14 @@ class Util {
   }
 
   /**
-   * 
-   * @param {*} scene 
-   * @param {*} key 
+   * loops through the pixels in the given texture (found by the key string) and returns all
+   *  bounds where pixels have alpha values, gettting those values from the Frame passed
+   * @param {Phaser.Textures.Frame} frame 
+   *  gotten from scene.textures.getFrame(key) where key is the string key of your image
    */
-  static findSticker (scene, key) {
-    scene.textures.getPixel(1,1,key)
+  static findSticker (textures, key) {
+    
+    return textures.getPixel(1,1, key)
   }
 
 
