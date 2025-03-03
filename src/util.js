@@ -9,7 +9,7 @@ class Util {
    * @param {Phaser.image} sticker 
    * @param {Phaser.image} silhouette 
    */
-  static handlePointerDown (pointer, sticker, silhouette) {
+  static handlePointerDown (sticker, silhouette) {
     //clicking... probably
     console.log('clicked!')
     //move the image to RedBox
