@@ -16,6 +16,17 @@ class Util {
     console.log(silhouette.x, silhouette.y)
     sticker.setPosition(silhouette.x, silhouette.y)
   }
+
+  /**
+   * 
+   * @param {*} scene 
+   * @param {*} key 
+   */
+  static findSticker (scene, key) {
+    scene.textures.getPixel(1,1,key)
+  }
+
+
 }
 
 export default Util
