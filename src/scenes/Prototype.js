@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import Util from '../util'
 import ss from '../models/PrototypeModel'
+import CONFIG from '../config.js'
 
 class PrototypeScene extends Phaser.Scene {
 
@@ -8,6 +9,10 @@ class PrototypeScene extends Phaser.Scene {
     //this is where to load images or in StartScene
     this.load.image('BlueBox', 'assets/BlueBox.png')
     this.load.image('RedBox', 'assets/RedBox.png')
+    this.load.image('CowFarm', 'assets/wivenhoe_park,_essex_1942.9.10.png')
+    this.load.image('BuffaloSticker', 'assets/Buffalo Sticker.png')
+    this.load.image('Inventory', 'assets/Picture_Perfect_Inventory_3Slot_S_Claire.png')
+    this.load.image('Frame', 'assets/Picture perfect- Frame.png')
   }
 
   sticker = {
@@ -19,8 +24,18 @@ class PrototypeScene extends Phaser.Scene {
   }
 
   create () {
-    ss.silhouetteOne = this.add.image(300, 300, 'RedBox')
-    ss.stickerOne = this.add.image(200, 200, 'BlueBox').setInteractive()
+
+
+    const cowFarm = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'CowFarm')
+    cowFarm.setScale(
+      CONFIG.DEFAULT_WIDTH / cowFarm.width ,
+      CONFIG.DEFAULT_HEIGHT / cowFarm.height
+    )
+    
+    this.add.image(975, 550, 'Frame').setScale(1.55)
+    ss.silhouetteOne = this.add.image(1000, 970, 'Inventory').setScale(0.8)
+    ss.stickerOne = this.add.image(350, 750, 'BuffaloSticker').setInteractive()
+    
     
 
     ss.stickerOne.on('pointerdown', this.handleBlueBoxPointerDown)
@@ -43,23 +58,6 @@ class PrototypeScene extends Phaser.Scene {
     //doesn't work cuz scope or something
     //this.handlePointerDown(pointer, this.BlueBox, this.RedBox)
   } 
-
-  /**
-   * use to handle 'pointerdown' events on the sticker object passed.
-   * the silhouette object should be where to move it to
-   * the pointer gets automatically passed to the event function, so when the function is added
-   * it should be declared inline and call this function with the appropriate variables
-   * @param {Phaser.Input.Pointer} pointer 
-   * @param {Phaser.image} sticker 
-   * @param {Phaser.image} silhouette 
-   */
-  handlePointerDown (pointer, sticker, silhouette) {
-    //clicking... probably
-    console.log('clicked!')
-    //move the image to RedBox
-    console.log(silhouette.x, silhouette.y)
-    sticker.setPosition(silhouette.x, silhouette.y)
-  }
 
 }
 
