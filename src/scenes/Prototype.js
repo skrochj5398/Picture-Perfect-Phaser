@@ -15,13 +15,13 @@ class PrototypeScene extends Phaser.Scene {
     this.load.image('Frame', 'assets/Picture perfect- Frame.png')
   }
 
-  sticker = {
+  /*sticker = {
     stickerImage: this.add.image(0,0,''),
     silhouetteImage: this.add.image(0,0,''),
     handlePointerDown: function(pointer){
       Util.handlePointerDown(pointer, this.stickerImage, silhouetteImage)
     }
-  }
+  } */
 
   create () {
 
@@ -41,8 +41,8 @@ class PrototypeScene extends Phaser.Scene {
     ss.stickerOne.on('pointerdown', this.handleBlueBoxPointerDown)
 
     // Testing making more objects
-    ss.silhouetteTwo = this.add.image(550, 200, 'RedBox');
-    ss.stickerTwo = this.add.image(600, 400, 'BlueBox').setInteractive();
+    //ss.silhouetteTwo = this.add.image(550, 200, 'RedBox');
+    //ss.stickerTwo = this.add.image(600, 400, 'BlueBox').setInteractive();
 
     //stickerTwo.on('pointerdown', (pointer) => this.handleBlueBoxPointerDown(pointer, stickerTwo, silhouetteTwo));
     
@@ -53,8 +53,8 @@ class PrototypeScene extends Phaser.Scene {
    // sticker.on('pointerdown', (pointer) => this.handleBlueBoxPointerDown(pointer, sticker))
 // }
 
-  handleBlueBoxPointerDown (pointer, sticker) {
-    Util.handlePointerDown(sticker, silhouette)
+  handleBlueBoxPointerDown (pointer) {
+    Util.handlePointerDown(pointer, ss.stickerOne, ss.silhouetteOne)
     //doesn't work cuz scope or something
     //this.handlePointerDown(pointer, this.BlueBox, this.RedBox)
   } 
