@@ -36,7 +36,7 @@ class PrototypeScene extends Phaser.Scene {
     ss.silhouetteOne = this.add.image(1000, 970, 'Inventory').setScale(0.8)
     ss.stickerOne = this.add.image(350, 750, 'BuffaloSticker').setInteractive()
     
-    
+    console.log(Util.findSticker(this.textures, 'BuffaloSticker'))
 
     ss.stickerOne.on('pointerdown', this.handleBlueBoxPointerDown)
 
