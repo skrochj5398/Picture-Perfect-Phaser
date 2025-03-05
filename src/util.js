@@ -26,7 +26,7 @@ class Util {
    */
   static findSticker (textures, key) {
     //step distance; change to balance speed and accuracy
-    const STEP = 1
+    const STEP = 4
     //make temp variables to take max/min for each coordinate
     // min needs to be big number so it gets updated correctly
     let min_x = 1000000, max_x = 0, min_y = 1000000, max_y = 0

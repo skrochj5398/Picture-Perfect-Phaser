@@ -11,6 +11,7 @@ class PrototypeScene extends Phaser.Scene {
     this.load.image('RedBox', 'assets/RedBox.png')
     this.load.image('CowFarm', 'assets/wivenhoe_park,_essex_1942.9.10.png')
     this.load.image('BuffaloSticker', 'assets/Buffalo Sticker.png')
+    this.load.image('BuffaloStickerPaintingSize', 'assets/buffalo_sticker_paintingSize.png')
     this.load.image('Inventory', 'assets/Picture_Perfect_Inventory_3Slot_S_Claire.png')
     this.load.image('Frame', 'assets/Picture perfect- Frame.png')
   }
@@ -28,9 +29,16 @@ class PrototypeScene extends Phaser.Scene {
     this.add.image(975, 550, 'Frame').setScale(1.55)
     ss.silhouetteOne = this.add.image(1000, 970, 'Inventory').setScale(0.8)
     ss.stickerOne = this.add.image(350, 750, 'BuffaloSticker').setInteractive()
-    
-    console.log(Util.findSticker(this.textures, 'BuffaloSticker'))
 
+    const testSticker = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 
+      'BuffaloStickerPaintingSize')
+    testSticker.setScale(
+      CONFIG.DEFAULT_WIDTH / testSticker.width ,
+      CONFIG.DEFAULT_HEIGHT / testSticker.height
+    )
+    
+    //console.log(Util.findSticker(this.textures, 'BuffaloStickerPaintingSize'))
+    console.log(this.game.time.physicsElapsed);
     ss.stickerOne.on('pointerdown', this.handleBlueBoxPointerDown)
   }
 

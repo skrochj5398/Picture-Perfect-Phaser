@@ -1,8 +1,9 @@
 
-class Painting extends View {
+
+class Painting {
 
 	Painting(img) {
-		super(img);
+		this.img = img
 	}
 
 }
