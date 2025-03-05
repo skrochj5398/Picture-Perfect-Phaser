@@ -8,6 +8,7 @@ import ExampleScene from './scenes/Example.js'
 import StartScene from './scenes/Start.js'
 import HUDScene from './scenes/HUD.js'
 import PrototypeScene from './scenes/Prototype.js'
+import LvlSelectScene from './scenes/LvlSelect'
 
 const config = {
   // Configure Phaser graphics settings
@@ -38,4 +39,5 @@ game.scene.add('StartScene', StartScene)
 game.scene.add('ExampleScene', ExampleScene)
 game.scene.add('HUDScene', HUDScene)
 game.scene.add('PrototypeScene', PrototypeScene)
-game.scene.start('StartScene')
+game.scene.add('LvlSelectScene', LvlSelectScene)
+game.scene.start('LvlSelectScene')
