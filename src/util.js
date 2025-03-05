@@ -25,8 +25,20 @@ class Util {
    */
   static findSticker (textures, key) {
     //loop through all or most pixels and find the left, right, top, and bottom bounds
-    // returned in a struct object
-    return textures.getPixel(1,1, key)
+    //make temp variables to take max/min for each coordinate
+    let min_x = 0, max_x = 0, min_y = 0, max_y = 0
+    //loop through pixels on const STEP to find rough maxes/mins
+    // use 
+    
+
+    //returned in a struct object
+    let bounds = {
+      leftBound: min_x,
+      rightBound: max_x,
+      topBound: min_y,
+      BottomBound: max_y
+    }
+    return Bounds;
   }
 
 
