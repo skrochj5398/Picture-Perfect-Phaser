@@ -36,9 +36,9 @@ class PrototypeScene extends Phaser.Scene {
       CONFIG.DEFAULT_WIDTH / testSticker.width ,
       CONFIG.DEFAULT_HEIGHT / testSticker.height
     )
-    
-    //console.log(Util.findSticker(this.textures, 'BuffaloStickerPaintingSize'))
-    console.log(this.game.time.physicsElapsed);
+    console.log(Util.findSticker(this.textures, 'BuffaloStickerPaintingSize'))
+
+
     ss.stickerOne.on('pointerdown', this.handleBlueBoxPointerDown)
   }
 
