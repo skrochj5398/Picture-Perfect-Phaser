@@ -1,6 +1,8 @@
 import Phaser from 'phaser'
 import Util from '../util'
 import ss from '../models/PrototypeModel'
+import Sticker from '../models/Sticker'
+import Silhouette from '../models/Silhouette'
 import CONFIG from '../config.js'
 
 class PrototypeScene extends Phaser.Scene {
@@ -41,8 +43,11 @@ class PrototypeScene extends Phaser.Scene {
     ss.stickerOne.on('pointerdown', this.handleBlueBoxPointerDown)
 
     // Testing making more objects
-    //ss.silhouetteTwo = this.add.image(550, 200, 'RedBox');
-    //ss.stickerTwo = this.add.image(600, 400, 'BlueBox').setInteractive();
+    var silhouetteTwo;
+    var stickerTwo = new Sticker('BlueBox', silhouetteTwo, 2);
+    silhouetteTwo = new Silhouette ('RedBox', stickerTwo, 2);
+    stickerTwo.setLocation(100, 100);
+    silhouetteTwo.setLocation(300,300);
 
     //stickerTwo.on('pointerdown', (pointer) => this.handleBlueBoxPointerDown(pointer, stickerTwo, silhouetteTwo));
     
