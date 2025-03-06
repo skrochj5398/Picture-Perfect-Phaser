@@ -18,16 +18,16 @@ class PrototypeScene extends Phaser.Scene {
 
   create () {
 
-
-    const cowFarm = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'CowFarm')
-    cowFarm.setScale(
-      CONFIG.DEFAULT_WIDTH / cowFarm.width ,
-      CONFIG.DEFAULT_HEIGHT / cowFarm.height
+    const Frame = this.add.image(CONFIG.DEFAULT_WIDTH / 1.98, CONFIG.DEFAULT_HEIGHT / 1.96, 'Frame')
+    Frame.setScale(
+      CONFIG.DEFAULT_WIDTH / Frame.width * 1.05,
+      CONFIG.DEFAULT_HEIGHT / Frame.height * 1.16
     )
+
+    const cowFarm = this.add.image(CONFIG.DEFAULT_WIDTH / 2.02, CONFIG.DEFAULT_HEIGHT / 2.06, 'CowFarm')
     
-    this.add.image(975, 550, 'Frame').setScale(1.55)
-    ss.silhouetteOne = this.add.image(1000, 970, 'Inventory').setScale(0.8)
-    ss.stickerOne = this.add.image(350, 750, 'BuffaloSticker').setInteractive()
+    ss.silhouetteOne = this.add.image(1000, 1010, 'Inventory').setScale(.5)
+    ss.stickerOne = this.add.image(400, 700, 'BuffaloSticker').setInteractive().setScale(.8)
     
     console.log(Util.findSticker(this.textures, 'BuffaloSticker'))
 
