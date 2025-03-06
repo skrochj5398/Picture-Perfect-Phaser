@@ -12,8 +12,10 @@ class Painting {
    * loops through the pixels in the given texture (found by the key string) and returns all
    *  bounds where pixels have alpha values, getting those values from the Frame passed
    * returns null if no nontransparent pixels are found
-   * @param {Phaser.Textures.Frame} frame 
-   *  gotten from scene.textures.getFrame(key) where key is the string key of your image
+   * @param {Phaser.Textures.TextureManager} textures 
+   * gotten from this.textures on a phaser texture object or one that inherits from it
+   * @param {string} key
+   * the key is the string identifier given to a Phaser.Image object when it is created
    */
   static findSticker (textures, key) {
     //step distance; change to balance speed and accuracy

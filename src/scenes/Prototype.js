@@ -30,12 +30,12 @@ class PrototypeScene extends Phaser.Scene {
     ss.silhouetteOne = this.add.image(1000, 1010, 'Inventory').setScale(.5)
     ss.stickerOne = this.add.image(400, 700, 'BuffaloSticker').setInteractive().setScale(.8)
 
-    const testSticker = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 
+    /*const testSticker = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 
       'BuffaloStickerPaintingSize')
     testSticker.setScale(
       CONFIG.DEFAULT_WIDTH / testSticker.width ,
       CONFIG.DEFAULT_HEIGHT / testSticker.height
-    )
+    )*/
     //console.log(Util.findSticker(this.textures, 'BuffaloStickerPaintingSize'))
 
 
