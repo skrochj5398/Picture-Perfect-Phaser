@@ -10,18 +10,20 @@ class Painting {
    * @param {Sticker[]} stickers 
    * the stickers that are to be hidden on this painting (in corresponding order with 
    *  stickersPaintingSize)
-   * @param {Phaser.GameObjects.Image[]} stickersPaintingSize
-   * the large, transparent versions of the stickers hidden in the painting (in corresponding order
-   *  with stickers)
+   * @param {String[]} stickerKeys
+   * the keys of the large, transparent versions of the stickers hidden in the painting (in 
+   *  corresponding order with stickers)
    * @param {Silhouette[]} silhouettes 
    * the silhouette objects in large, transparent image form for ease of placement
+   * @param {Phaser.Scene} scene
+   * the scene that all of the Phaser.GameObjects.Image were created on (usually 'this')
    */
-	constructor(img, stickers, stickersPaintingSize, silhouettes) {
+	constructor(img, stickers, stickerKeys, silhouettes, scene) {
     console.log("called painting constructor")
     //save members
 		this.img = img
     this.stickers = stickers
-    this.stickersPaintingSize = stickersPaintingSize
+    this.stickerKeys = stickerKeys
     this.silhouettes = silhouettes
 
     //place the painting image, the painting-size-stickers, and silhouettes
@@ -33,20 +35,42 @@ class Painting {
     }
     //place painting-size-stickers
     //actually don't. we can find their sticker location without moving them
-    //place silhouettes
-    if (silhouettes instanceof Silhouette) {
+    if (!(stickerKeys instanceof String)) {
+      console.log('passed stickersPaintingSize is not a String')
+    }
+    //place silhouettes TODO uncomment when Silhouette is added
+    /*if (silhouettes instanceof Silhouette) {
       for (const silhouette of this.silhouettes) {
         silhouette.getImg().setPosition(CONFIG.DEFAULT_WIDTH / 2.02, CONFIG.DEFAULT_HEIGHT / 2.06)
         //TODO update to change silhouette image position once Silhouette is defined
       }
     } else {
       console.log('passed silhouettes is not a Silhouette')
+    }*/
+   
+    //find the bounds for all stickers
+    for (let i = 0; i < this.stickerKeys.length; i++) {
+      //get a bound of a sticker
+      const bounds = this.findSticker(scene.textures, stickerKeys[i])
+      //access corresponding sticker
+      const sticker = this.stickers[i]
+      //calculate position
+      // assuming painting is centered, get painting's offset from origin
+      const heightOffset = (CONFIG.DEFAULT_HEIGHT + this.img.height) / 2.0
+      const widthOffset = (CONFIG.DEFAULT_WIDTH + this.img.width) / 2.0
+      // get sticker origin by averaging bounds
+      const stickerBoundsX = (bounds.leftBound + bounds.rightBound) / 2.0
+      const stickerBoundsY = (bounds.topBound + bounds.BottomBound) / 2.0
+      // add offset to get final positioning of sticker origin
+      const finalX = stickerBoundsX + widthOffset
+      const finalY = stickerBoundsY + heightOffset
+      //save somewhere... or use immediately
+      sticker.setPosition(finalX, finalY)
+      //eliminate the painting size stickers
+      
+      //loops through the rest
     }
 
-    //find the bounds for all stickers
-    
-
-    //replace all painting-size-stickers with stickers
 
     console.log('painting constructor finished')
 	}
@@ -58,7 +82,7 @@ class Painting {
    *  bounds where pixels have alpha values, getting those values from the Frame passed
    * returns null if no nontransparent pixels are found
    * @param {Phaser.Textures.TextureManager} textures 
-   * gotten from this.textures on a phaser texture object or one that inherits from it
+   * gotten from this.textures on a phaser texture object or one that inherits from it (like Scene)
    * @param {string} key
    * the key is the string identifier given to a Phaser.Image object when it is created
    */

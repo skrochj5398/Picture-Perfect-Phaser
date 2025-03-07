@@ -27,6 +27,7 @@ class JessieTestScene extends Phaser.Scene {
     )
 
     const cowFarm = this.add.image(0, 0, 'CowFarm')
+    cowFarm.destroy()
     console.log('about to create a painting...')
     const testPainting = new Painting(cowFarm, null, null, null)
     
