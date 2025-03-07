@@ -8,13 +8,14 @@ import ExampleScene from './scenes/Example.js'
 import StartScene from './scenes/Start.js'
 import HUDScene from './scenes/HUD.js'
 import PrototypeScene from './scenes/Prototype.js'
+import JessieTestScene from './scenes/JessieTestScene.js'
 
 const config = {
   // Configure Phaser graphics settings
   type: Phaser.AUTO,
   scale: {
     parent: 'game',
-    mode: Phaser.Scale.AUTO,
+    mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
     width: CONFIG.DEFAULT_WIDTH,
     height: CONFIG.DEFAULT_HEIGHT,
@@ -48,4 +49,5 @@ game.scene.add('StartScene', StartScene)
 game.scene.add('ExampleScene', ExampleScene)
 game.scene.add('HUDScene', HUDScene)
 game.scene.add('PrototypeScene', PrototypeScene)
+game.scene.add('JessieTestScene', JessieTestScene)
 game.scene.start('StartScene')

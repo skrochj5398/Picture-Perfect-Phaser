@@ -53,9 +53,14 @@ class StartScene extends Phaser.Scene {
     this.music.play('freeVertexStudioTrack1')
   }
 
-  keyReleased () {
-    console.log('Key released')
-    this.scene.start('PrototypeScene')
+  keyReleased (event) {
+    console.log('Key released', event.code)
+    if (event.code == 'KeyP') {
+      this.scene.start('JessieTestScene')
+    } else {
+      this.scene.start('PrototypeScene')
+    }
+    
     this.music.stop()
   }
 }

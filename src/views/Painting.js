@@ -1,9 +1,54 @@
-
+import CONFIG from '../config.js'
 
 class Painting {
 
-	Painting(img) {
+  /**
+   * constructs the Painting object while placing the painting size stickers, finding where the visible
+   *  part is, replacing that image with the sticker's images, and placing the silhouettes
+   * @param {Phaser.GameObjects.Image} img 
+   * the image object for the painting itself
+   * @param {Sticker[]} stickers 
+   * the stickers that are to be hidden on this painting (in corresponding order with 
+   *  stickersPaintingSize)
+   * @param {Phaser.GameObjects.Image[]} stickersPaintingSize
+   * the large, transparent versions of the stickers hidden in the painting (in corresponding order
+   *  with stickers)
+   * @param {Silhouette[]} silhouettes 
+   * the silhouette objects in large, transparent image form for ease of placement
+   */
+	constructor(img, stickers, stickersPaintingSize, silhouettes) {
+    console.log("called painting constructor")
+    //save members
 		this.img = img
+    this.stickers = stickers
+    this.stickersPaintingSize = stickersPaintingSize
+    this.silhouettes = silhouettes
+
+    //place the painting image, the painting-size-stickers, and silhouettes
+    //place the painting
+    if (this.img instanceof Phaser.GameObjects.Image) {
+      this.img.setPosition(CONFIG.DEFAULT_WIDTH / 2.02, CONFIG.DEFAULT_HEIGHT / 2.06)
+    } else {
+      console.log('passed img is not a Phaser.GameObjects.Image')
+    }
+    //place painting-size-stickers
+    //actually don't. we can find their sticker location without moving them
+    //place silhouettes
+    if (silhouettes instanceof Silhouette) {
+      for (const silhouette of this.silhouettes) {
+        silhouette.getImg().setPosition(CONFIG.DEFAULT_WIDTH / 2.02, CONFIG.DEFAULT_HEIGHT / 2.06)
+        //TODO update to change silhouette image position once Silhouette is defined
+      }
+    } else {
+      console.log('passed silhouettes is not a Silhouette')
+    }
+
+    //find the bounds for all stickers
+    
+
+    //replace all painting-size-stickers with stickers
+
+    console.log('painting constructor finished')
 	}
 
 
@@ -84,3 +129,6 @@ class Painting {
 
 
 }
+
+
+export default Painting
