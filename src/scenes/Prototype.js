@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import Util from '../util'
 import ss from '../models/PrototypeModel'
 import CONFIG from '../config.js'
+import Frame from './Frame.js'
 
 class PrototypeScene extends Phaser.Scene {
 
@@ -19,13 +20,18 @@ class PrototypeScene extends Phaser.Scene {
 
   create () {
 
-    const Frame = this.add.image(CONFIG.DEFAULT_WIDTH / 1.98, CONFIG.DEFAULT_HEIGHT / 1.96, 'Frame')
+    
+    
+    
+    
+    /*this.add.image(CONFIG.DEFAULT_WIDTH / 1.98, CONFIG.DEFAULT_HEIGHT / 1.96, 'Frame')
     Frame.setScale(
-      CONFIG.DEFAULT_WIDTH / Frame.width * 1.05,
-      CONFIG.DEFAULT_HEIGHT / Frame.height * 1.16
-    )
+    CONFIG.DEFAULT_WIDTH / Frame.width * 1.05,
+    CONFIG.DEFAULT_HEIGHT / Frame.height * 1.16
+)*/
 
     const cowFarm = this.add.image(CONFIG.DEFAULT_WIDTH / 2.02, CONFIG.DEFAULT_HEIGHT / 2.06, 'CowFarm')
+    const Frame = this.add.nineslice(CONFIG.DEFAULT_WIDTH / 1.98, CONFIG.DEFAULT_HEIGHT / 1.96, 'Frame', 0, 1920, 1080, 32, 32, 32, 32)
     
     ss.silhouetteOne = this.add.image(1000, 1010, 'Inventory').setScale(.5)
     ss.stickerOne = this.add.image(400, 700, 'BuffaloSticker').setInteractive().setScale(.8)
