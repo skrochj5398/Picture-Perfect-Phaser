@@ -4,5 +4,8 @@
  */
 var ss = {
   stickerOne: null,
-  silhouetteOne: null
+  silhouetteOne: null,
+
+  stickerTwo: null,
+  silhouetteTwo: null
 }
