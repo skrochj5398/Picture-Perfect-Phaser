@@ -56,8 +56,15 @@ class PrototypeScene extends Phaser.Scene {
     var silhouetteTwo;
     var stickerTwo = new Sticker(BlueBox, silhouetteTwo, 2);
     silhouetteTwo = new Silhouette (RedBox, stickerTwo, 2);
+    //Testing setters
+    stickerTwo.setSilhouette(stickerTwo, silhouetteTwo);
     stickerTwo.setLocation(stickerTwo, 100, 100);
     silhouetteTwo.setLocation(silhouetteTwo, 300,300);
+    //Testing getters
+    console.log(stickerTwo.getID(stickerTwo));
+    console.log(stickerTwo.getSilhouette(stickerTwo));
+    console.log(silhouetteTwo.getID(silhouetteTwo));
+    console.log(silhouetteTwo.getSticker(silhouetteTwo));
 
     //stickerTwo.on('pointerdown', (pointer) => this.handleBlueBoxPointerDown(pointer, stickerTwo, silhouetteTwo));
     
