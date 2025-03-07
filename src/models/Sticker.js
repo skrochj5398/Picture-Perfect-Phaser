@@ -5,10 +5,8 @@ class Sticker {
     this.id = id;
   }
   // test method
-  setLocation(xCoordinate, yCoordinate){
-    this.image.style.position = "absolute";
-    this.image.style.left = xCoordinate + "px";
-    this.image.style.top = yCoordinate + "px";
+  setLocation(imageN, xCoordinate, yCoordinate){
+    imageN.image.setPosition(xCoordinate, yCoordinate);
   }
 }
 // class Silhouette {
