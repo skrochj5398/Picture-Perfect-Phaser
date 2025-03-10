@@ -34,6 +34,8 @@ class JessieTestScene extends Phaser.Scene {
     let silhouette
     const img = this.add.image(0,0,'BuffaloSticker').setInteractive()
     const sticker = new Sticker(img, silhouette, 0);
+    //TODO apply interact function on sticker to test removeSticker in its environment
+    //ss.stickerOne.on('pointerdown', this.handleBlueBoxPointerDown)
 
     console.log('about to create a painting...')
     const testPainting = new Painting(
@@ -43,19 +45,10 @@ class JessieTestScene extends Phaser.Scene {
       null, 
       this
     )
+
+    //for now, just call removeSticker to see logs TODO remove after testing
+    testPainting.removeSticker(sticker)
     
-    
-
-    /*const testSticker = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 
-      'BuffaloStickerPaintingSize')
-    testSticker.setScale(
-      CONFIG.DEFAULT_WIDTH / testSticker.width ,
-      CONFIG.DEFAULT_HEIGHT / testSticker.height
-    )*/
-    //console.log(Util.findSticker(this.textures, 'BuffaloStickerPaintingSize'))
-
-
-    //ss.stickerOne.on('pointerdown', this.handleBlueBoxPointerDown)
   }
 
   handleBlueBoxPointerDown (pointer) {
