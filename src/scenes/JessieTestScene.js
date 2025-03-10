@@ -2,7 +2,8 @@ import Phaser from 'phaser'
 import Util from '../util.js'
 import ss from '../models/PrototypeModel.js'
 import CONFIG from '../config.js'
-import Painting from '../views/Painting.js'
+import Painting from '../models/Painting.js'
+import Sticker from '../models/Sticker.js'
 
 class JessieTestScene extends Phaser.Scene {
 
@@ -27,12 +28,23 @@ class JessieTestScene extends Phaser.Scene {
     )
 
     const cowFarm = this.add.image(0, 0, 'CowFarm')
-    cowFarm.destroy()
-    console.log('about to create a painting...')
-    const testPainting = new Painting(cowFarm, null, null, null)
-    
+
     ss.silhouetteOne = this.add.image(1000, 1010, 'Inventory').setScale(.5)
-    ss.stickerOne = this.add.image(400, 700, 'BuffaloSticker').setInteractive().setScale(.8)
+    //ss.stickerOne = this.add.image(400, 700, 'BuffaloSticker').setInteractive().setScale(.8)
+    let silhouette
+    const img = this.add.image(0,0,'BuffaloSticker').setInteractive()
+    const sticker = new Sticker(img, silhouette, 0);
+
+    console.log('about to create a painting...')
+    const testPainting = new Painting(
+      cowFarm, 
+      new Array(sticker), 
+      new Array('BuffaloStickerPaintingSize'), 
+      null, 
+      this
+    )
+    
+    
 
     /*const testSticker = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 
       'BuffaloStickerPaintingSize')
@@ -43,7 +55,7 @@ class JessieTestScene extends Phaser.Scene {
     //console.log(Util.findSticker(this.textures, 'BuffaloStickerPaintingSize'))
 
 
-    ss.stickerOne.on('pointerdown', this.handleBlueBoxPointerDown)
+    //ss.stickerOne.on('pointerdown', this.handleBlueBoxPointerDown)
   }
 
   handleBlueBoxPointerDown (pointer) {

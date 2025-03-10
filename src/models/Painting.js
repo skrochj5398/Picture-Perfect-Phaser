@@ -1,4 +1,5 @@
 import CONFIG from '../config.js'
+import Sticker from './Sticker.js'
 
 class Painting {
 
@@ -13,6 +14,7 @@ class Painting {
    * @param {String[]} stickerKeys
    * the keys of the large, transparent versions of the stickers hidden in the painting (in 
    *  corresponding order with stickers)
+   * remember to define with: new Array('key1', 'key2', 'key3')
    * @param {Silhouette[]} silhouettes 
    * the silhouette objects in large, transparent image form for ease of placement
    * @param {Phaser.Scene} scene
@@ -33,6 +35,10 @@ class Painting {
     } else {
       console.log('passed img is not a Phaser.GameObjects.Image')
     }
+    //check the stickers input
+    if (!(this.stickers instanceof Sticker)) {
+      console.log('passed stickers is not a Sticker')
+    }
     //place painting-size-stickers
     //actually don't. we can find their sticker location without moving them
     if (!(stickerKeys instanceof String)) {
@@ -49,25 +55,29 @@ class Painting {
     }*/
    
     //find the bounds for all stickers
+    console.log('about to loop over stickers...')
     for (let i = 0; i < this.stickerKeys.length; i++) {
       //get a bound of a sticker
+      console.log('Searching pixels of key: ', stickerKeys[i])
       const bounds = this.findSticker(scene.textures, stickerKeys[i])
+      console.log(bounds)
       //access corresponding sticker
       const sticker = this.stickers[i]
       //calculate position
       // assuming painting is centered, get painting's offset from origin
-      const heightOffset = (CONFIG.DEFAULT_HEIGHT + this.img.height) / 2.0
-      const widthOffset = (CONFIG.DEFAULT_WIDTH + this.img.width) / 2.0
+      const heightOffset = (CONFIG.DEFAULT_HEIGHT - this.img.height) / 2.0
+      const widthOffset = (CONFIG.DEFAULT_WIDTH - this.img.width) / 2.0
+      console.log('painting offset found to be: ', widthOffset, ' ', heightOffset)
       // get sticker origin by averaging bounds
       const stickerBoundsX = (bounds.leftBound + bounds.rightBound) / 2.0
       const stickerBoundsY = (bounds.topBound + bounds.BottomBound) / 2.0
+      console.log('sticker origin found at: ', stickerBoundsX, ' ', stickerBoundsY)
       // add offset to get final positioning of sticker origin
       const finalX = stickerBoundsX + widthOffset
       const finalY = stickerBoundsY + heightOffset
       //save somewhere... or use immediately
-      sticker.setPosition(finalX, finalY)
-      //eliminate the painting size stickers
-      
+      console.log('setting sticker to location: ', finalX, ' ', finalY)
+      sticker.setLocation(sticker, finalX, finalY)
       //loops through the rest
     }
 
@@ -86,7 +96,7 @@ class Painting {
    * @param {string} key
    * the key is the string identifier given to a Phaser.Image object when it is created
    */
-  static findSticker (textures, key) {
+  findSticker (textures, key) {
     //step distance; change to balance speed and accuracy
     const STEP = 4
     //make temp variables to take max/min for each coordinate
@@ -151,8 +161,22 @@ class Painting {
     return bounds;
   }
 
-
+  /**
+   * triggers sticker to be removed from the image. 
+   * will likely trigger animation and the like.
+   * For now, simply destroys the sticker
+   * @param {Sticker} stickerToRemove 
+   */
+  removeSticker (stickerToRemove) {
+    //check if in array; -1 if not in array
+    const removeIndex = this.stickers.indexOf(stickerToRemove)
+    if (removeIndex != -1) {
+      console.log("Removing sticker from painting")
+      this.stickers.splice(removeIndex, 1)
+    } else {
+      console.log("Sticker not found in painting")
+    }
+  }
 }
-
 
 export default Painting
