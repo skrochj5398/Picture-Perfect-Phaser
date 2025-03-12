@@ -61,8 +61,22 @@ class Painting {
       console.log('Searching pixels of key: ', stickerKeys[i])
       const bounds = this.findSticker(scene.textures, stickerKeys[i])
       console.log(bounds)
+
+      // create an image on the scene for this sticker key
+      let cropSticker = scene.add.image(0,0,stickerKeys[i])
+      // crop to just around the bounds
+      /*cropSticker.setCrop(
+        bounds.leftBound, 
+        bounds.topBound,
+        bounds.rightBound,
+        bounds.bottomBound
+      )*/
+      // set postition of the cropped sticker
+      cropSticker.setPosition(CONFIG.DEFAULT_WIDTH / 2.02, CONFIG.DEFAULT_HEIGHT / 2.06)
+
       //access corresponding sticker
       const sticker = this.stickers[i]
+
       //calculate position
       // assuming painting is centered, get painting's offset from origin
       const heightOffset = (CONFIG.DEFAULT_HEIGHT - this.img.height) / 2.0
@@ -78,6 +92,7 @@ class Painting {
       //save somewhere... or use immediately
       console.log('setting sticker to location: ', finalX, ' ', finalY)
       sticker.setLocation(sticker, finalX, finalY)
+
       //loops through the rest
     }
 

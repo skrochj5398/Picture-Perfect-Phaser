@@ -32,29 +32,33 @@ class JessieTestScene extends Phaser.Scene {
     ss.silhouetteOne = this.add.image(1000, 1010, 'Inventory').setScale(.5)
     //ss.stickerOne = this.add.image(400, 700, 'BuffaloSticker').setInteractive().setScale(.8)
     let silhouette
-    const img = this.add.image(0,0,'BuffaloSticker').setInteractive()
-    const sticker = new Sticker(img, silhouette, 0);
+    const testStickerImg = this.add.image(0,0,'BuffaloSticker').setInteractive()
+    this.testSticker = new Sticker(testStickerImg, silhouette, 0)
     //TODO apply interact function on sticker to test removeSticker in its environment
-    //ss.stickerOne.on('pointerdown', this.handleBlueBoxPointerDown)
+    // making it an arrow function works, but holds up a lot of data
+    this.testSticker.image.on('pointerdown', () => {this.handleTestStickerPointerDown(this)})
+    // static doesn't work
+    //this.testSticker.image.on('pointerdown', JessieTestScene.handleTestStickerPointerDown)
+    // passing this scene to it doesn't work
+    //this.testSticker.image.on('pointerdown', this.handleTestStickerPointerDown)
 
     console.log('about to create a painting...')
-    const testPainting = new Painting(
+    this.testPainting = new Painting(
       cowFarm, 
-      new Array(sticker), 
+      new Array(this.testSticker), 
       new Array('BuffaloStickerPaintingSize'), 
       null, 
       this
     )
 
     //for now, just call removeSticker to see logs TODO remove after testing
-    testPainting.removeSticker(sticker)
+    //testPainting.removeSticker(this.testSticker)
     
   }
 
-  handleBlueBoxPointerDown (pointer) {
-    Util.handlePointerDown(pointer, ss.stickerOne, ss.silhouetteOne)
-    //doesn't work cuz scope or something
-    //this.handlePointerDown(pointer, this.BlueBox, this.RedBox)
+  handleTestStickerPointerDown (scene) {
+    scene.testPainting.removeSticker(this.testSticker)
+    this.testSticker.setLocation(this.testSticker, -100, -100)
   } 
 
 }
