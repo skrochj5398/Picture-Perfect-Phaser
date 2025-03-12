@@ -39,10 +39,10 @@ class PrototypeScene extends Phaser.Scene {
     CONFIG.DEFAULT_HEIGHT / Frame.height * 1.16
 )*/
 
-    const cowFarm = this.add.image(CONFIG.DEFAULT_WIDTH / 2.02, CONFIG.DEFAULT_HEIGHT / 2.06, 'CowFarm')
+    const cowFarm = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.06, 'CowFarm')
     const Frame = this.add.nineslice(CONFIG.DEFAULT_WIDTH / 1.98, CONFIG.DEFAULT_HEIGHT / 1.96, 'Frame', 0, 1920, 1080, 32, 32, 32, 32)
     
-    ss.silhouetteOne = this.add.image(1000, 1010, 'Inventory').setScale(.5)
+    ss.silhouetteOne = this.add.nineslice(1000, 1010, 'Inventory', 0, 1000, 300, 32, 32, 32, 32).setScale(.5)
     ss.stickerOne = this.add.image(400, 700, 'BuffaloSticker').setInteractive().setScale(.8)
 
     /*const testSticker = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 
@@ -57,7 +57,7 @@ class PrototypeScene extends Phaser.Scene {
     ss.stickerOne.on('pointerdown', this.handleBlueBoxPointerDown)
 
     // Testing making more objects
-    const BlueBox = this.add.image(500, 500, 'BlueBox').setScale(0.5);
+    /*const BlueBox = this.add.image(500, 500, 'BlueBox').setScale(0.5);
     const RedBox = this.add.image(500, 500, 'RedBox').setScale(0.5);
     var silhouetteTwo;
     var stickerTwo = new Sticker(BlueBox, silhouetteTwo, 2);
@@ -70,7 +70,7 @@ class PrototypeScene extends Phaser.Scene {
     console.log(stickerTwo.getID(stickerTwo));
     console.log(stickerTwo.getSilhouette(stickerTwo));
     console.log(silhouetteTwo.getID(silhouetteTwo));
-    console.log(silhouetteTwo.getSticker(silhouetteTwo));
+    console.log(silhouetteTwo.getSticker(silhouetteTwo));*/
 
     //stickerTwo.on('pointerdown', (pointer) => this.handleBlueBoxPointerDown(pointer, stickerTwo, silhouetteTwo));
     
