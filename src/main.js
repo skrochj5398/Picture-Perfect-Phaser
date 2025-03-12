@@ -17,7 +17,17 @@ const config = {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
     width: CONFIG.DEFAULT_WIDTH,
-    height: CONFIG.DEFAULT_HEIGHT
+    height: CONFIG.DEFAULT_HEIGHT,
+
+    min: {
+      minWidth : CONFIG.DEFAULT_MINWIDTH,
+      minHeight : CONFIG.DEFAULT_MINHEIGHT
+    },
+
+    max: {
+      maxWidth : CONFIG.DEFAULT_WIDTH,
+      maxHeight : CONFIG.DEFAULT_HEIGHT
+    }
   },
 
   // Configure physics settings
