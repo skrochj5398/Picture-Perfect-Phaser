@@ -7,11 +7,11 @@ class Inventory{
     this.silhouettes = newSilhouettes
     this.id = id;
   }
-  addSticker(inventory, newSticker){
-
+  addSticker(newSticker){
+    this.foundStickers.push(newSticker);
   }
-  getID(inventory){
-    return inventory.id;
+  getID(){
+    return this.id;
   }
 }
 export default Inventory;
