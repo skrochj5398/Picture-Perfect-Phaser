@@ -8,23 +8,19 @@ class Painting {
    *  part is, replacing that image with the sticker's images, and placing the silhouettes
    * @param {Phaser.GameObjects.Image} img 
    * the image object for the painting itself
-   * @param {Sticker[]} stickers 
-   * the stickers that are to be hidden on this painting (in corresponding order with 
-   *  stickersPaintingSize)
    * @param {String[]} stickerKeys
-   * the keys of the large, transparent versions of the stickers hidden in the painting (in 
-   *  corresponding order with stickers)
+   * the keys of the large, transparent versions of the stickers hidden in the painting
    * remember to define with: new Array('key1', 'key2', 'key3')
    * @param {Silhouette[]} silhouettes 
    * the silhouette objects in large, transparent image form for ease of placement
    * @param {Phaser.Scene} scene
    * the scene that all of the Phaser.GameObjects.Image were created on (usually 'this')
    */
-	constructor(img, stickers, stickerKeys, silhouettes, scene) {
+	constructor(img, stickerKeys, silhouettes, scene) {
     console.log("called painting constructor")
     //save members
 		this.img = img
-    this.stickers = stickers
+    this.stickers = new Array()
     this.stickerKeys = stickerKeys
     this.silhouettes = silhouettes
 
@@ -36,9 +32,9 @@ class Painting {
       console.log('passed img is not a Phaser.GameObjects.Image')
     }
     //check the stickers input
-    if (!(this.stickers instanceof Sticker)) {
-      console.log('passed stickers is not a Sticker')
-    }
+    // if (!(this.stickers instanceof Sticker)) {
+    //   console.log('passed stickers is not a Sticker')
+    // }
     //place painting-size-stickers
     //actually don't. we can find their sticker location without moving them
     if (!(stickerKeys instanceof String)) {
@@ -63,41 +59,44 @@ class Painting {
       console.log(bounds)
 
       // create an image on the scene for this sticker key
-      let cropSticker = scene.add.image(0,0,stickerKeys[i])
-      // crop to just around the bounds
-      // cropSticker.setCrop(
-      //   bounds.leftBound, 
-      //   bounds.topBound,
-      //   bounds.rightBound-bounds.leftBound,
-      //   bounds.bottomBound-bounds.topBound
-      // )
-      cropSticker.setCrop(
+      let stickerImage = scene.add.image(0,0,stickerKeys[i]).setInteractive()
+      //crop to just around the visible parts
+      stickerImage.setCrop(
         bounds.leftBound, 
         bounds.topBound,
         bounds.rightBound - bounds.leftBound,
         bounds.bottomBound - bounds.topBound
       )
+      //create a new hitArea for clicking interaction
+      stickerImage.input.hitArea = new Phaser.Geom.Rectangle(
+        bounds.leftBound, 
+        bounds.topBound, 
+        bounds.rightBound - bounds.leftBound,
+        bounds.bottomBound - bounds.topBound
+      )
+      // create a Sticker around this sticker
+      const sticker = new Sticker(stickerImage, null, 0)
+      // add the Sticker to this.stickers
+      this.stickers.push(sticker)
       // set postition of the cropped sticker
-      cropSticker.setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.06)
+      stickerImage.setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.06)
 
-      //access corresponding sticker
-      const sticker = this.stickers[i]
-
-      //calculate position
-      // assuming painting is centered, get painting's offset from origin
-      const heightOffset = (CONFIG.DEFAULT_HEIGHT - this.img.height) / 2.0
-      const widthOffset = (CONFIG.DEFAULT_WIDTH - this.img.width) / 2.0
-      console.log('painting offset found to be: ', widthOffset, ' ', heightOffset)
-      // get sticker origin by averaging bounds
-      const stickerBoundsX = (bounds.leftBound + bounds.rightBound) / 2.0
-      const stickerBoundsY = (bounds.topBound + bounds.bottomBound) / 2.0
-      console.log('sticker origin found at: ', stickerBoundsX, ' ', stickerBoundsY)
-      // add offset to get final positioning of sticker origin
-      const finalX = stickerBoundsX + widthOffset
-      const finalY = stickerBoundsY + heightOffset
-      //save somewhere... or use immediately
-      console.log('setting sticker to location: ', finalX, ' ', finalY)
-      sticker.setLocation(sticker, finalX, finalY)
+      // unecessary with cropping
+      // //calculate position 
+      // // assuming painting is centered, get painting's offset from origin
+      // const heightOffset = (CONFIG.DEFAULT_HEIGHT - this.img.height) / 2.0
+      // const widthOffset = (CONFIG.DEFAULT_WIDTH - this.img.width) / 2.0
+      // console.log('painting offset found to be: ', widthOffset, ' ', heightOffset)
+      // // get sticker origin by averaging bounds
+      // const stickerBoundsX = (bounds.leftBound + bounds.rightBound) / 2.0
+      // const stickerBoundsY = (bounds.topBound + bounds.bottomBound) / 2.0
+      // console.log('sticker origin found at: ', stickerBoundsX, ' ', stickerBoundsY)
+      // // add offset to get final positioning of sticker origin
+      // const finalX = stickerBoundsX + widthOffset
+      // const finalY = stickerBoundsY + heightOffset
+      // //save somewhere... or use immediately
+      // console.log('setting sticker to location: ', finalX, ' ', finalY)
+      // sticker.setLocation(sticker, finalX, finalY)
 
       //loops through the rest
     }
@@ -198,6 +197,7 @@ class Painting {
       console.log("Sticker not found in painting")
     }
   }
+
 }
 
 export default Painting

@@ -1,5 +1,4 @@
 import Phaser from 'phaser'
-import Util from '../util.js'
 import ss from '../models/PrototypeModel.js'
 import CONFIG from '../config.js'
 import Painting from '../models/Painting.js'
@@ -25,14 +24,14 @@ class JessieTestScene extends Phaser.Scene {
 
     const cowFarm = this.add.image(0, 0, 'CowFarm')
 
-    ss.silhouetteOne = this.add.image(1000, 1010, 'Inventory').setScale(.5)
+    const inventory = this.add.image(1000, 1010, 'Inventory').setScale(.5)
     //ss.stickerOne = this.add.image(400, 700, 'BuffaloSticker').setInteractive().setScale(.8)
-    let silhouette
-    const testStickerImg = this.add.image(0,0,'BuffaloSticker').setInteractive()
-    this.testSticker = new Sticker(testStickerImg, silhouette, 0)
+    //let silhouette
+    //const testStickerImg = this.add.image(0,0,'BuffaloSticker').setInteractive()
+    //this.testSticker = new Sticker(testStickerImg, silhouette, 0)
     //TODO apply interact function on sticker to test removeSticker in its environment
     // making it an arrow function works, but holds up a lot of data
-    this.testSticker.image.on('pointerdown', () => {this.handleTestStickerPointerDown(this)})
+    //this.testSticker.image.on('pointerdown', () => {this.handleTestStickerPointerDown(this)})
     // static doesn't work
     //this.testSticker.image.on('pointerdown', JessieTestScene.handleTestStickerPointerDown)
     // passing this scene to it doesn't work
@@ -41,20 +40,22 @@ class JessieTestScene extends Phaser.Scene {
     console.log('about to create a painting...')
     this.testPainting = new Painting(
       cowFarm, 
-      new Array(this.testSticker), 
       new Array('BuffaloStickerPaintingSize'), 
       null, 
       this
     )
 
-    //for now, just call removeSticker to see logs TODO remove after testing
-    //testPainting.removeSticker(this.testSticker)
+    //get the stickers and save them; used in on click function
+    this.stickers = this.testPainting.stickers
+    // attach a function to a sticker
+    this.stickers[0].image.on('pointerdown', () => {this.handleTestStickerPointerDown(this)})
     
   }
 
   handleTestStickerPointerDown (scene) {
-    scene.testPainting.removeSticker(this.testSticker)
-    this.testSticker.setLocation(this.testSticker, -100, -100)
+    console.log("running click function")
+    this.stickers[0].setLocation(this.stickers[0], -100, -100)
+    scene.testPainting.removeSticker(this.stickers[0])
   } 
 
 }
