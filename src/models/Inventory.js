@@ -13,5 +13,8 @@ class Inventory{
   getID(){
     return this.id;
   }
+  getSticker(index){
+    return this.foundStickers[index];
+  }
 }
 export default Inventory;

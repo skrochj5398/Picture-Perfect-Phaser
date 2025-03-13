@@ -3,11 +3,11 @@ import Util from '../util'
 import ss from '../models/PrototypeModel'
 import Sticker from '../models/Sticker'
 import Silhouette from '../models/Silhouette'
+import Inventory from '../models/Inventory'
 import CONFIG from '../config.js'
 import Frame from './Frame.js'
 
 class PrototypeScene extends Phaser.Scene {
-
   preload () {
     //this is where to load images or in StartScene
     this.load.image('BlueBox', 'assets/BlueBox.png')
@@ -61,20 +61,29 @@ class PrototypeScene extends Phaser.Scene {
     ss.stickerOne.on('pointerdown', this.handleBlueBoxPointerDown)
 
     // Testing making more objects
-    /*const BlueBox = this.add.image(500, 500, 'BlueBox').setScale(0.5);
-    const RedBox = this.add.image(500, 500, 'RedBox').setScale(0.5);
-    var silhouetteTwo;
-    var stickerTwo = new Sticker(BlueBox, silhouetteTwo, 2);
-    silhouetteTwo = new Silhouette (RedBox, stickerTwo, 2);
-    //Testing setters
-    stickerTwo.setSilhouette(silhouetteTwo);
-    stickerTwo.setLocation(100, 100);
-    silhouetteTwo.setLocation(300,300);
-    //Testing getters
-    console.log(stickerTwo.getID(stickerTwo));
-    console.log(stickerTwo.getSilhouette(stickerTwo));
-    console.log(silhouetteTwo.getID(silhouetteTwo));
-    console.log(silhouetteTwo.getSticker(silhouetteTwo));*/
+    // const BlueBox = this.add.image(500, 500, 'BlueBox').setScale(0.5);
+    // const RedBox = this.add.image(500, 500, 'RedBox').setScale(0.5);
+    // var silhouetteTwo;
+    // var stickerTwo = new Sticker(BlueBox, silhouetteTwo, 2);
+    // silhouetteTwo = new Silhouette (RedBox, stickerTwo, 2);
+    // //Testing setters
+    // stickerTwo.setSilhouette(silhouetteTwo);
+    // stickerTwo.setLocation(100, 100);
+    // silhouetteTwo.setLocation(300,300);
+    // //Testing getters
+    // //console.log(stickerTwo.getID());
+    // //console.log(stickerTwo.getSilhouette());
+    // //console.log(silhouetteTwo.getID());
+    // //console.log(silhouetteTwo.getSticker());
+
+    // //Testing Inventory
+     const stickers = [];
+     const silhouettes = [];
+     var inventory1 = new Inventory(null, stickers, silhouettes, 1);
+    // inventory1.addSticker(stickerTwo);
+    // //Testing getters
+    // console.log(inventory1.getID());
+    // console.log(inventory1.getSticker(0));
 
     //stickerTwo.on('pointerdown', (pointer) => this.handleBlueBoxPointerDown(pointer, stickerTwo, silhouetteTwo));
     
