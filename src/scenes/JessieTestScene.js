@@ -21,11 +21,7 @@ class JessieTestScene extends Phaser.Scene {
 
   create () {
 
-    const Frame = this.add.image(CONFIG.DEFAULT_WIDTH / 1.98, CONFIG.DEFAULT_HEIGHT / 1.96, 'Frame')
-    Frame.setScale(
-      CONFIG.DEFAULT_WIDTH / Frame.width * 1.05,
-      CONFIG.DEFAULT_HEIGHT / Frame.height * 1.16
-    )
+    const Frame = this.add.nineslice(CONFIG.DEFAULT_WIDTH / 1.98, CONFIG.DEFAULT_HEIGHT / 1.96, 'Frame', 0, 1920, 1080, 32, 32, 32, 32)
 
     const cowFarm = this.add.image(0, 0, 'CowFarm')
 

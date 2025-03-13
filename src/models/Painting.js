@@ -65,14 +65,20 @@ class Painting {
       // create an image on the scene for this sticker key
       let cropSticker = scene.add.image(0,0,stickerKeys[i])
       // crop to just around the bounds
-      /*cropSticker.setCrop(
+      // cropSticker.setCrop(
+      //   bounds.leftBound, 
+      //   bounds.topBound,
+      //   bounds.rightBound-bounds.leftBound,
+      //   bounds.bottomBound-bounds.topBound
+      // )
+      cropSticker.setCrop(
         bounds.leftBound, 
         bounds.topBound,
-        bounds.rightBound,
-        bounds.bottomBound
-      )*/
+        bounds.rightBound - bounds.leftBound,
+        bounds.bottomBound - bounds.topBound
+      )
       // set postition of the cropped sticker
-      cropSticker.setPosition(CONFIG.DEFAULT_WIDTH / 2.02, CONFIG.DEFAULT_HEIGHT / 2.06)
+      cropSticker.setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.06)
 
       //access corresponding sticker
       const sticker = this.stickers[i]
@@ -84,7 +90,7 @@ class Painting {
       console.log('painting offset found to be: ', widthOffset, ' ', heightOffset)
       // get sticker origin by averaging bounds
       const stickerBoundsX = (bounds.leftBound + bounds.rightBound) / 2.0
-      const stickerBoundsY = (bounds.topBound + bounds.BottomBound) / 2.0
+      const stickerBoundsY = (bounds.topBound + bounds.bottomBound) / 2.0
       console.log('sticker origin found at: ', stickerBoundsX, ' ', stickerBoundsY)
       // add offset to get final positioning of sticker origin
       const finalX = stickerBoundsX + widthOffset
@@ -171,7 +177,7 @@ class Painting {
       leftBound: min_x,
       rightBound: max_x,
       topBound: min_y,
-      BottomBound: max_y
+      bottomBound: max_y
     }
     return bounds;
   }
