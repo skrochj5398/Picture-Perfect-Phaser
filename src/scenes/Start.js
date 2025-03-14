@@ -13,7 +13,7 @@ class StartScene extends Phaser.Scene {
 
   preload () {
     // Load the image assets needed for THIS scene
-    this.load.image('StartScreen', 'assets/StartScreen.png')
+    this.load.image('StartScreen', 'assets/Menus/Main/Picture_Perfect_Main_Menu_Claire.png')
 
     // Load the image assets needed for 'ExampleScene'
     this.load.image('sky', 'assets/skies/space3.png')
@@ -57,6 +57,8 @@ class StartScene extends Phaser.Scene {
     console.log('Key released', event.code)
     if (event.code == 'KeyP') {
       this.scene.start('JessieTestScene')
+    } if (event.code == 'KeyA') {
+      this.scene.start('AlphaScene')
     } else {
       this.scene.start('PrototypeScene')
     }

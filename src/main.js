@@ -9,6 +9,7 @@ import StartScene from './scenes/Start.js'
 import HUDScene from './scenes/HUD.js'
 import PrototypeScene from './scenes/Prototype.js'
 import JessieTestScene from './scenes/JessieTestScene.js'
+import AlphaScene from './scenes/AlphaScene.js'
 
 const config = {
   // Configure Phaser graphics settings
@@ -50,4 +51,5 @@ game.scene.add('ExampleScene', ExampleScene)
 game.scene.add('HUDScene', HUDScene)
 game.scene.add('PrototypeScene', PrototypeScene)
 game.scene.add('JessieTestScene', JessieTestScene)
+game.scene.add('AlphaScene', AlphaScene)
 game.scene.start('StartScene')

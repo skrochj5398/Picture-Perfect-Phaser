@@ -1,5 +1,6 @@
 import CONFIG from '../config.js'
 import Sticker from './Sticker.js'
+import Silhouette from './Silhouette.js'
 
 class Painting {
 
@@ -28,27 +29,18 @@ class Painting {
     //place the painting
     if (this.img instanceof Phaser.GameObjects.Image) {
       this.img.setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.06)
+      this.img.setScale(0.417)
     } else {
       console.log('passed img is not a Phaser.GameObjects.Image')
     }
-    //check the stickers input
-    // if (!(this.stickers instanceof Sticker)) {
-    //   console.log('passed stickers is not a Sticker')
-    // }
-    //place painting-size-stickers
-    //actually don't. we can find their sticker location without moving them
-    if (!(stickerKeys instanceof String)) {
-      console.log('passed stickersPaintingSize is not a String')
-    }
-    //place silhouettes TODO uncomment when Silhouette is added
-    /*if (silhouettes instanceof Silhouette) {
+    //place silhouettes
+    if (silhouettes instanceof Array && silhouettes[0] instanceof Silhouette) {
       for (const silhouette of this.silhouettes) {
-        silhouette.getImg().setPosition(CONFIG.DEFAULT_WIDTH / 2.02, CONFIG.DEFAULT_HEIGHT / 2.06)
-        //TODO update to change silhouette image position once Silhouette is defined
+        silhouette.image.setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.06)
       }
     } else {
       console.log('passed silhouettes is not a Silhouette')
-    }*/
+    }
    
     //find the bounds for all stickers
     console.log('about to loop over stickers...')
@@ -82,27 +74,10 @@ class Painting {
         // set postition of the cropped sticker
         stickerImage.setPosition(CONFIG.DEFAULT_WIDTH / 2.02, CONFIG.DEFAULT_HEIGHT / 2.06)
 
-        // unecessary with cropping
-        // //calculate position 
-        // // assuming painting is centered, get painting's offset from origin
-        // const heightOffset = (CONFIG.DEFAULT_HEIGHT - this.img.height) / 2.0
-        // const widthOffset = (CONFIG.DEFAULT_WIDTH - this.img.width) / 2.0
-        // console.log('painting offset found to be: ', widthOffset, ' ', heightOffset)
-        // // get sticker origin by averaging bounds
-        // const stickerBoundsX = (bounds.leftBound + bounds.rightBound) / 2.0
-        // const stickerBoundsY = (bounds.topBound + bounds.bottomBound) / 2.0
-        // console.log('sticker origin found at: ', stickerBoundsX, ' ', stickerBoundsY)
-        // // add offset to get final positioning of sticker origin
-        // const finalX = stickerBoundsX + widthOffset
-        // const finalY = stickerBoundsY + heightOffset
-        // //save somewhere... or use immediately
-        // console.log('setting sticker to location: ', finalX, ' ', finalY)
-        // sticker.setLocation(sticker, finalX, finalY)
-
         //loops through the rest
       }
     }
-    this.setPosition(-3000, -3000)
+    this.setPosition(-5000, 0)
 
     console.log('painting constructor finished')
 	}
@@ -187,6 +162,7 @@ class Painting {
    * triggers sticker to be removed from the image. 
    * will likely trigger animation and the like.
    * For now, simply destroys the sticker
+   * sets the index to null so that the other indeces are consistent with level build
    * @param {Sticker} stickerToRemove 
    */
   removeSticker (stickerToRemove) {
@@ -194,7 +170,7 @@ class Painting {
     const removeIndex = this.stickers.indexOf(stickerToRemove)
     if (removeIndex != -1) {
       console.log("Removing sticker from painting")
-      this.stickers.splice(removeIndex, 1)
+      this.stickers[removeIndex] = null
     } else {
       console.log("Sticker not found in painting")
     }
@@ -214,18 +190,20 @@ class Painting {
     //add the difference to each object
     // painting
     this.img.setPosition(this.img.x + xDifference, this.img.y + yDifference)
-    // stickers
+    // stickers; accounts for clicked stickers being null
     for (let i = 0; i < this.stickers.length; i++) {
-      let imageX = this.stickers[i].image.x
-      let imageY = this.stickers[i].image.y
-      this.stickers[i].image.setPosition(imageX + xDifference, imageY + yDifference)
+      if (this.stickers[i] != null) {
+        let imageX = this.stickers[i].image.x
+        let imageY = this.stickers[i].image.y
+        this.stickers[i].image.setPosition(imageX + xDifference, imageY + yDifference)
+      }
     }
     // silhouettes
-    // for (let i = 0; i < this.silhouettes.length; i++) {
-    //   let imageX = this.silhouettes[i].image.x
-    //   let imageY = this.silhouettes[i].image.y
-    //   this.silhouettes[i].image.setPosition(imageX + xDifference, imageY + yDifference)
-    // }
+    for (let silhouette of this.silhouettes) {
+      let imageX = silhouette.image.x
+      let imageY = silhouette.image.y
+      silhouette.image.setPosition(imageX + xDifference, imageY + yDifference)
+    }
     // frame?
     
     //done. that easy

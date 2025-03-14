@@ -20,10 +20,12 @@ class JessieTestScene extends Phaser.Scene {
 
   create () {
 
-    const Frame = this.add.nineslice(CONFIG.DEFAULT_WIDTH / 1.98, CONFIG.DEFAULT_HEIGHT / 1.96, 'Frame', 0, 1920, 1080, 32, 32, 32, 32)
+    
 
     const cowFarm = this.add.image(0, 0, 'CowFarm')
     const painting1 = this.add.image(0, 0, 'Painting1')
+
+    const Frame = this.add.nineslice(CONFIG.DEFAULT_WIDTH / 1.98, CONFIG.DEFAULT_HEIGHT / 1.96, 'Frame', 0, 1920, 1080, 32, 32, 32, 32)
 
     const inventory = this.add.image(1000, 1010, 'Inventory').setScale(.5)
     //ss.stickerOne = this.add.image(400, 700, 'BuffaloSticker').setInteractive().setScale(.8)
