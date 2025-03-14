@@ -5,20 +5,20 @@ class Silhouette {
     this. id = id;
   }
   // test method
-  setLocation(imageN, xCoordinate, yCoordinate){
-    imageN.image.setPosition(xCoordinate, yCoordinate);
+  setLocation(xCoordinate, yCoordinate){
+    this.image.setPosition(xCoordinate, yCoordinate);
   }
   // return the sticker linked to this silhouette
-  getSticker(silhouette){
-    return silhouette.sticker;
+  getSticker(){
+    return this.sticker;
   }
   // get the silhouette's id
-  getID(silhouette){
-    return silhouette.id;
+  getID(){
+    return this.id;
   }
   // change the sticker attached to this silhouette
-  setSilhouette(silhouette, sticker){
-    silhouette.sticker = sticker;
+  setSticker(sticker){
+    this.sticker = sticker;
   }
 }
 export default Silhouette
