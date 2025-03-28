@@ -46,7 +46,7 @@ class StartScene extends Phaser.Scene {
     this.startButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 1.7, 
       'BlueBox').setScale(1, 0.5).setInteractive()
     this.optionsButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 1.4, 
-      'RedBox').setScale(1, 0.4).setInteractive()
+      'BlueBox').setScale(1, 0.4).setInteractive()
     this.creditsButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 1.2, 
       'BlueBox').setScale(1, 0.4).setInteractive()
     
@@ -54,6 +54,14 @@ class StartScene extends Phaser.Scene {
     this.startButton.on('pointerup', () => {this.toLevelSelect()})
     this.optionsButton.on('pointerup', () => {this.toOptions()})
     this.creditsButton.on('pointerup', () => {this.toCredits()})
+
+    // assign functions to update texture for hovering
+    this.startButton.on('pointermove', () => {this.hoverButton(this.startButton)})
+    this.startButton.on('pointerout', () => {this.unHoverButton(this.startButton)})
+    this.optionsButton.on('pointermove', () => {this.hoverButton(this.optionsButton)})
+    this.optionsButton.on('pointerout', () => {this.unHoverButton(this.optionsButton)})
+    this.creditsButton.on('pointermove', () => {this.hoverButton(this.creditsButton)})
+    this.creditsButton.on('pointerout', () => {this.unHoverButton(this.creditsButton)})
 
     // Load and play background music
     // this.music = this.sound.addAudioSprite('gameAudio')
@@ -67,9 +75,27 @@ class StartScene extends Phaser.Scene {
       this.scene.start('JessieTestScene')
     } if (event.code == 'KeyA') {
       this.scene.start('AlphaScene')
+    } if (event.code == 'Space') {
+      this.scene.start('PrototypeScene')
     }
     
     //this.music.stop()
+  }
+
+  /**
+   * changes button texture when hovered over
+   * @param {Phaser.GameObjects.Image} image 
+   */
+  hoverButton (image) {
+    image.setTexture('RedBox')
+  }
+
+  /**
+   * changes button texture when no longer hovered over
+   * @param {Phaser.GameObjects.Image} image 
+   */
+  unHoverButton (image) {
+    image.setTexture('BlueBox')
   }
 
   /**
