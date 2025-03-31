@@ -8,6 +8,8 @@ import ExampleScene from './scenes/Example.js'
 import StartScene from './scenes/Start.js'
 import HUDScene from './scenes/HUD.js'
 import PrototypeScene from './scenes/Prototype.js'
+import JessieTestScene from './scenes/JessieTestScene.js'
+import AlphaScene from './scenes/AlphaScene.js'
 
 const config = {
   // Configure Phaser graphics settings
@@ -17,7 +19,17 @@ const config = {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
     width: CONFIG.DEFAULT_WIDTH,
-    height: CONFIG.DEFAULT_HEIGHT
+    height: CONFIG.DEFAULT_HEIGHT,
+
+    min: {
+      minWidth : CONFIG.DEFAULT_MINWIDTH,
+      minHeight : CONFIG.DEFAULT_MINHEIGHT
+    },
+
+    max: {
+      maxWidth : CONFIG.DEFAULT_WIDTH,
+      maxHeight : CONFIG.DEFAULT_HEIGHT
+    }
   },
 
   // Configure physics settings
@@ -38,4 +50,6 @@ game.scene.add('StartScene', StartScene)
 game.scene.add('ExampleScene', ExampleScene)
 game.scene.add('HUDScene', HUDScene)
 game.scene.add('PrototypeScene', PrototypeScene)
+game.scene.add('JessieTestScene', JessieTestScene)
+game.scene.add('AlphaScene', AlphaScene)
 game.scene.start('StartScene')
