@@ -29,6 +29,8 @@ class PrototypeScene extends Phaser.Scene {
     }
   } */
 
+    static inventory1 = new Inventory()
+
   create () {
 
     const cowFarm = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.06, 'CowFarm')
@@ -77,9 +79,6 @@ class PrototypeScene extends Phaser.Scene {
     // //console.log(silhouetteTwo.getSticker());
 
     // //Testing Inventory
-     const stickers = [];
-     const silhouettes = [];
-     var inventory1 = new Inventory(null, stickers, silhouettes, 1);
     // inventory1.addSticker(stickerTwo);
     // //Testing getters
     // console.log(inventory1.getID());
