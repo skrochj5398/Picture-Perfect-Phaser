@@ -14,10 +14,13 @@ class StartScene extends Phaser.Scene {
 
   preload () {
     // Load the image assets needed for THIS scene
-    this.load.image('StartScreen', 'assets/Menus/Main/Picture_Perfect_Main_Menu_Claire.png')
+    this.load.image('StartScreen', 'assets/UI_Main_Menu_Background_Claire_3_31_2025_v1.png')
     // temp button textures
     this.load.image('BlueBox', 'assets/BlueBox.png')
     this.load.image('RedBox', 'assets/RedBox.png')
+    // actual menu textures
+    this.load.image('StartButton', 'assets/UI_Play_Button_Claire_3_31_2025_v1.png')
+    this.load.image('OptionsButton', 'assets/UI_Options_Button_Claire_3_31_2025_v1.png')
 
     // Pre-load the entire audio sprite
     this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [
@@ -49,20 +52,20 @@ class StartScene extends Phaser.Scene {
       this, 
       CONFIG.DEFAULT_WIDTH / 2.0, 
       CONFIG.DEFAULT_HEIGHT / 1.7, 
-      'BlueBox', 
-      'RedBox', 
+      'StartButton', 
+      'StartButton', 
       () => {this.toLevelSelect()}
-    ).setInteractive().setScale(1, 0.5)
+    ).setInteractive()
 
     // options button
     this.optionsButton = new HoverableButton(
       this, 
       CONFIG.DEFAULT_WIDTH / 2.0, 
       CONFIG.DEFAULT_HEIGHT / 1.4, 
-      'BlueBox', 
-      'RedBox', 
+      'OptionsButton', 
+      'OptionsButton', 
       () => {this.toOptions()}
-    ).setInteractive().setScale(1, 0.4)
+    ).setInteractive()
     
     // credits button
     this.creditsButton = new HoverableButton(
