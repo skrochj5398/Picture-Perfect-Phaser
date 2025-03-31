@@ -6,6 +6,7 @@ import Silhouette from '../models/Silhouette'
 import Inventory from '../models/Inventory'
 import CONFIG from '../config.js'
 import Frame from './Frame.js'
+import EMITTER from '../models/Emitter.js'
 
 class PrototypeScene extends Phaser.Scene {
   preload () {
@@ -33,23 +34,15 @@ class PrototypeScene extends Phaser.Scene {
 
   create () {
 
+
     const cowFarm = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.06, 'CowFarm')
-    
+
     //Slicing the frame to make it not distorted
     const Frame = this.add.nineslice(CONFIG.DEFAULT_WIDTH / 1.98, CONFIG.DEFAULT_HEIGHT / 1.96, 'Frame', 0, 1920, 1080, 32, 32, 32, 32)
 
-    // Create and configure a particle emitter
-    const emitter = this.add.particles(0, 0, 'red', {
-      speed: 100,
-      scale: { start: 1, end: 0 },
-      blendMode: 'ADD'
-    })
     
     ss.silhouetteOne = this.add.nineslice(1000, 1010, 'Inventory', 0, 1000, 300, 32, 32, 32, 32).setScale(.5)
     ss.stickerOne = this.add.image(400, 700, 'BuffaloSticker').setInteractive().setScale(.8)
-
-    // Make the particle emitter follow an object
-    emitter.startFollow(ss.stickerOne)
 
     /*const testSticker = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 
       'BuffaloStickerPaintingSize')
