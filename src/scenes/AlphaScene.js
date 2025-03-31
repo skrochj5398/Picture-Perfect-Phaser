@@ -8,8 +8,8 @@ class AlphaScene extends Phaser.Scene {
   preload () {
     //this is where to load images or in StartScene
     // temp images for left and right buttons
-    this.load.image('BlueBox', 'assets/BlueBox.png')
-    this.load.image('RedBox', 'assets/RedBox.png')
+    this.load.image('ArrowLeft', 'assets/sprites/Arrow_Left.png')
+    this.load.image('ArrowRight', 'assets/sprites/Arrow_Right.png')
 
     // paintings
     this.load.image(
@@ -167,10 +167,12 @@ class AlphaScene extends Phaser.Scene {
     this.currentPainting.setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.06)
 
     // attach functions to move up or down the array
-    this.blueBox = this.add.image(10, CONFIG.DEFAULT_HEIGHT / 2, 'BlueBox').setInteractive()
-    this.redBox = this.add.image(CONFIG.DEFAULT_WIDTH - 10, CONFIG.DEFAULT_HEIGHT / 2, 'RedBox').setInteractive()
-    this.blueBox.on('pointerdown', () => {this.lastPainting()})
-    this.redBox.on('pointerdown', () => {this.nextPainting()})
+    this.arrowLeft = this.add.image(55, CONFIG.DEFAULT_HEIGHT / 2, 'ArrowLeft').setInteractive()
+    this.arrowRight = this.add.image(CONFIG.DEFAULT_WIDTH - 55, CONFIG.DEFAULT_HEIGHT / 2, 'ArrowRight').setInteractive()
+    this.arrowLeft.setScale(0.5)
+    this.arrowRight.setScale(0.5)
+    this.arrowLeft.on('pointerdown', () => {this.lastPainting()})
+    this.arrowRight.on('pointerdown', () => {this.nextPainting()})
   }
 
   handleTestStickerPointerDown (index) {

@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import CONFIG from '../config.js'
+import HoverableButton from '../models/HoverableButton.js'
 
 class StartScene extends Phaser.Scene {
   init () {
@@ -43,25 +44,35 @@ class StartScene extends Phaser.Scene {
     this.input.keyboard.on('keyup', this.keyReleased, this)
 
     // Create buttons to load textures into
-    this.startButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 1.7, 
-      'BlueBox').setScale(1, 0.5).setInteractive()
-    this.optionsButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 1.4, 
-      'BlueBox').setScale(1, 0.4).setInteractive()
-    this.creditsButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 1.2, 
-      'BlueBox').setScale(1, 0.4).setInteractive()
-    
-    // assign functions to all buttons
-    this.startButton.on('pointerup', () => {this.toLevelSelect()})
-    this.optionsButton.on('pointerup', () => {this.toOptions()})
-    this.creditsButton.on('pointerup', () => {this.toCredits()})
+    // start button
+    this.startButton = new HoverableButton(
+      this, 
+      CONFIG.DEFAULT_WIDTH / 2.0, 
+      CONFIG.DEFAULT_HEIGHT / 1.7, 
+      'BlueBox', 
+      'RedBox', 
+      () => {this.toLevelSelect()}
+    ).setInteractive().setScale(1, 0.5)
 
-    // assign functions to update texture for hovering
-    this.startButton.on('pointermove', () => {this.hoverButton(this.startButton)})
-    this.startButton.on('pointerout', () => {this.unHoverButton(this.startButton)})
-    this.optionsButton.on('pointermove', () => {this.hoverButton(this.optionsButton)})
-    this.optionsButton.on('pointerout', () => {this.unHoverButton(this.optionsButton)})
-    this.creditsButton.on('pointermove', () => {this.hoverButton(this.creditsButton)})
-    this.creditsButton.on('pointerout', () => {this.unHoverButton(this.creditsButton)})
+    // options button
+    this.optionsButton = new HoverableButton(
+      this, 
+      CONFIG.DEFAULT_WIDTH / 2.0, 
+      CONFIG.DEFAULT_HEIGHT / 1.4, 
+      'BlueBox', 
+      'RedBox', 
+      () => {this.toOptions()}
+    ).setInteractive().setScale(1, 0.4)
+    
+    // credits button
+    this.creditsButton = new HoverableButton(
+      this, 
+      CONFIG.DEFAULT_WIDTH / 2.0, 
+      CONFIG.DEFAULT_HEIGHT / 1.2, 
+      'BlueBox', 
+      'RedBox', 
+      () => {this.toCredits()}
+    ).setInteractive().setScale(1, 0.4)
 
     // Load and play background music
     // this.music = this.sound.addAudioSprite('gameAudio')
