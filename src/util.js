@@ -1,4 +1,3 @@
-
 class Util {
   /**
    * use to handle 'pointerdown' events on the sticker object passed.
