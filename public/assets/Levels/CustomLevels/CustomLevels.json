@@ -1,0 +1,11 @@
+{
+  "name": "CustomLevel1",
+	"numPaintings": 4,
+	"paintings": {
+		"name": "assets/Levels/CustomLevels/CustomLevel1/Painting1/the_last_of_the_buffalo_2014.79.5.jpg",
+		"numStickers": 1,
+		"stickers": {
+			"name": ""
+		}
+	}
+}

@@ -44,6 +44,15 @@ class PrototypeScene extends Phaser.Scene {
     ss.silhouetteOne = this.add.nineslice(1000, 1010, 'Inventory', 0, 1000, 300, 32, 32, 32, 32).setScale(.5)
     ss.stickerOne = this.add.image(400, 700, 'BuffaloSticker').setInteractive().setScale(.8)
 
+    // Create and configure a particle emitter
+    this.emitter = this.add.particles(0, 0, 'red', {
+      speed: 100,
+      lifespan: 1000,
+      scale: { start: 1, end: 0 },
+      blendMode: 'ADD',
+      emitting: false
+    })
+
     /*const testSticker = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 
       'BuffaloStickerPaintingSize')
     testSticker.setScale(
@@ -53,7 +62,9 @@ class PrototypeScene extends Phaser.Scene {
     //console.log(Util.findSticker(this.textures, 'BuffaloStickerPaintingSize'))
 
 
-    ss.stickerOne.on('pointerdown', this.handleBlueBoxPointerDown)
+    ss.stickerOne.on('pointerdown', () => {this.handleBlueBoxPointerDown()})
+
+    
 
     // Testing making more objects
     // const BlueBox = this.add.image(500, 500, 'BlueBox').setScale(0.5);
@@ -87,7 +98,9 @@ class PrototypeScene extends Phaser.Scene {
 // }
 
   handleBlueBoxPointerDown (pointer) {
+    this.emitter.emitParticleAt(ss.stickerOne.x, ss.stickerOne.y)
     Util.handlePointerDown(pointer, ss.stickerOne, ss.silhouetteOne)
+    ss.stickerOne.disableInteractive()
     //doesn't work cuz scope or something
     //this.handlePointerDown(pointer, this.BlueBox, this.RedBox)
   } 

@@ -10,6 +10,7 @@ class Inventory{
   }
   addSticker(newSticker){
     this.foundStickers.push(newSticker);
+    newSticker.image.diasbleInterative()
   }
   getID(){
     return this.id;
