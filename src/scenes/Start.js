@@ -122,7 +122,7 @@ class StartScene extends Phaser.Scene {
     //this.scene.start('')
 
     //go to alpha for now
-    this.scene.start('AlphaScene')
+    this.scene.start('BetaScene')
   }
 
   /**
