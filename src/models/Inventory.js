@@ -18,5 +18,9 @@ class Inventory{
   getSticker(index){
     return this.foundStickers[index];
   }
+  emptyInventory(){
+    this.foundStickers.length = 0;
+    this.silhouettes.length = 0;
+  }
 }
 export default Inventory;
