@@ -1,0 +1,17 @@
+{
+  "name": "CustomLevel1",
+	"numPaintings": 4,
+	"paintings": [
+		{
+			"name": "the_last_of_the_buffalo_2014.79.5.jpg",
+			"numStickers": 1,
+			"stickers": {
+				"name": "Soldier Sticker.png"
+			},
+			"numSilhouettes": 2,
+			"silhouettes": [
+				
+			]
+		}
+	]
+}

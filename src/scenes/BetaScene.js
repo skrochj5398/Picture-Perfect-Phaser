@@ -3,7 +3,7 @@ import CONFIG from '../config.js'
 import Painting from '../models/Painting.js'
 import Silhouette from '../models/Silhouette.js'
 
-class AlphaScene extends Phaser.Scene {
+class BetaScene extends Phaser.Scene {
 
   preload () {
     //this is where to load images or in StartScene
@@ -219,4 +219,4 @@ class AlphaScene extends Phaser.Scene {
 
 }
 
-export default AlphaScene
+export default BetaScene
