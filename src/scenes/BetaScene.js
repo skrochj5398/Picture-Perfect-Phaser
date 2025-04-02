@@ -112,6 +112,15 @@ class BetaScene extends Phaser.Scene {
     )
     const inventory = this.add.image(1000, 1010, 'Inventory').setScale(.5)
 
+    // Create and configure a particle emitter
+    this.emitter = this.add.particles(0, 0, 'red', {
+      speed: 100,
+      lifespan: 1000,
+      scale: { start: 1, end: 0 },
+      blendMode: 'ADD',
+      emitting: false
+    })
+
     // pass silhouettes too, in an array of Silhouettes with ids concat(painting#, silhouette#)
     // define after Frame so frame doesn't block click events (must more blood be shed!?)
     const painting1 = new Painting(
@@ -177,6 +186,7 @@ class BetaScene extends Phaser.Scene {
 
   handleTestStickerPointerDown (index) {
     console.log("running click function")
+    this.emitter.emitParticleAt(ss.stickerOne.x, ss.stickerOne.y)
     this.currentPainting.stickers[index].image.setPosition(-5000, 0)
     this.currentPainting.removeSticker(this.currentPainting.stickers[index])
   } 
