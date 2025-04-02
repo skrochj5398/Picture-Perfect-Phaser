@@ -14,7 +14,9 @@ class StartScene extends Phaser.Scene {
 
   preload () {
     // Load the image assets needed for THIS scene
-    this.load.image('StartScreen', 'assets/Menus/Main/Picture_Perfect_Main_Menu_Claire.png')
+    this.load.image('StartScreen1', 'assets/Main_Menu_Backround_Claire_4_2_2025_v1.png')
+    this.load.image('StartScreen2', 'public/assets/Main_Menu_Frame_Claire_4_2_2025_v1.png')
+    this.load.image('StartScreen3', 'public/assets/Main_Menu_Title_4_1_2025_Claire_v1.png')
 
     // Load the image assets needed for 'ExampleScene'
     this.load.image('sky', 'assets/skies/space3.png')
@@ -39,20 +41,28 @@ class StartScene extends Phaser.Scene {
     this.loadingText.destroy()
 
     // Add background image
-    const startScreen = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'StartScreen')
-    startScreen.setScale(
+    const startScreen1 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'StartScreen1')
+    startScreen1.setScale(
       // rescales the image to aspect ratio of the game
-      CONFIG.DEFAULT_WIDTH / startScreen.width,
-      CONFIG.DEFAULT_HEIGHT / startScreen.height
-    )
+      CONFIG.DEFAULT_WIDTH / startScreen1.width,
+      CONFIG.DEFAULT_HEIGHT / startScreen1.height
 
+    )
+    
+    const startScreen2 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'StartScreen2')
+    startScreen2.setScale(
+      // rescales the image to aspect ratio of the game
+      CONFIG.DEFAULT_WIDTH / startScreen2.width,
+      CONFIG.DEFAULT_HEIGHT / startScreen2.height
+    )
+    //create animation
     this.anims.create({
       key: "grass",
       frames: this.anims.generateFrameNumbers("Test anim", {frames:[0,1,2,3,4,5,6,7]}),
       frameRate: 8,
       repeat: -1
   })
-
+    //move animated spritesheet into correct position
     this.player = this.add.sprite(1000, 500, "Test anim")
     this.player.setScale(1.2)
     this.player.play("grass",true)
