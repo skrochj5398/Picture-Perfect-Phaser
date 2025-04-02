@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import CONFIG from '../config.js'
+import HoverableButton from '../models/HoverableButton.js'
 
 class StartScene extends Phaser.Scene {
   init () {
@@ -13,10 +14,13 @@ class StartScene extends Phaser.Scene {
 
   preload () {
     // Load the image assets needed for THIS scene
-    this.load.image('StartScreen', 'assets/Menus/Main/Picture_Perfect_Main_Menu_Claire.png')
+    this.load.image('StartScreen', 'assets/UI_Main_Menu_Background_Claire_3_31_2025_v1.png')
     // temp button textures
     this.load.image('BlueBox', 'assets/BlueBox.png')
     this.load.image('RedBox', 'assets/RedBox.png')
+    // actual menu textures
+    this.load.image('StartButton', 'assets/UI_Play_Button_Claire_3_31_2025_v1.png')
+    this.load.image('OptionsButton', 'assets/UI_Options_Button_Claire_3_31_2025_v1.png')
 
     // Pre-load the entire audio sprite
     this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [
@@ -43,17 +47,35 @@ class StartScene extends Phaser.Scene {
     this.input.keyboard.on('keyup', this.keyReleased, this)
 
     // Create buttons to load textures into
-    this.startButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 1.7, 
-      'BlueBox').setScale(1, 0.5).setInteractive()
-    this.optionsButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 1.4, 
-      'RedBox').setScale(1, 0.4).setInteractive()
-    this.creditsButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 1.2, 
-      'BlueBox').setScale(1, 0.4).setInteractive()
+    // start button
+    this.startButton = new HoverableButton(
+      this, 
+      CONFIG.DEFAULT_WIDTH / 2.0, 
+      CONFIG.DEFAULT_HEIGHT / 1.7, 
+      'StartButton', 
+      'StartButton', 
+      () => {this.toLevelSelect()}
+    ).setInteractive()
+
+    // options button
+    this.optionsButton = new HoverableButton(
+      this, 
+      CONFIG.DEFAULT_WIDTH / 2.0, 
+      CONFIG.DEFAULT_HEIGHT / 1.4, 
+      'OptionsButton', 
+      'OptionsButton', 
+      () => {this.toOptions()}
+    ).setInteractive()
     
-    // assign functions to all buttons
-    this.startButton.on('pointerup', () => {this.toLevelSelect()})
-    this.optionsButton.on('pointerup', () => {this.toOptions()})
-    this.creditsButton.on('pointerup', () => {this.toCredits()})
+    // credits button
+    this.creditsButton = new HoverableButton(
+      this, 
+      CONFIG.DEFAULT_WIDTH / 2.0, 
+      CONFIG.DEFAULT_HEIGHT / 1.2, 
+      'BlueBox', 
+      'RedBox', 
+      () => {this.toCredits()}
+    ).setInteractive().setScale(1, 0.4)
 
     // Load and play background music
     // this.music = this.sound.addAudioSprite('gameAudio')
@@ -67,9 +89,27 @@ class StartScene extends Phaser.Scene {
       this.scene.start('JessieTestScene')
     } if (event.code == 'KeyA') {
       this.scene.start('AlphaScene')
+    } if (event.code == 'Space') {
+      this.scene.start('PrototypeScene')
     }
     
     //this.music.stop()
+  }
+
+  /**
+   * changes button texture when hovered over
+   * @param {Phaser.GameObjects.Image} image 
+   */
+  hoverButton (image) {
+    image.setTexture('RedBox')
+  }
+
+  /**
+   * changes button texture when no longer hovered over
+   * @param {Phaser.GameObjects.Image} image 
+   */
+  unHoverButton (image) {
+    image.setTexture('BlueBox')
   }
 
   /**
@@ -80,6 +120,9 @@ class StartScene extends Phaser.Scene {
   toLevelSelect () {
     console.log('toLevelSelect')
     //this.scene.start('')
+
+    //go to alpha for now
+    this.scene.start('BetaScene')
   }
 
   /**
