@@ -17,6 +17,11 @@ class StartScene extends Phaser.Scene {
     // temp button textures
     this.load.image('BlueBox', 'assets/BlueBox.png')
     this.load.image('RedBox', 'assets/RedBox.png')
+    this.load.spritesheet("Test anim", "assets/Animation/Spritesheet.png", {
+        frameWidth: 1920,
+        frameHeight: 1080
+
+    })
 
     // Pre-load the entire audio sprite
     this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [
@@ -66,9 +71,19 @@ class StartScene extends Phaser.Scene {
     // Load and play background music
     // this.music = this.sound.addAudioSprite('gameAudio')
     // this.music.play('freeVertexStudioTrack1')
+
+    this.anims.create({
+      key: "grass",
+      frames: this.anims.generateFrameNumbers("Test anim", {frames:[0,1,2,3,4,5,6,7]}),
+      frameRate: 8,
+      repeat: -1
+  })
+
+    this.player = this.add.sprite(1000, 500, "Test anim")
+    this.player.setScale(1.2)
+    this.player.play("grass",true)
   }
 
-  // use this just to enter test scenes
   keyReleased (event) {
     console.log('Key released', event.code)
     if (event.code == 'KeyP') {
