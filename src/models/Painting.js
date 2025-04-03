@@ -59,6 +59,8 @@ class Painting {
 
         console.log(bounds)
 
+        console.log("sticker texture height", scene.textures.getFrame(stickerKeys[i]).height)
+
         // create an image on the scene for this sticker key
         const stickerImage = scene.add.image(0, 0, stickerKeys[i]).setInteractive()
         // crop to just around the visible parts
