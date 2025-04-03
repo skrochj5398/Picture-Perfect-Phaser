@@ -30,7 +30,7 @@ class Painting {
     // scene.textures.getFrame(img).height
     // scene.textures.getFrame(img).width
 
-    // Cow painting WxH 1710 x 924, trying to scale to Cow painting
+    // Scaling every painting to fix into the frame without messing with the aspect ratio.
     const targetWidth = 1920 - 160
     const widthScale = targetWidth / scene.textures.getFrame(img).width
 
