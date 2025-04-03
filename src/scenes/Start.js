@@ -14,9 +14,14 @@ class StartScene extends Phaser.Scene {
 
   preload () {
     // Load the image assets needed for THIS scene
-    this.load.image('StartScreen1', 'assets/Main_Menu_Backround_Claire_4_2_2025_v1.png')
-    this.load.image('StartScreen2', 'assets/Main_Menu_Frame_Claire_4_2_2025_v1.png')
-    this.load.image('StartScreen3', 'assets/Main_Menu_Title_4_1_2025_Claire_v1.png')
+    //this.load.image('StartScreen', 'assets/Menus/Main/Picture_Perfect_Main_Menu_Claire.png')
+    this.load.image('StartScreen', 'assets/UI_Main_Menu_Background_Claire_3_31_2025_v1.png')
+
+    this.load.image('StartButton', 'assets/UI_Play_Button_Claire_3_31_2025_v1.png')
+    this.load.image('OptionsButton', 'assets/UI_Options_Button_Claire_3_31_2025_v1.png')
+
+    this.load.image('RedBox', 'assets/RedBox.png')
+    this.load.image('BlueBox', 'assets/BlueBox.png')
 
     // Load the image assets needed for 'ExampleScene'
     this.load.image('sky', 'assets/skies/space3.png')
@@ -41,39 +46,54 @@ class StartScene extends Phaser.Scene {
     this.loadingText.destroy()
 
     // Add background image
-    const startScreen1 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'StartScreen1')
-    startScreen1.setScale(
+    const startScreen = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'StartScreen')
+    startScreen.setScale(
       // rescales the image to aspect ratio of the game
-      CONFIG.DEFAULT_WIDTH / startScreen1.width,
-      CONFIG.DEFAULT_HEIGHT / startScreen1.height
-
-    )
-    
-    const startScreen2 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'StartScreen2')
-    startScreen2.setScale(
-      // rescales the image to aspect ratio of the game
-      CONFIG.DEFAULT_WIDTH / startScreen2.width,
-      CONFIG.DEFAULT_HEIGHT / startScreen2.height
+      CONFIG.DEFAULT_WIDTH / startScreen.width,
+      CONFIG.DEFAULT_HEIGHT / startScreen.height
     )
 
-    const startScreen3 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'StartScreen3')
-    startScreen2.setScale(
-      // rescales the image to aspect ratio of the game
-      CONFIG.DEFAULT_WIDTH / startScreen3.width,
-      CONFIG.DEFAULT_HEIGHT / startScreen3.height
-    )
-    
-    //create animation
     this.anims.create({
       key: "grass",
       frames: this.anims.generateFrameNumbers("Test anim", {frames:[0,1,2,3,4,5,6,7]}),
       frameRate: 8,
       repeat: -1
   })
-    //move animated spritesheet into correct position
+
     this.player = this.add.sprite(1000, 500, "Test anim")
     this.player.setScale(1.2)
     this.player.play("grass",true)
+
+
+    // start button
+    this.startButton = new HoverableButton(
+      this, 
+      CONFIG.DEFAULT_WIDTH / 2.0, 
+      CONFIG.DEFAULT_HEIGHT / 1.7, 
+      'StartButton', 
+      'StartButton', 
+      () => {this.toLevelSelect()}
+    ).setInteractive()
+
+    // options button
+    this.optionsButton = new HoverableButton(
+      this, 
+      CONFIG.DEFAULT_WIDTH / 2.0, 
+      CONFIG.DEFAULT_HEIGHT / 1.4, 
+      'OptionsButton', 
+      'OptionsButton', 
+      () => {this.toOptions()}
+    ).setInteractive()
+
+    // credits button
+    this.creditsButton = new HoverableButton(
+      this, 
+      CONFIG.DEFAULT_WIDTH / 2.0, 
+      CONFIG.DEFAULT_HEIGHT / 1.2, 
+      'BlueBox', 
+      'RedBox', 
+      () => {this.toCredits()}
+    ).setInteractive().setScale(1, 0.4)
 
 
     // Add a callback when a key is released
@@ -97,6 +117,38 @@ class StartScene extends Phaser.Scene {
     
     //this.music.stop()
   }
+
+
+  /**
+   * Runs when pointerup event triggers on startButton.
+   * Runs when Start Button is clicked.
+   * Changes the scene to level select.
+   */
+  toLevelSelect () {
+    console.log('toLevelSelect')
+    this.scene.start('BetaScene')
+  }
+
+  /**
+   * Runs when pointerup event triggers on optionsButton.
+   * Runs when Options Button is clicked.
+   * Changes the scene to options.
+   */
+  toOptions () {
+    console.log('toOptions')
+    //this.scene.start('')
+  }
+
+  /**
+   * Runs when pointerup event triggers on creditsButton.
+   * Runs when Credits Button is clicked.
+   * Changes the scene to credits. 
+   */
+  toCredits () {
+    console.log('toCredits')
+    //this.scene.start('')
+  }
+
 }
 
 export default StartScene
