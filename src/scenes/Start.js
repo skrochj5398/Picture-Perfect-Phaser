@@ -14,7 +14,14 @@ class StartScene extends Phaser.Scene {
 
   preload () {
     // Load the image assets needed for THIS scene
-    this.load.image('StartScreen', 'assets/Menus/Main/Picture_Perfect_Main_Menu_Claire.png')
+    //this.load.image('StartScreen', 'assets/Menus/Main/Picture_Perfect_Main_Menu_Claire.png')
+    this.load.image('StartScreen', 'assets/UI_Main_Menu_Background_Claire_3_31_2025_v1.png')
+
+    this.load.image('StartButton', 'assets/UI_Play_Button_Claire_3_31_2025_v1.png')
+    this.load.image('OptionsButton', 'assets/UI_Options_Button_Claire_3_31_2025_v1.png')
+
+    this.load.image('RedBox', 'assets/RedBox.png')
+    this.load.image('BlueBox', 'assets/BlueBox.png')
 
     // Load the image assets needed for 'ExampleScene'
     this.load.image('sky', 'assets/skies/space3.png')
@@ -58,6 +65,37 @@ class StartScene extends Phaser.Scene {
     this.player.play("grass",true)
 
 
+    // start button
+    this.startButton = new HoverableButton(
+      this, 
+      CONFIG.DEFAULT_WIDTH / 2.0, 
+      CONFIG.DEFAULT_HEIGHT / 1.7, 
+      'StartButton', 
+      'StartButton', 
+      () => {this.toLevelSelect()}
+    ).setInteractive()
+
+    // options button
+    this.optionsButton = new HoverableButton(
+      this, 
+      CONFIG.DEFAULT_WIDTH / 2.0, 
+      CONFIG.DEFAULT_HEIGHT / 1.4, 
+      'OptionsButton', 
+      'OptionsButton', 
+      () => {this.toOptions()}
+    ).setInteractive()
+
+    // credits button
+    this.creditsButton = new HoverableButton(
+      this, 
+      CONFIG.DEFAULT_WIDTH / 2.0, 
+      CONFIG.DEFAULT_HEIGHT / 1.2, 
+      'BlueBox', 
+      'RedBox', 
+      () => {this.toCredits()}
+    ).setInteractive().setScale(1, 0.4)
+
+
     // Add a callback when a key is released
     this.input.keyboard.on('keyup', this.keyReleased, this)
 
@@ -79,6 +117,38 @@ class StartScene extends Phaser.Scene {
     
     //this.music.stop()
   }
+
+
+  /**
+   * Runs when pointerup event triggers on startButton.
+   * Runs when Start Button is clicked.
+   * Changes the scene to level select.
+   */
+  toLevelSelect () {
+    console.log('toLevelSelect')
+    this.scene.start('BetaScene')
+  }
+
+  /**
+   * Runs when pointerup event triggers on optionsButton.
+   * Runs when Options Button is clicked.
+   * Changes the scene to options.
+   */
+  toOptions () {
+    console.log('toOptions')
+    //this.scene.start('')
+  }
+
+  /**
+   * Runs when pointerup event triggers on creditsButton.
+   * Runs when Credits Button is clicked.
+   * Changes the scene to credits. 
+   */
+  toCredits () {
+    console.log('toCredits')
+    //this.scene.start('')
+  }
+
 }
 
 export default StartScene
