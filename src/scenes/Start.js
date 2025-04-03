@@ -15,7 +15,8 @@ class StartScene extends Phaser.Scene {
   preload () {
     // Load the image assets needed for THIS scene
     //this.load.image('StartScreen', 'assets/Menus/Main/Picture_Perfect_Main_Menu_Claire.png')
-    this.load.image('StartScreen', 'assets/UI_Main_Menu_Background_Claire_3_31_2025_v1.png')
+    this.load.image('startScreen_1', 'assets/Main_Menu_Backround_Claire_4_2_2025_v1.png')
+    this.load.image('startScreen_2')
 
     this.load.image('StartButton', 'assets/UI_Play_Button_Claire_3_31_2025_v1.png')
     this.load.image('OptionsButton', 'assets/UI_Options_Button_Claire_3_31_2025_v1.png')
@@ -46,11 +47,11 @@ class StartScene extends Phaser.Scene {
     this.loadingText.destroy()
 
     // Add background image
-    const startScreen = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'StartScreen')
-    startScreen.setScale(
+    const startScreen_1 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'startScreen_1')
+    startScreen_1.setScale(
       // rescales the image to aspect ratio of the game
-      CONFIG.DEFAULT_WIDTH / startScreen.width,
-      CONFIG.DEFAULT_HEIGHT / startScreen.height
+      CONFIG.DEFAULT_WIDTH / startScreen_1.width,
+      CONFIG.DEFAULT_HEIGHT / startScreen_1.height
     )
 
     this.anims.create({
