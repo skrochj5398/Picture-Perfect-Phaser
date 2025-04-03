@@ -1,10 +1,3 @@
-/*preload()
-{
-    this.load.image('red', 'assets/particles/red.png')
-}*/
-
-
-
 // Create and configure a particle emitter
 const EMITTER = ({
     speed: 100,
