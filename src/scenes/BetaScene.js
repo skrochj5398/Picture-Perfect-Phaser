@@ -39,8 +39,8 @@ class BetaScene extends Phaser.Scene {
     // create path to simplify + specific level folder
     // TODO generalize
     let path = 'assets/Levels/'
-    const jsonObj = JSON.parse(json)
-    console.log(jsonObj)
+    //const jsonObj = JSON.parse(json)
+    console.log(json)
     // how do I access?
 
 
