@@ -4,6 +4,7 @@ import Painting from '../models/Painting.js'
 import Silhouette from '../models/Silhouette.js'
 
 class BetaScene extends Phaser.Scene {
+
   preload () {
     // this is where to load images or in StartScene
     // temp images for left and right buttons
@@ -99,17 +100,52 @@ class BetaScene extends Phaser.Scene {
   }
 
   create () {
-    // create the painting so they are under the frame
-    const tempPainting1 = this.add.image(0, 0, 'Painting1')
-    const tempPainting2 = this.add.image(0, 0, 'Painting2')
-    const tempPainting3 = this.add.image(0, 0, 'Painting3')
-    const tempPainting4 = this.add.image(0, 0, 'Painting4')
+    // pass silhouettes too, in an array of Silhouettes with ids concat(painting#, silhouette#)
+    // define after Frame so frame doesn't block click events (must more blood be shed!?)
+    const painting1 = new Painting(
+      'Painting1',
+      new Array('Painting1Sticker1'),
+      new Array(
+        new Silhouette(this.add.image(0, 0, 'Painting1Silhouette1'), null, 11),
+        new Silhouette(this.add.image(0, 0, 'Painting1Silhouette2'), null, 12)
+      ),
+      this
+    )
+    const painting2 = new Painting(
+      'Painting2',
+      new Array('Painting2Sticker1'),
+      new Array(
+        new Silhouette(this.add.image(0, 0, 'Painting2Silhouette1'), null, 21),
+        new Silhouette(this.add.image(0, 0, 'Painting2Silhouette2'), null, 22)
+      ),
+      this
+    )
+    const painting3 = new Painting(
+      'Painting3',
+      new Array('Painting3Sticker1', 'Painting3Sticker2'),
+      new Array(
+        new Silhouette(this.add.image(0, 0, 'Painting3Silhouette1'), null, 31),
+        new Silhouette(this.add.image(0, 0, 'Painting3Silhouette2'), null, 32)
+      ),
+      this
+    )
+    const painting4 = new Painting(
+      'Painting4',
+      new Array('Painting4Sticker1', 'Painting4Sticker2', 'Painting4Sticker3'),
+      new Array(
+        new Silhouette(this.add.image(0, 0, 'Painting4Silhouette1'), null, 41)
+      ),
+      this
+    )
 
-    const Frame = this.add.nineslice(
-      CONFIG.DEFAULT_WIDTH / 1.98,
-      CONFIG.DEFAULT_HEIGHT / 1.96,
-      'Frame',
-      0, 1920, 1080, 32, 32, 32, 32
+    // load the paintings into an array
+    this.paintings = new Array(painting1, painting2, painting3, painting4)
+
+    this.paintingFrame = this.add.nineslice(
+      CONFIG.DEFAULT_WIDTH / 2,
+      CONFIG.DEFAULT_HEIGHT / 2,
+      'Frame', 0, 1920, 1080,
+      81, 81, 81, 81
     )
     const inventory = this.add.image(1000, 1010, 'Inventory').setScale(0.5)
 
@@ -122,47 +158,6 @@ class BetaScene extends Phaser.Scene {
       emitting: false
     })
 
-    // pass silhouettes too, in an array of Silhouettes with ids concat(painting#, silhouette#)
-    // define after Frame so frame doesn't block click events (must more blood be shed!?)
-    const painting1 = new Painting(
-      tempPainting1,
-      new Array('Painting1Sticker1'),
-      new Array(
-        new Silhouette(this.add.image(0, 0, 'Painting1Silhouette1'), null, 11),
-        new Silhouette(this.add.image(0, 0, 'Painting1Silhouette2'), null, 12)
-      ),
-      this
-    )
-    const painting2 = new Painting(
-      tempPainting2,
-      new Array('Painting2Sticker1'),
-      new Array(
-        new Silhouette(this.add.image(0, 0, 'Painting2Silhouette1'), null, 21),
-        new Silhouette(this.add.image(0, 0, 'Painting2Silhouette2'), null, 22)
-      ),
-      this
-    )
-    const painting3 = new Painting(
-      tempPainting3,
-      new Array('Painting3Sticker1', 'Painting3Sticker2'),
-      new Array(
-        new Silhouette(this.add.image(0, 0, 'Painting3Silhouette1'), null, 31),
-        new Silhouette(this.add.image(0, 0, 'Painting3Silhouette2'), null, 32)
-      ),
-      this
-    )
-    const painting4 = new Painting(
-      tempPainting4,
-      new Array('Painting4Sticker1', 'Painting4Sticker2', 'Painting4Sticker3'),
-      new Array(
-        new Silhouette(this.add.image(0, 0, 'Painting4Silhouette1'), null, 41)
-      ),
-      this
-    )
-
-    // load the paintings into an array
-    this.paintings = new Array(painting1, painting2, painting3, painting4)
-
     // attach a function to a sticker; should attach all of them
     console.log('about to attach click function')
     for (const painting of this.paintings) {
@@ -173,16 +168,15 @@ class BetaScene extends Phaser.Scene {
     }
 
     // set first painting and position it
-    this.currentPainting = this.paintings[0]
-    this.currentPainting.setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.06)
+    this.updatePainting(0)
 
     // attach functions to move up or down the array
     this.arrowLeft = this.add.image(55, CONFIG.DEFAULT_HEIGHT / 2, 'ArrowLeft').setInteractive()
     this.arrowRight = this.add.image(CONFIG.DEFAULT_WIDTH - 55, CONFIG.DEFAULT_HEIGHT / 2, 'ArrowRight').setInteractive()
     this.arrowLeft.setScale(0.5)
     this.arrowRight.setScale(0.5)
-    this.arrowLeft.on('pointerdown', () => { this.lastPainting() })
-    this.arrowRight.on('pointerdown', () => { this.nextPainting() })
+    this.arrowLeft.on('pointerdown', () => {this.lastPainting()})
+    this.arrowRight.on('pointerdown', () => {this.nextPainting()})
   }
 
   handleTestStickerPointerDown (index) {
@@ -203,11 +197,8 @@ class BetaScene extends Phaser.Scene {
       console.log('looping paintings')
       nextIndex = 0
     }
-    // change current painting to that one
-    // change new paintings position to center of screen TODO update when frames are fixed
-    this.paintings[nextIndex].setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.06)
-    // change this.currentPainting
-    this.currentPainting = this.paintings[nextIndex]
+
+    this.updatePainting(nextIndex)
   }
 
   lastPainting () {
@@ -221,11 +212,19 @@ class BetaScene extends Phaser.Scene {
       console.log('looping paintings backwards')
       lastIndex = this.paintings.length - 1
     }
+
+    this.updatePainting(lastIndex)
+  }
+
+  updatePainting (newIndex) {
     // change current painting to that one
-    // change new paintings position to center of screen TODO update when frames are fixed
-    this.paintings[lastIndex].setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.06)
     // change this.currentPainting
-    this.currentPainting = this.paintings[lastIndex]
+    this.currentPainting = this.paintings[newIndex]
+
+    // change new paintings position to center of screen TODO update when frames are fixed
+    this.currentPainting.setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2)
+    const width = this.currentPainting.getWidth()
+    this.paintingFrame.width = width + 160
   }
 }
 
