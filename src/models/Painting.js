@@ -29,7 +29,6 @@ class Painting {
     //place the painting
     if (this.img instanceof Phaser.GameObjects.Image) {
       this.img.setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.06)
-      this.img.setScale(0.417)
     } else {
       console.log('passed img is not a Phaser.GameObjects.Image')
     }
@@ -50,6 +49,8 @@ class Painting {
         console.log('Searching pixels of key: ', stickerKeys[i])
         const bounds = this.findSticker(scene.textures, stickerKeys[i])
         console.log(bounds)
+
+        console.log("sticker texture height", scene.textures.getFrame(stickerKeys[i]).height)
 
         // create an image on the scene for this sticker key
         let stickerImage = scene.add.image(0,0,stickerKeys[i]).setInteractive()

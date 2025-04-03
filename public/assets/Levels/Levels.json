@@ -1,0 +1,60 @@
+{
+	"numLevels": 1,
+	"levels": [{
+  	"name": "CustomLevel1",
+		"numPaintings": 4,
+		"paintings": [{
+			"name": "the_last_of_the_buffalo_2014.79.5.jpg",
+			"numStickers": 1,
+			"stickers": [{
+				"name": "Soldier Sticker.png"
+			}],
+			"numSilhouettes": 2,
+			"silhouettes": [{
+				"name": "Buffalo Negative.png"
+			}, {
+				"name": "Skull Negative.png"
+			}]
+		}, {
+			"name": "joshua_commanding_the_sun_to_stand_still_upon_gibeon_2004.64.1.jpg",
+			"numStickers": 1,
+			"stickers": [{
+				"name": "Angel Sticker.png"
+			}],
+			"numSilhouettes": 2,
+			"silhouettes": [{
+				"name": "Charging Soldier Negative.png"
+			}, {
+				"name": "Soldier Negative.png"
+			}]
+		}, {
+			"name": "wivenhoe_park,_essex_1942.9.10.jpg",
+			"numStickers": 2,
+			"stickers": [{
+				"name": "Buffalo Sticker.png"
+			}, {
+				"name": "Charging Soldier Sticker.png"
+			}],
+			"numSilhouettes": 2,
+			"silhouettes": [{
+				"name": "Boat Negative.png"
+			}, {
+				"name": "Cow Negative.png"
+			}]
+		}, {
+			"name": "the_voyage_of_life__youth_1971.16.2.jpg",
+			"numStickers": 3,
+			"stickers": [{
+				"name": "Boat Sticker.png"
+			}, {
+				"name": "Cow Sticker.png"
+			}, {
+				"name": "Skull Sticker.png"
+			}],
+			"numSilhouettes": 1,
+			"silhouettes": [{
+				"name": "Angel Negative.png"
+			}]
+		}]
+	}]
+}
