@@ -4,6 +4,7 @@ import ss from '../models/PrototypeModel'
 import Sticker from '../models/Sticker'
 import Silhouette from '../models/Silhouette'
 import Inventory from '../models/Inventory'
+import InventoryView from '../models/InventoryView'
 import CONFIG from '../config.js'
 import Frame from './Frame.js'
 import EMITTER from '../models/Emitter.js'
@@ -31,6 +32,7 @@ class PrototypeScene extends Phaser.Scene {
   } */
 
     static inventory1 = new Inventory()
+    static slots = new InventoryView('InventorySlot');
 
   create () {
 
@@ -82,14 +84,19 @@ class PrototypeScene extends Phaser.Scene {
     // //console.log(silhouetteTwo.getID());
     // //console.log(silhouetteTwo.getSticker());
 
-    // //Testing Inventory
+    // Testing Inventory
     // inventory1.addSticker(stickerTwo);
-    // //Testing getters
+    // Testing getters
     // console.log(inventory1.getID());
     // console.log(inventory1.getSticker(0));
 
     //stickerTwo.on('pointerdown', (pointer) => this.handleBlueBoxPointerDown(pointer, stickerTwo, silhouetteTwo));
     
+    // Testing InventoryView
+    /* For use in creating InventoryView
+    var gameWidth=game.config.width;
+    var gameHeight=game.config.height;
+    */
     
   }
 
