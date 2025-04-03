@@ -15,8 +15,8 @@ class StartScene extends Phaser.Scene {
   preload () {
     // Load the image assets needed for THIS scene
     this.load.image('StartScreen1', 'assets/Main_Menu_Backround_Claire_4_2_2025_v1.png')
-    this.load.image('StartScreen2', 'public/assets/Main_Menu_Frame_Claire_4_2_2025_v1.png')
-    this.load.image('StartScreen3', 'public/assets/Main_Menu_Title_4_1_2025_Claire_v1.png')
+    this.load.image('StartScreen2', 'assets/Main_Menu_Frame_Claire_4_2_2025_v1.png')
+    this.load.image('StartScreen3', 'assets/Main_Menu_Title_4_1_2025_Claire_v1.png')
 
     // Load the image assets needed for 'ExampleScene'
     this.load.image('sky', 'assets/skies/space3.png')
@@ -55,6 +55,14 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_WIDTH / startScreen2.width,
       CONFIG.DEFAULT_HEIGHT / startScreen2.height
     )
+
+    const startScreen3 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'StartScreen3')
+    startScreen2.setScale(
+      // rescales the image to aspect ratio of the game
+      CONFIG.DEFAULT_WIDTH / startScreen3.width,
+      CONFIG.DEFAULT_HEIGHT / startScreen3.height
+    )
+    
     //create animation
     this.anims.create({
       key: "grass",
