@@ -6,7 +6,7 @@ import Silhouette from '../models/Silhouette.js'
 class AlphaScene extends Phaser.Scene {
 
   preload () {
-    //this is where to load images or in StartScene
+    // this is where to load images or in StartScene
     // temp images for left and right buttons
     this.load.image('ArrowLeft', 'assets/sprites/Arrow_Left.png')
     this.load.image('ArrowRight', 'assets/sprites/Arrow_Right.png')

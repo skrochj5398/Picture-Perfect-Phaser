@@ -32,11 +32,12 @@ class BetaScene extends Phaser.Scene {
     // load paintings from json file
     this.load.json('levelData', 'assets/Levels/Levels.json')
     // create json object
-    let json = this.cache.json.get('levelData')
+    const json = this.cache.json.get('levelData')
     // create path to simplify + specific level folder
     // TODO generalize
     let path = 'assets/Levels/'
-    console.log(json)
+    const jsonObj = JSON.parse(json)
+    console.log(jsonObj)
     // how do I access?
 
 
