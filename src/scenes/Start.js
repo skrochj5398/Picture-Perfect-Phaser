@@ -15,7 +15,9 @@ class StartScene extends Phaser.Scene {
   preload () {
     // Load the image assets needed for THIS scene
     //this.load.image('StartScreen', 'assets/Menus/Main/Picture_Perfect_Main_Menu_Claire.png')
-    this.load.image('StartScreen', 'assets/UI_Main_Menu_Background_Claire_3_31_2025_v1.png')
+    this.load.image('startScreen_1', 'assets/Main_Menu_Backround_Claire_4_2_2025_v1.png')
+    this.load.image('startScreen_2', 'assets/Main_Menu_Frame_Claire_4_2_2025_v1.png')
+    this.load.image('startScreen_3', 'assets/Main_Menu_Title_4_1_2025_Claire_v1.png')
 
     this.load.image('StartButton', 'assets/UI_Play_Button_Claire_3_31_2025_v1.png')
     this.load.image('OptionsButton', 'assets/UI_Options_Button_Claire_3_31_2025_v1.png')
@@ -46,11 +48,11 @@ class StartScene extends Phaser.Scene {
     this.loadingText.destroy()
 
     // Add background image
-    const startScreen = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'StartScreen')
-    startScreen.setScale(
+    const startScreen_1 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'startScreen_1')
+    startScreen_1.setScale(
       // rescales the image to aspect ratio of the game
-      CONFIG.DEFAULT_WIDTH / startScreen.width,
-      CONFIG.DEFAULT_HEIGHT / startScreen.height
+      CONFIG.DEFAULT_WIDTH / startScreen_1.width,
+      CONFIG.DEFAULT_HEIGHT / startScreen_1.height
     )
 
     this.anims.create({
@@ -64,16 +66,32 @@ class StartScene extends Phaser.Scene {
     this.player.setScale(1.2)
     this.player.play("grass",true)
 
+    // Add background image 2
+    const startScreen_2 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'startScreen_2')
+    startScreen_2.setScale(
+      // rescales the image to aspect ratio of the game
+    CONFIG.DEFAULT_WIDTH / startScreen_2.width,
+    CONFIG.DEFAULT_HEIGHT / startScreen_2.height
+    )
+
+    // Add background image 3
+    const startScreen_3 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.7, 'startScreen_3')
+    startScreen_3.setScale
+    
+   
+
+
+
 
     // start button
     this.startButton = new HoverableButton(
       this, 
       CONFIG.DEFAULT_WIDTH / 2.0, 
-      CONFIG.DEFAULT_HEIGHT / 1.7, 
+      CONFIG.DEFAULT_HEIGHT / 1.65, 
       'StartButton', 
       'StartButton', 
       () => {this.toLevelSelect()}
-    ).setInteractive()
+    ).setInteractive().setScale(0.8)
 
     // options button
     this.optionsButton = new HoverableButton(
@@ -83,17 +101,17 @@ class StartScene extends Phaser.Scene {
       'OptionsButton', 
       'OptionsButton', 
       () => {this.toOptions()}
-    ).setInteractive()
+    ).setInteractive().setScale(0.8)
 
     // credits button
     this.creditsButton = new HoverableButton(
       this, 
       CONFIG.DEFAULT_WIDTH / 2.0, 
-      CONFIG.DEFAULT_HEIGHT / 1.2, 
+      CONFIG.DEFAULT_HEIGHT / 1.23, 
       'BlueBox', 
       'RedBox', 
       () => {this.toCredits()}
-    ).setInteractive().setScale(1, 0.4)
+    ).setInteractive().setScale(1, 0.3)
 
 
     // Add a callback when a key is released
