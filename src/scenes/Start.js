@@ -14,13 +14,16 @@ class StartScene extends Phaser.Scene {
 
   preload () {
     // Load the image assets needed for THIS scene
-    this.load.image('StartScreen', 'assets/UI_Main_Menu_Background_Claire_3_31_2025_v1.png')
-    // temp button textures
-    this.load.image('BlueBox', 'assets/BlueBox.png')
-    this.load.image('RedBox', 'assets/RedBox.png')
-    // actual menu textures
-    this.load.image('StartButton', 'assets/UI_Play_Button_Claire_3_31_2025_v1.png')
-    this.load.image('OptionsButton', 'assets/UI_Options_Button_Claire_3_31_2025_v1.png')
+    this.load.image('StartScreen', 'assets/Menus/Main/Picture_Perfect_Main_Menu_Claire.png')
+
+    // Load the image assets needed for 'ExampleScene'
+    this.load.image('sky', 'assets/skies/space3.png')
+    this.load.image('logo', 'assets/sprites/phaser3-logo.png')
+    this.load.image('red', 'assets/particles/red.png')
+    this.load.spritesheet("Test anim", "assets/Animation/Spritesheet.png", {
+      frameWidth: 1920,
+      frameHeight: 1080
+    })
 
     // Pre-load the entire audio sprite
     this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [
@@ -43,43 +46,24 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / startScreen.height
     )
 
+    this.anims.create({
+      key: "grass",
+      frames: this.anims.generateFrameNumbers("Test anim", {frames:[0,1,2,3,4,5,6,7]}),
+      frameRate: 8,
+      repeat: -1
+  })
+
+    this.player = this.add.sprite(1000, 500, "Test anim")
+    this.player.setScale(1.2)
+    this.player.play("grass",true)
+
+
     // Add a callback when a key is released
     this.input.keyboard.on('keyup', this.keyReleased, this)
 
-    // Create buttons to load textures into
-    // start button
-    this.startButton = new HoverableButton(
-      this, 
-      CONFIG.DEFAULT_WIDTH / 2.0, 
-      CONFIG.DEFAULT_HEIGHT / 1.7, 
-      'StartButton', 
-      'StartButton', 
-      () => {this.toLevelSelect()}
-    ).setInteractive()
-
-    // options button
-    this.optionsButton = new HoverableButton(
-      this, 
-      CONFIG.DEFAULT_WIDTH / 2.0, 
-      CONFIG.DEFAULT_HEIGHT / 1.4, 
-      'OptionsButton', 
-      'OptionsButton', 
-      () => {this.toOptions()}
-    ).setInteractive()
-    
-    // credits button
-    this.creditsButton = new HoverableButton(
-      this, 
-      CONFIG.DEFAULT_WIDTH / 2.0, 
-      CONFIG.DEFAULT_HEIGHT / 1.2, 
-      'BlueBox', 
-      'RedBox', 
-      () => {this.toCredits()}
-    ).setInteractive().setScale(1, 0.4)
-
     // Load and play background music
-    // this.music = this.sound.addAudioSprite('gameAudio')
-    // this.music.play('freeVertexStudioTrack1')
+    this.music = this.sound.addAudioSprite('gameAudio')
+    this.music.play('freeVertexStudioTrack1')
   }
 
   // use this just to enter test scenes
@@ -95,56 +79,6 @@ class StartScene extends Phaser.Scene {
     
     //this.music.stop()
   }
-
-  /**
-   * changes button texture when hovered over
-   * @param {Phaser.GameObjects.Image} image 
-   */
-  hoverButton (image) {
-    image.setTexture('RedBox')
-  }
-
-  /**
-   * changes button texture when no longer hovered over
-   * @param {Phaser.GameObjects.Image} image 
-   */
-  unHoverButton (image) {
-    image.setTexture('BlueBox')
-  }
-
-  /**
-   * Runs when pointerup event triggers on startButton.
-   * Runs when Start Button is clicked.
-   * Changes the scene to level select.
-   */
-  toLevelSelect () {
-    console.log('toLevelSelect')
-    //this.scene.start('')
-
-    //go to alpha for now
-    this.scene.start('BetaScene')
-  }
-
-  /**
-   * Runs when pointerup event triggers on optionsButton.
-   * Runs when Options Button is clicked.
-   * Changes the scene to options.
-   */
-  toOptions () {
-    console.log('toOptions')
-    //this.scene.start('')
-  }
-
-  /**
-   * Runs when pointerup event triggers on creditsButton.
-   * Runs when Credits Button is clicked.
-   * Changes the scene to credits. 
-   */
-  toCredits () {
-    console.log('toCredits')
-    //this.scene.start('')
-  }
-  
 }
 
 export default StartScene
