@@ -17,19 +17,19 @@ class BetaScene extends Phaser.Scene {
     // paintings
     this.load.image(
       'Painting1', 
-      'assets/Levels/Level3/Painting1/the_last_of_the_buffalo_2014.79.5 (PS).png'
+      'assets/Levels/Level3/Painting1/the_last_of_the_buffalo_2014.79.5.png'
     )
     this.load.image(
       'Painting2', 
-      'assets/Levels/Level3/Painting2/joshua_commanding_the_sun_to_stand_still_upon_gibeon_2004.64.1 (PS).png'
+      'assets/Levels/Level3/Painting2/joshua_commanding_the_sun_to_stand_still_upon_gibeon_2004.64.1.png'
     )
     this.load.image(
       'Painting3', 
-      'assets/Levels/Level3/Painting3/wivenhoe_park,_essex_1942.9.10 (PS).png'
+      'assets/Levels/Level3/Painting3/wivenhoe_park,_essex_1942.9.10.png'
     )
     this.load.image(
       'Painting4', 
-      'assets/Levels/Level3/Painting4/the_voyage_of_life__youth_1971.16.2 (PS).png'
+      'assets/Levels/Level3/Painting4/the_voyage_of_life__youth_1971.16.2.png'
     )
 
     // load paintings from json file

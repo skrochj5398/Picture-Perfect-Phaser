@@ -43,7 +43,8 @@ class Painting {
     // place silhouettes
     if (silhouettes instanceof Array && silhouettes[0] instanceof Silhouette) {
       for (const silhouette of this.silhouettes) {
-        silhouette.image.setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.06)
+        silhouette.image.setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2).setScale(this.targetScale)
+        silhouette.image.depth = 1
       }
     } else {
       console.log('passed silhouettes is not a Silhouette')
@@ -62,7 +63,7 @@ class Painting {
         console.log("sticker texture height", scene.textures.getFrame(stickerKeys[i]).height)
 
         // create an image on the scene for this sticker key
-        const stickerImage = scene.add.image(0, 0, stickerKeys[i]).setInteractive()
+        const stickerImage = scene.add.image(0, 0, stickerKeys[i]).setInteractive().setScale(this.targetScale)
         // crop to just around the visible parts
         stickerImage.setCrop(
           bounds.leftBound,
@@ -82,7 +83,7 @@ class Painting {
         // add the Sticker to this.stickers
         this.stickers.push(sticker)
         // set position of the cropped sticker
-        stickerImage.setPosition(CONFIG.DEFAULT_WIDTH / 2.02, CONFIG.DEFAULT_HEIGHT / 2.06)
+        stickerImage.setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2)
 
         // loops through the rest
       }
