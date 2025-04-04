@@ -5,6 +5,15 @@ import Silhouette from '../models/Silhouette.js'
 
 class BetaScene extends Phaser.Scene {
 
+  init() {
+    this.loadingText = this.add.text(
+      CONFIG.DEFAULT_WIDTH / 2,
+      CONFIG.DEFAULT_HEIGHT / 2,
+      'Loading...', { font: '16pt Arial', color: '#FFFFFF', align: 'center' }
+    )
+    this.loadingText.setOrigin(0.5, 0.5)
+  }
+
   preload () {
     // this is where to load images or in StartScene
     // temp images for left and right buttons
@@ -17,31 +26,25 @@ class BetaScene extends Phaser.Scene {
     // paintings
     this.load.image(
       'Painting1', 
-      'assets/Levels/Level3/Painting1/the_last_of_the_buffalo_2014.79.5 (PS).png'
+      'assets/Levels/Level3/Painting1/the_last_of_the_buffalo_2014.79.5.png'
     )
     this.load.image(
       'Painting2', 
-      'assets/Levels/Level3/Painting2/joshua_commanding_the_sun_to_stand_still_upon_gibeon_2004.64.1 (PS).png'
+      'assets/Levels/Level3/Painting2/joshua_commanding_the_sun_to_stand_still_upon_gibeon_2004.64.1.png'
     )
     this.load.image(
       'Painting3', 
-      'assets/Levels/Level3/Painting3/wivenhoe_park,_essex_1942.9.10 (PS).png'
+      'assets/Levels/Level3/Painting3/wivenhoe_park,_essex_1942.9.10.png'
     )
     this.load.image(
       'Painting4', 
-      'assets/Levels/Level3/Painting4/the_voyage_of_life__youth_1971.16.2 (PS).png'
+      'assets/Levels/Level3/Painting4/the_voyage_of_life__youth_1971.16.2.png'
     )
 
     // load paintings from json file
     this.load.json('levelData', 'assets/Levels/Levels.json')
     // create json object
-    const json = this.cache.json.get('levelData')
-    // create path to simplify + specific level folder
-    // TODO generalize
-    let path = 'assets/Levels/'
-    //const jsonObj = JSON.parse(json)
-    console.log(json)
-    // how do I access?
+    
 
 
     // stickers and silhouettes for each painting (this'll get long)
@@ -112,6 +115,48 @@ class BetaScene extends Phaser.Scene {
   }
 
   create () {
+    // uncomment to work on json
+    /*const data = this.cache.json.get('levelData')
+    // make sure the json is working
+    console.log(JSON.stringify(data))
+    console.log("numLevels from json: " + data.numLevels)
+    //it's working!!!
+
+    // create path to simplify + specific level folder
+    
+    // loopception
+    // get index of current level
+    const levelIndex = 0
+    // get current level data
+    const thisLevel = data.levels[levelIndex]
+    // add name to path
+    let path = 'assets/Levels/' + thisLevel.name + '/'
+    // get number of paintings in level
+    const numPaintings = thisLevel.numPaintings
+    // loop through them
+    for (let i = 0; i < numPaintings; i++) {
+      // get thisPainting
+      const thisPainting = thisLevel.paintings[i]
+      // load the painting
+      this.load.image('Painting' + i, path + 'Painting' + i + '/' + thisPainting.name)
+      // get number of stickers
+      const numStickers = thisPainting.numStickers
+      // loop and load
+      for (let i = 0; i < numStickers; i++) {
+        // load
+
+      }
+      // get number of silhouettes
+      const numSilhouettes = thisPainting.numSilhouettes
+      // loop and load
+      for (let i = 0; i < numSilhouettes; i++) {
+        // load
+        
+      }
+    }*/
+    this.loadingText.destroy()
+
+
     // pass silhouettes too, in an array of Silhouettes with ids concat(painting#, silhouette#)
     // define after Frame so frame doesn't block click events (must more blood be shed!?)
     const painting1 = new Painting(
@@ -193,7 +238,8 @@ class BetaScene extends Phaser.Scene {
 
   handleTestStickerPointerDown (index) {
     console.log('running click function')
-    this.emitter.emitParticleAt(this.currentPainting.stickers[index].image.x, this.currentPainting.stickers[index].image.y)
+    this.emitter.emitParticleAt(this.currentPainting.stickers[index].gameOrigin.x, this.currentPainting.stickers[index].gameOrigin.y)
+    console.log('particle emitted at: ', this.currentPainting.stickers[index].gameOrigin)
     this.currentPainting.stickers[index].image.setPosition(-5000, 0)
     this.currentPainting.removeSticker(this.currentPainting.stickers[index])
   }

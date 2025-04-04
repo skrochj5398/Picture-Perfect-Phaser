@@ -1,5 +1,4 @@
 import * as Phaser from 'phaser'
-
 import CONFIG from '../config.js'
 import Sticker from './Sticker.js'
 import Silhouette from './Silhouette.js'
@@ -43,7 +42,8 @@ class Painting {
     // place silhouettes
     if (silhouettes instanceof Array && silhouettes[0] instanceof Silhouette) {
       for (const silhouette of this.silhouettes) {
-        silhouette.image.setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.06)
+        silhouette.image.setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2).setScale(this.targetScale)
+        silhouette.image.depth = 1
       }
     } else {
       console.log('passed silhouettes is not a Silhouette')
@@ -62,15 +62,15 @@ class Painting {
         console.log("sticker texture height", scene.textures.getFrame(stickerKeys[i]).height)
 
         // create an image on the scene for this sticker key
-        const stickerImage = scene.add.image(0, 0, stickerKeys[i]).setInteractive()
-        // crop to just around the visible parts
+        const stickerImage = scene.add.image(0, 0, stickerKeys[i]).setInteractive().setScale(this.targetScale)
+        // crop to just around the visible parts; unclear whether this matters
         stickerImage.setCrop(
           bounds.leftBound,
           bounds.topBound,
           bounds.rightBound - bounds.leftBound,
           bounds.bottomBound - bounds.topBound
         )
-        // create a new hitArea for clicking interaction
+        // create a new hitArea for clicking interaction; the real fix
         stickerImage.input.hitArea = new Phaser.Geom.Rectangle(
           bounds.leftBound,
           bounds.topBound,
@@ -82,7 +82,18 @@ class Painting {
         // add the Sticker to this.stickers
         this.stickers.push(sticker)
         // set position of the cropped sticker
-        stickerImage.setPosition(CONFIG.DEFAULT_WIDTH / 2.02, CONFIG.DEFAULT_HEIGHT / 2.06)
+        stickerImage.setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2)
+        // try setting origin so particles spawn on the sticker
+        // haha linear algebra jumpscare
+        const paintingLoc = new Phaser.Math.Vector2(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2)
+        console.log(paintingLoc)
+        const paintingTopLeft = paintingLoc.subtract(new Phaser.Math.Vector2((this.img.width / 2.0) * this.targetScale, (this.img.height / 2.0) * this.targetScale))
+        console.log(paintingTopLeft)
+        const relativeStickerCenter = new Phaser.Math.Vector2(((bounds.leftBound + bounds.rightBound) / 2.0) * this.targetScale, ((bounds.topBound + bounds.bottomBound) / 2.0) * this.targetScale)
+        console.log(relativeStickerCenter)
+        const stickerGameOrigin = paintingTopLeft.add(relativeStickerCenter)
+        console.log(stickerGameOrigin)
+        sticker.gameOrigin = stickerGameOrigin
 
         // loops through the rest
       }

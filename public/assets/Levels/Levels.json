@@ -1,27 +1,32 @@
 {
 	"numLevels": 1,
-	"levels": {
+	"levels": [{
   		"name": "CustomLevel1",
 		"numPaintings": 4,
-		"paintings": [
-			"the_last_of_the_buffalo_2014.79.5 (PS).jpg",
-			"joshua_commanding_the_sun_to_stand_still_upon_gibeon_2004.64.1 (PS).jpg",
-			"wivenhoe_park,_essex_1942.9.10 (PS).jpg",
-			"the_voyage_of_life__youth_1971.16.2 (PS).jpg"
-		],
-		"numStickersPerPainting": [1,1,2,3],
-		"stickersPerPainting": [
-			["Soldier Sticker.png"],
-			["Angel Sticker.png"],
-			["Buffalo Sticker.png", "Charging Soldier Sticker.png"],
-			["Boat Sticker.png", "Cow Sticker.png", "Skull Sticker.png"]
-		],
-		"numSilhouettesPerPainting": [2,2,2,1],
-		"silhouettesPerPainting": [
-			["Buffalo Negative.png", "Skull Negative.png"],
-			["Charging Soldier Negative.png", "Soldier Negative.png"],
-			["Boat Negative.png", "Cow Negative.png"],
-			["Angel Negative.png"]
-		]
-	}
+		"paintings": [{
+			"name": "the_last_of_the_buffalo_2014.79.5 (PS).jpg",
+			"numStickers": 1,
+			"stickers": ["Soldier Sticker.png"],
+			"numSilhouettes": 2,
+			"silhouettes": ["Buffalo Negative.png", "Skull Negative.png"]
+		},{
+			"name": "joshua_commanding_the_sun_to_stand_still_upon_gibeon_2004.64.1 (PS).jpg",
+			"numStickers": 1,
+			"stickers": ["Angel Sticker.png"],
+			"numSilhouettes": 2,
+			"silhouettes": ["Charging Soldier Negative.png", "Soldier Negative.png"]
+		},{
+			"name": "wivenhoe_park,_essex_1942.9.10 (PS).jpg",
+			"numStickers": 2,
+			"stickers": ["Buffalo Sticker.png", "Charging Soldier Sticker.png"],
+			"numSilhouettes": 2,
+			"silhouettes": ["Boat Negative.png", "Cow Negative.png"]
+		},{
+			"name": "the_voyage_of_life__youth_1971.16.2 (PS).jpg",
+			"numStickers": 3,
+			"stickers": ["Boat Sticker.png", "Cow Sticker.png", "Skull Sticker.png"],
+			"numSilhouettes": 1,
+			"silhouettes": ["Angel Negative.png"]
+		}]
+	}]
 }

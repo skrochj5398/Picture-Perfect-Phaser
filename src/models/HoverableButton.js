@@ -27,6 +27,9 @@ class HoverableButton extends Phaser.GameObjects.Image {
 		// call Phaser.GameObjects.Image; must do first
 		super(scene, x, y, texture)
 		scene.add.existing(this)
+		
+		// set default tint
+		this.setTint(0xdddddd)
 
 		// save variables for event listeners
 		this.unHoverTexture = texture
@@ -37,20 +40,30 @@ class HoverableButton extends Phaser.GameObjects.Image {
 		this.on('pointermove', () => {this.onPointerMove()})
 		this.on('pointerout', () => {this.onPointerOut()})
 		this.on('pointerup', () => {this.onPointerUp()})
+		this.on('pointerdown', () => {this.onPointerDown()})
 	}
 
 	/**
-	 * handles swapping textures when pointer hovers over this object
+	 * handles tinting when pointer hovers over this object
 	 */
 	onPointerMove() {
 		this.setTexture(this.hoverTexture)
+		this.setTint(0xffffff)
 	}
 
 	/**
-	 * handles swapping textures when pointer stops hovering over this object
+	 * handles tinting when pointer stops hovering over this object
 	 */
 	onPointerOut() {
 		this.setTexture(this.unHoverTexture)
+		this.setTint(0xdddddd)
+	}
+
+	/**
+	 * handles tinting when pointer is pressed down on this object
+	 */
+	onPointerDown() {
+		this.setTint(0xaaaaaa)
 	}
 }
 
