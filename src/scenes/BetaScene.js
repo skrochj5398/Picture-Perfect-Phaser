@@ -35,13 +35,7 @@ class BetaScene extends Phaser.Scene {
     // load paintings from json file
     this.load.json('levelData', 'assets/Levels/Levels.json')
     // create json object
-    const json = this.cache.json.get('levelData')
-    // create path to simplify + specific level folder
-    // TODO generalize
-    let path = 'assets/Levels/'
-    //const jsonObj = JSON.parse(json)
-    console.log(json)
-    // how do I access?
+    
 
 
     // stickers and silhouettes for each painting (this'll get long)
@@ -112,6 +106,47 @@ class BetaScene extends Phaser.Scene {
   }
 
   create () {
+    // uncomment to work on json
+    /*const data = this.cache.json.get('levelData')
+    // make sure the json is working
+    console.log(JSON.stringify(data))
+    console.log("numLevels from json: " + data.numLevels)
+    //it's working!!!
+
+    // create path to simplify + specific level folder
+    
+    // loopception
+    // get index of current level
+    const levelIndex = 0
+    // get current level data
+    const thisLevel = data.levels[levelIndex]
+    // add name to path
+    let path = 'assets/Levels/' + thisLevel.name + '/'
+    // get number of paintings in level
+    const numPaintings = thisLevel.numPaintings
+    // loop through them
+    for (let i = 0; i < numPaintings; i++) {
+      // get thisPainting
+      const thisPainting = thisLevel.paintings[i]
+      // load the painting
+      this.load.image('Painting' + i, path + 'Painting' + i + '/' + thisPainting.name)
+      // get number of stickers
+      const numStickers = thisPainting.numStickers
+      // loop and load
+      for (let i = 0; i < numStickers; i++) {
+        // load
+
+      }
+      // get number of silhouettes
+      const numSilhouettes = thisPainting.numSilhouettes
+      // loop and load
+      for (let i = 0; i < numSilhouettes; i++) {
+        // load
+        
+      }
+    }*/
+
+
     // pass silhouettes too, in an array of Silhouettes with ids concat(painting#, silhouette#)
     // define after Frame so frame doesn't block click events (must more blood be shed!?)
     const painting1 = new Painting(
