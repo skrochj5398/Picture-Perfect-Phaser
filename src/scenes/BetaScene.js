@@ -1,6 +1,8 @@
 import Phaser from 'phaser'
 import CONFIG from '../config.js'
 import Painting from '../models/Painting.js'
+import Inventory from '../models/Inventory.js'
+import InventoryView from '../models/InventoryView.js'
 import Silhouette from '../models/Silhouette.js'
 
 class BetaScene extends Phaser.Scene {
@@ -28,6 +30,8 @@ class BetaScene extends Phaser.Scene {
       'Painting4', 
       'assets/Levels/Level3/Painting4/the_voyage_of_life__youth_1971.16.2.jpg'
     )
+
+    this.load.image('InventorySlot', 'assets/InventorySlot.png');
 
     // stickers and silhouettes for each painting (this'll get long)
     //  Painting1
@@ -104,13 +108,17 @@ class BetaScene extends Phaser.Scene {
     const tempPainting3 = this.add.image(0, 0, 'Painting3')
     const tempPainting4 = this.add.image(0, 0, 'Painting4')
 
+    // variable to hold the number of stickers (for creating the inventory)
+    //const numStickers = 0;
+
     const Frame = this.add.nineslice(
       CONFIG.DEFAULT_WIDTH / 1.98, 
       CONFIG.DEFAULT_HEIGHT / 1.96, 
       'Frame', 
       0, 1920, 1080, 32, 32, 32, 32
     )
-    const inventory = this.add.image(1000, 1010, 'Inventory').setScale(.5)
+
+    //var inventory = this.add.image(1000, 1010, 'Inventory').setScale(.5)
 
     // pass silhouettes too, in an array of Silhouettes with ids concat(painting#, silhouette#)
     // define after Frame so frame doesn't block click events (must more blood be shed!?)
@@ -153,14 +161,28 @@ class BetaScene extends Phaser.Scene {
     // load the paintings into an array
     this.paintings = new Array(painting1, painting2, painting3, painting4)
 
+    // create inventory
+    var realInventory = new Inventory();
     // attach a function to a sticker; should attach all of them
     console.log('about to attach click function')
     for (let painting of this.paintings) {
       for (let i = 0; i < painting.stickers.length; i++) {
         console.log('attaching event to sticker ', i)
+        //numStickers++
         painting.stickers[i].image.on('pointerdown', () => {this.handleTestStickerPointerDown(i)})
+        realInventory.addSticker(painting.stickers[i]);
       }
     }
+
+    // Testing some nonsense
+    //var gameWidth = CONFIG.DEFAULT_WIDTH;
+    //var gameHeight = CONFIG.DEFAULT_HEIGHT;
+    const inventoryView = new InventoryView('InventorySlot', 960, 1035, 125, realInventory);
+    inventoryView.draw(this);
+    //console.log('drawing inventory');
+    // stickerArray = new Array();
+    // stickerArray = stickerArray.concat()
+    // const realInventory = new Inventory()
     
     //set first painting and position it
     this.currentPainting = this.paintings[0]

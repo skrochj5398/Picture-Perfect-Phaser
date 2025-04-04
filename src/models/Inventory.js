@@ -10,13 +10,17 @@ class Inventory{
   }
   addSticker(newSticker){
     this.foundStickers.push(newSticker);
-    newSticker.image.diasbleInterative()
+    this.silhouettes.push(newSticker.getSilhouette());
+    //newSticker.image.diasbleInterative()
   }
   getID(){
     return this.id;
   }
   getSticker(index){
     return this.foundStickers[index];
+  }
+  getLength(){
+    return this.foundStickers.length;
   }
   emptyInventory(){
     this.foundStickers.length = 0;

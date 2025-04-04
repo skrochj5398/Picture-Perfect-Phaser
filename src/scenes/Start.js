@@ -72,7 +72,7 @@ class StartScene extends Phaser.Scene {
     if (event.code == 'KeyP') {
       this.scene.start('JessieTestScene')
     } if (event.code == 'KeyA') {
-      this.scene.start('AlphaScene')
+      this.scene.start('BetaScene')
     } if (event.code == 'Space') {
       this.scene.start('PrototypeScene')
     }
