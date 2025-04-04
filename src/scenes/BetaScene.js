@@ -228,7 +228,8 @@ class BetaScene extends Phaser.Scene {
 
   handleTestStickerPointerDown (index) {
     console.log('running click function')
-    this.emitter.emitParticleAt(this.currentPainting.stickers[index].image.x, this.currentPainting.stickers[index].image.y)
+    this.emitter.emitParticleAt(this.currentPainting.stickers[index].gameOrigin.x, this.currentPainting.stickers[index].gameOrigin.y)
+    console.log('particle emitted at: ', this.currentPainting.stickers[index].gameOrigin)
     this.currentPainting.stickers[index].image.setPosition(-5000, 0)
     this.currentPainting.removeSticker(this.currentPainting.stickers[index])
   }
