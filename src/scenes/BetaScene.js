@@ -5,6 +5,15 @@ import Silhouette from '../models/Silhouette.js'
 
 class BetaScene extends Phaser.Scene {
 
+  init() {
+    this.loadingText = this.add.text(
+      CONFIG.DEFAULT_WIDTH / 2,
+      CONFIG.DEFAULT_HEIGHT / 2,
+      'Loading...', { font: '16pt Arial', color: '#FFFFFF', align: 'center' }
+    )
+    this.loadingText.setOrigin(0.5, 0.5)
+  }
+
   preload () {
     // this is where to load images or in StartScene
     // temp images for left and right buttons
@@ -145,6 +154,7 @@ class BetaScene extends Phaser.Scene {
         
       }
     }*/
+    this.loadingText.destroy()
 
 
     // pass silhouettes too, in an array of Silhouettes with ids concat(painting#, silhouette#)
