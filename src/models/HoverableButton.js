@@ -5,22 +5,21 @@
  * and a function that executes when clicked
  */
 class HoverableButton extends Phaser.GameObjects.Image {
-	
 	/**
-	 * creates the HoverableButton as a Phaser.GameObjects.Image with the following parameters, a 
+	 * creates the HoverableButton as a Phaser.GameObjects.Image with the following parameters, a
 	 *  different texture when hovering, and a function that executes when clicked.
 	 *  Handles adding itself to the scene as well.
-	 * @param {Phaser.Scene} scene 
+	 * @param {Phaser.Scene} scene
 	 *  the scene the image is added to
-	 * @param {number} x 
+	 * @param {number} x
 	 *  x coordinate
-	 * @param {number} y 
+	 * @param {number} y
 	 *  y coordinate
-	 * @param {Phaser.Textures.Texture | string} texture 
+	 * @param {Phaser.Textures.Texture | string} texture
 	 *  the texture object or string key referencing a texture object. Used as the default texture
-	 * @param {Phaser.Textures.Texture | string} hoverTexture 
+	 * @param {Phaser.Textures.Texture | string} hoverTexture
 	 *  the texture object or string key referencing a texture object. Used when hovered over
-	 * @param {function} clickFunction 
+	 * @param {function} clickFunction
 	 *  a function that executes when this object is clicked
 	 */
 	constructor(scene, x, y, texture, hoverTexture, clickFunction) {

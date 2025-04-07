@@ -113,6 +113,8 @@ class StartScene extends Phaser.Scene {
       this.scene.start('AlphaScene')
     } if (event.code == 'Space') {
       this.scene.start('PrototypeScene')
+    } if (event.code == 'KeyG') {
+      this.scene.start('GameScene')
     }
     
     //this.music.stop()
