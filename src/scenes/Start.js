@@ -14,7 +14,7 @@ class StartScene extends Phaser.Scene {
 
   preload () {
     // Load the image assets needed for THIS scene
-    //this.load.image('StartScreen', 'assets/Menus/Main/Picture_Perfect_Main_Menu_Claire.png')
+    // this.load.image('StartScreen', 'assets/Menus/Main/Picture_Perfect_Main_Menu_Claire.png')
     this.load.image('startScreen_1', 'assets/Main_Menu_Backround_Claire_4_2_2025_v1.png')
     this.load.image('startScreen_2', 'assets/Main_Menu_Frame_Claire_4_2_2025_v1.png')
     this.load.image('startScreen_3', 'assets/Main_Menu_Title_4_1_2025_Claire_v1.png')
@@ -41,11 +41,17 @@ class StartScene extends Phaser.Scene {
       'assets/audio/gameAudioSprite.mp3',
       'assets/audio/gameAudioSprite.ac3'
     ])
+
+    // load json
+    this.load.json('levelData', 'assets/Levels/Levels.json')
   }
 
   create () {
     // Remove loading text
     this.loadingText.destroy()
+
+    // create json object on this
+    this.data = this.cache.json.get('levelData')
 
     // Add background image
     const startScreen_1 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'startScreen_1')
@@ -60,7 +66,7 @@ class StartScene extends Phaser.Scene {
       frames: this.anims.generateFrameNumbers("Test anim", {frames:[0,1,2,3,4,5,6,7]}),
       frameRate: 8,
       repeat: -1
-  })
+    })
 
     this.player = this.add.sprite(1000, 500, "Test anim")
     this.player.setScale(1.2)
@@ -76,7 +82,7 @@ class StartScene extends Phaser.Scene {
 
     // Add background image 3
     const startScreen_3 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.7, 'startScreen_3')
-    startScreen_3.setScale
+    startScreen_3.setScale()
     
    
 
@@ -125,17 +131,29 @@ class StartScene extends Phaser.Scene {
   // use this just to enter test scenes
   keyReleased (event) {
     console.log('Key released', event.code)
-    if (event.code == 'KeyP') {
+    if (event.code === 'KeyP') {
       this.scene.start('JessieTestScene')
-    } if (event.code == 'KeyA') {
-      this.scene.start('AlphaScene')
-    } if (event.code == 'Space') {
-      this.scene.start('PrototypeScene')
-    } if (event.code == 'KeyG') {
-      this.scene.start('GameScene')
     }
-    
-    //this.music.stop()
+    if (event.code === 'KeyA') {
+      this.scene.start('AlphaScene')
+    }
+    if (event.code === 'Space') {
+      this.scene.start('PrototypeScene')
+    }
+    if (event.code === 'KeyG') {
+      // pass the json to init
+      this.scene.start('GameScene', { levelData: this.data.levels[0] })
+    }
+    if (event.code === 'Digit1') {
+      this.scene.start('GameScene', { levelData: this.data.levels[0] })
+    }
+    if (event.code === 'Digit2') {
+      this.scene.start('GameScene', { levelData: this.data.levels[1] })
+    }
+    if (event.code === 'Digit3') {
+      this.scene.start('GameScene', { levelData: this.data.levels[2] })
+    }
+    // this.music.stop()
   }
 
 
