@@ -11,6 +11,8 @@ import PrototypeScene from './scenes/Prototype.js'
 import JessieTestScene from './scenes/JessieTestScene.js'
 import AlphaScene from './scenes/AlphaScene.js'
 import BetaScene from './scenes/BetaScene.js'
+import GameScene from './scenes/GameScene.js'
+import WinScene from './scenes/WinScene.js'
 
 const config = {
   // Configure Phaser graphics settings
@@ -54,4 +56,6 @@ game.scene.add('PrototypeScene', PrototypeScene)
 game.scene.add('JessieTestScene', JessieTestScene)
 game.scene.add('AlphaScene', AlphaScene)
 game.scene.add('BetaScene', BetaScene)
+game.scene.add('GameScene', GameScene)
+game.scene.add('WinScene', WinScene)
 game.scene.start('StartScene')

@@ -19,8 +19,12 @@ class PrototypeScene extends Phaser.Scene {
     this.load.image('BuffaloStickerPaintingSize', 'assets/buffalo_sticker_paintingSize.png')
     this.load.image('Inventory', 'assets/Picture_Perfect_Inventory_3Slot_S_Claire.png')
     this.load.image('Frame', 'assets/Picture perfect- Frame.png')
+    this.load.image('Frame4', 'assets/Picture perfect- Frame2.png')
     this.load.image('Frame2', 'assets/sprites/Picture perfect- Frame2 (extra).png')
     this.load.image('Frame3', 'assets/sprites/Picture perfect- Frame3.png')
+
+    //Load in particle effects
+    this.load.image('red' , 'assets/particles/red.png')
   }
 
   /*sticker = {
