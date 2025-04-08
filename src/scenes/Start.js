@@ -132,25 +132,32 @@ class StartScene extends Phaser.Scene {
   keyReleased (event) {
     console.log('Key released', event.code)
     if (event.code === 'KeyP') {
+      this.scene.stop('StartScene')
       this.scene.start('JessieTestScene')
     }
     if (event.code === 'KeyA') {
+      this.scene.stop('StartScene')
       this.scene.start('AlphaScene')
     }
     if (event.code === 'Space') {
+      this.scene.stop('StartScene')
       this.scene.start('PrototypeScene')
     }
     if (event.code === 'KeyG') {
+      this.scene.stop('StartScene')
       // pass the json to init
       this.scene.start('GameScene', { levelData: this.data.levels[0] })
     }
     if (event.code === 'Digit1') {
+      this.scene.stop('StartScene')
       this.scene.start('GameScene', { levelData: this.data.levels[0] })
     }
     if (event.code === 'Digit2') {
+      this.scene.stop('StartScene')
       this.scene.start('GameScene', { levelData: this.data.levels[1] })
     }
     if (event.code === 'Digit3') {
+      this.scene.stop('StartScene')
       this.scene.start('GameScene', { levelData: this.data.levels[2] })
     }
     // this.music.stop()
