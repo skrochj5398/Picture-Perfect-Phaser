@@ -63,6 +63,8 @@ class GameScene extends Phaser.Scene {
     // inventory & frame
     this.load.image('Inventory', 'assets/Picture_Perfect_Inventory_3Slot_S_Claire.png')
     this.load.image('Frame', 'assets/Picture perfect- Frame.png')
+    this.load.image('Frame2', 'assets/Picture perfect- Frame2.png')
+    this.load.image('Frame3', 'assets/sprites/Picture perfect- Frame3.png')
   }
 
   create () {
@@ -106,6 +108,8 @@ class GameScene extends Phaser.Scene {
     this.emitter = this.add.particles(0, 0, 'red', {
       speed: 100,
       lifespan: 1000,
+      quantity: 20,
+      frequency: 10,
       scale: { start: 1, end: 0 },
       blendMode: 'ADD',
       emitting: false
