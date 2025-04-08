@@ -112,6 +112,7 @@ class BetaScene extends Phaser.Scene {
     // inventory & frame
     this.load.image('Inventory', 'assets/Picture_Perfect_Inventory_3Slot_S_Claire.png')
     this.load.image('Frame', 'assets/Picture perfect- Frame.png')
+    this.load.image('Frame2', 'assets/Picture perfect- Frame2.png')
   }
 
   create () {
