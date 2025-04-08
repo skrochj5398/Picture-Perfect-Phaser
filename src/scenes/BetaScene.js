@@ -177,8 +177,8 @@ class BetaScene extends Phaser.Scene {
     // Testing some nonsense
     //var gameWidth = CONFIG.DEFAULT_WIDTH;
     //var gameHeight = CONFIG.DEFAULT_HEIGHT;
-    const inventoryView = new InventoryView('InventorySlot', 960, 1035, 125, realInventory);
-    inventoryView.draw(this);
+    this.inventoryView = new InventoryView('InventorySlot', 960, 1035, 125, realInventory);
+    this.inventoryView.draw(this);
     //console.log('drawing inventory');
     // stickerArray = new Array();
     // stickerArray = stickerArray.concat()
@@ -199,6 +199,7 @@ class BetaScene extends Phaser.Scene {
 
   handleTestStickerPointerDown (index) {
     console.log("running click function")
+    this.inventoryView.drawNewSticker(this.currentPainting.stickers[index], this);
     this.currentPainting.stickers[index].image.setPosition(-5000, 0)
     this.currentPainting.removeSticker(this.currentPainting.stickers[index])
   } 
