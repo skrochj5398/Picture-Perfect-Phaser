@@ -16,7 +16,7 @@ class WinScene extends Phaser.Scene {
 		this.timeElapsed = this.game.getTime() - this.timeCheck
 		console.log(this.timeElapsed)
 		// check if enough time has passed
-		if (this.timeElapsed >= 5000) {
+		if (this.timeElapsed >= 3000) {
 			this.game.scene.stop('WinScene')
 			this.game.scene.start('StartScene')
 		}
