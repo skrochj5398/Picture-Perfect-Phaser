@@ -6,6 +6,9 @@ class Sticker {
     this.silhouette = silhouette;
     this.id = id;
     this.gameOrigin = new Phaser.Math.Vector2(-10, -10)
+    //this.realPosition = new Phaser.Math.Vector2(this.position - this.gameOrigin)
+    this.offset = (0, 0);
+    //this.of
   }
 
   // test method

@@ -163,13 +163,6 @@ class BetaScene extends Phaser.Scene {
     // variable to hold the number of stickers (for creating the inventory)
     //const numStickers = 0;
 
-    const Frame = this.add.nineslice(
-      CONFIG.DEFAULT_WIDTH / 1.98, 
-      CONFIG.DEFAULT_HEIGHT / 1.96, 
-      'Frame', 
-      0, 1920, 1080, 32, 32, 32, 32
-    )
-
     //var inventory = this.add.image(1000, 1010, 'Inventory').setScale(.5)
 
     // pass silhouettes too, in an array of Silhouettes with ids concat(painting#, silhouette#)
@@ -272,7 +265,7 @@ class BetaScene extends Phaser.Scene {
     this.inventoryView.drawNewSticker(this.currentPainting.stickers[index], this);
     this.emitter.emitParticleAt(this.currentPainting.stickers[index].gameOrigin.x, this.currentPainting.stickers[index].gameOrigin.y)
     console.log('particle emitted at: ', this.currentPainting.stickers[index].gameOrigin)
-    this.currentPainting.stickers[index].image.setPosition(-5000, 0)
+    //this.currentPainting.stickers[index].image.setPosition(-5000, 0)
     this.currentPainting.removeSticker(this.currentPainting.stickers[index])
   }
 
