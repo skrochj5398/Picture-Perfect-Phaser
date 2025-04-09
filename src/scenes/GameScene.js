@@ -85,6 +85,11 @@ class GameScene extends Phaser.Scene {
       emitting: false
     })
 
+    this.tweens.add({
+      targets: this.emitter,
+      ease: 'sine.inout'
+    })
+
     // attach a function to a sticker; should attach all of them
     console.log('about to attach click function')
     for (const painting of this.paintings) {
