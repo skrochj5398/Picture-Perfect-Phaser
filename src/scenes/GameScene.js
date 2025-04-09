@@ -28,37 +28,7 @@ class GameScene extends Phaser.Scene {
     this.load.image('red', 'assets/particles/red.png')
 
     // json loading
-    // add name to path
-    const path = 'assets/Levels/' + this.levelData.name + '/'
-    // get number of paintings in level
-    const numPaintings = this.levelData.numPaintings
-    // loop through them
-    for (let i = 0; i < numPaintings; i++) {
-      // get thisPainting
-      const thisPainting = this.levelData.paintings[i]
-      // load the painting
-      console.log('loading painting: ' + thisPainting.name)
-      this.load.image('Painting' + (i + 1), path + 'Painting' + (i + 1) + '/' + thisPainting.name)
-      // get number of stickers
-      console.log('numStickers: ' + thisPainting.numStickers)
-      const numStickers = thisPainting.numStickers
-      // loop and load
-      for (let j = 0; j < numStickers; j++) {
-        // load
-        const stickerPath = path + 'Painting' + (i + 1) + '/' + thisPainting.stickers[j]
-        console.log('loading sticker: ' + stickerPath)
-        this.load.image('Painting' + (i + 1) + 'Sticker' + (j + 1), stickerPath)
-      }
-      // get number of silhouettes
-      const numSilhouettes = thisPainting.numSilhouettes
-      // loop and load
-      for (let k = 0; k < numSilhouettes; k++) {
-        // load
-        const silhouettePath = path + 'Painting' + (i + 1) + '/' + thisPainting.silhouettes[k]
-        console.log('loading silhouette: ' + silhouettePath)
-        this.load.image('Painting' + (i + 1) + 'Silhouette' + (k + 1), silhouettePath)
-      }
-    }
+    this.loadPaintingsFromJson(this.levelData)
 
     // inventory & frame
     this.load.image('Inventory', 'assets/Picture_Perfect_Inventory_3Slot_S_Claire.png')
@@ -97,7 +67,7 @@ class GameScene extends Phaser.Scene {
     this.paintingFrame = this.add.nineslice(
       CONFIG.DEFAULT_WIDTH / 2,
       CONFIG.DEFAULT_HEIGHT / 2,
-      'Frame3', 0, 1920, 1080,
+      'Frame', 0, 1920, 1080,
       81, 81, 81, 81
     )
 
@@ -115,17 +85,12 @@ class GameScene extends Phaser.Scene {
       emitting: false
     })
 
-    this.tweens.add({
-      targets: this.emitter,
-      ease: 'sine.inout'
-    })
-
     // attach a function to a sticker; should attach all of them
     console.log('about to attach click function')
     for (const painting of this.paintings) {
       for (let i = 0; i < painting.stickers.length; i++) {
         console.log('attaching event to sticker ', i)
-        painting.stickers[i].image.on('pointerdown', () => { this.handleTestStickerPointerDown(i) })
+        painting.stickers[i].image.on('pointerdown', () => { this.onStickerPointerDown(i) })
       }
     }
 
@@ -139,14 +104,30 @@ class GameScene extends Phaser.Scene {
     this.arrowRight.setScale(0.5)
     this.arrowLeft.on('pointerdown', () => { this.lastPainting() })
     this.arrowRight.on('pointerdown', () => { this.nextPainting() })
+
+    // assign stickersLeft = stickers for each painting
+    this.numStickersLeft = this.numStickers
+    this.numStickersLeftPerPainting = this.numStickersPerPainting
   }
 
-  handleTestStickerPointerDown (index) {
+  onStickerPointerDown (index) {
     console.log('running click function')
     this.emitter.emitParticleAt(this.currentPainting.stickers[index].gameOrigin.x, this.currentPainting.stickers[index].gameOrigin.y)
     console.log('particle emitted at: ', this.currentPainting.stickers[index].gameOrigin)
     this.currentPainting.stickers[index].image.setPosition(-5000, 0)
     this.currentPainting.removeSticker(this.currentPainting.stickers[index])
+    // decrement num stickers left
+    this.numStickersLeft--
+    console.log(this.numStickersLeft)
+    // decrement num stickers left per painting
+    this.numStickersLeftPerPainting[this.paintings.indexOf(this.currentPainting)]--
+    console.log(this.numStickersLeftPerPainting)
+    // check if any stickers are left
+    if (this.numStickersLeft === 0) {
+      // got to win scene
+      this.game.scene.stop('GameScene')
+      this.game.scene.start('WinScene')
+    }
   }
 
   nextPainting () {
@@ -188,6 +169,50 @@ class GameScene extends Phaser.Scene {
     this.currentPainting.setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2)
     const width = this.currentPainting.getWidth()
     this.paintingFrame.width = width + 160
+  }
+
+  loadPaintingsFromJson (levelData) {
+    // add name to path
+    const path = 'assets/Levels/' + levelData.name + '/'
+    // get number of paintings in level
+    const numPaintings = levelData.numPaintings
+    // create numStickers on this
+    this.numStickers = 0
+    // array to hold num for each painting; will be loaded as paintings are
+    this.numStickersPerPainting = []
+    // loop through them
+    for (let i = 0; i < numPaintings; i++) {
+      // get thisPainting
+      const thisPainting = levelData.paintings[i]
+      // add a zero to numStickersPerPainting
+      this.numStickersPerPainting.push(0)
+      // load the painting
+      console.log('loading painting: ' + thisPainting.name)
+      this.load.image('Painting' + (i + 1), path + 'Painting' + (i + 1) + '/' + thisPainting.name)
+      // get number of stickers
+      console.log('numStickers: ' + thisPainting.numStickers)
+      const numStickers = thisPainting.numStickers
+      // loop and load
+      for (let j = 0; j < numStickers; j++) {
+        // load
+        const stickerPath = path + 'Painting' + (i + 1) + '/' + thisPainting.stickers[j]
+        console.log('loading sticker: ' + stickerPath)
+        this.load.image('Painting' + (i + 1) + 'Sticker' + (j + 1), stickerPath)
+        // increment number of stickers in level
+        this.numStickers++
+        // increment number of stickers in painting
+        this.numStickersPerPainting[i]++
+      }
+      // get number of silhouettes
+      const numSilhouettes = thisPainting.numSilhouettes
+      // loop and load
+      for (let k = 0; k < numSilhouettes; k++) {
+        // load
+        const silhouettePath = path + 'Painting' + (i + 1) + '/' + thisPainting.silhouettes[k]
+        console.log('loading silhouette: ' + silhouettePath)
+        this.load.image('Painting' + (i + 1) + 'Silhouette' + (k + 1), silhouettePath)
+      }
+    }
   }
 }
 
