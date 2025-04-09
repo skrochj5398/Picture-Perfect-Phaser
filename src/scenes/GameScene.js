@@ -124,10 +124,18 @@ class GameScene extends Phaser.Scene {
     console.log(this.numStickersLeftPerPainting)
     // check if any stickers are left
     if (this.numStickersLeft === 0) {
-      // got to win scene
-      this.game.scene.stop('GameScene')
-      this.game.scene.start('WinScene')
+      // go to win scene
+    this.win()
     }
+  }
+
+  win () {
+    // stop current scene
+    this.game.scene.stop('GameScene')
+    // fix textures persisting TODO
+
+    // start win scene
+    this.game.scene.start('WinScene')
   }
 
   nextPainting () {

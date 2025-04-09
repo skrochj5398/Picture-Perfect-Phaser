@@ -95,7 +95,6 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_WIDTH / 2.0, 
       CONFIG.DEFAULT_HEIGHT / 1.65, 
       'StartButton', 
-      'StartButton', 
       () => {this.toLevelSelect()}
     ).setInteractive().setScale(0.8)
 
@@ -104,7 +103,6 @@ class StartScene extends Phaser.Scene {
       this, 
       CONFIG.DEFAULT_WIDTH / 2.0, 
       CONFIG.DEFAULT_HEIGHT / 1.4, 
-      'OptionsButton', 
       'OptionsButton', 
       () => {this.toOptions()}
     ).setInteractive().setScale(0.8)
@@ -115,7 +113,6 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_WIDTH / 2.0, 
       CONFIG.DEFAULT_HEIGHT / 1.23, 
       'BlueBox', 
-      'RedBox', 
       () => {this.toCredits()}
     ).setInteractive().setScale(1, 0.3)
 
@@ -171,7 +168,8 @@ class StartScene extends Phaser.Scene {
    */
   toLevelSelect () {
     console.log('toLevelSelect')
-    this.scene.start('LevelSelectScene')
+    this.scene.stop('StartScene')
+    this.scene.start('LevelSelectScene', this.data)
   }
 
   /**
@@ -181,6 +179,7 @@ class StartScene extends Phaser.Scene {
    */
   toOptions () {
     console.log('toOptions')
+    //this.scene.stop('StartScene')
     //this.scene.start('')
   }
 
@@ -191,6 +190,7 @@ class StartScene extends Phaser.Scene {
    */
   toCredits () {
     console.log('toCredits')
+    //this.scene.stop('StartScene')
     //this.scene.start('')
   }
 

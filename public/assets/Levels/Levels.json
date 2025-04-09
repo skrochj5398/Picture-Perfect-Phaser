@@ -1,5 +1,5 @@
 {
-	"numLevels": 3,
+	"numLevels": 7,
 	"levels": [{
 		"name": "Level1",
 		"numPaintings": 3,
@@ -51,7 +51,7 @@
 			"silhouettes": ["Windmill Negative.png", "Hockey Skater Negative.png"]
 		}]
 	},{
-  	"name": "Level3",
+  		"name": "Level3",
 		"numPaintings": 4,
 		"paintings": [{
 			"name": "the_last_of_the_buffalo_2014.79.5.png",
@@ -78,5 +78,13 @@
 			"numSilhouettes": 1,
 			"silhouettes": ["Angel Negative.png"]
 		}]
+	},{
+		"name": "haha4"
+	},{
+		"name": "haha5"
+	},{
+		"name": "haha6"
+	},{
+		"name": "haha7"
 	}]
 }
