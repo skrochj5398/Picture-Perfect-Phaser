@@ -171,7 +171,7 @@ class StartScene extends Phaser.Scene {
    */
   toLevelSelect () {
     console.log('toLevelSelect')
-    this.scene.start('BetaScene')
+    this.scene.start('LevelSelectScene')
   }
 
   /**
