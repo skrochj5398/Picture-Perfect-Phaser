@@ -124,10 +124,18 @@ class GameScene extends Phaser.Scene {
     console.log(this.numStickersLeftPerPainting)
     // check if any stickers are left
     if (this.numStickersLeft === 0) {
-      // got to win scene
-      this.game.scene.stop('GameScene')
-      this.game.scene.start('WinScene')
+      // go to win scene
+      this.win()
     }
+  }
+
+  win () {
+    // stop current scene
+    this.game.scene.stop('GameScene')
+    // fix textures persisting TODO
+    this.removePaintingTextures(this.levelData)
+    // start win scene
+    this.game.scene.start('WinScene')
   }
 
   nextPainting () {
@@ -211,6 +219,31 @@ class GameScene extends Phaser.Scene {
         const silhouettePath = path + 'Painting' + (i + 1) + '/' + thisPainting.silhouettes[k]
         console.log('loading silhouette: ' + silhouettePath)
         this.load.image('Painting' + (i + 1) + 'Silhouette' + (k + 1), silhouettePath)
+      }
+    }
+  }
+
+  removePaintingTextures (levelData) {
+    // get number of paintings in level
+    const numPaintings = levelData.numPaintings
+    // loop through them
+    for (let i = 0; i < numPaintings; i++) {
+      // get thisPainting
+      const thisPainting = levelData.paintings[i]
+      // remove
+      this.textures.remove('Painting' + (i + 1))
+      // get number of stickers
+      console.log('numStickers: ' + thisPainting.numStickers)
+      const numStickers = thisPainting.numStickers
+      // loop and remove
+      for (let j = 0; j < numStickers; j++) {
+        this.textures.remove('Painting' + (i + 1) + 'Sticker' + (j + 1))
+      }
+      // get number of silhouettes
+      const numSilhouettes = thisPainting.numSilhouettes
+      // loop and remove
+      for (let k = 0; k < numSilhouettes; k++) {
+        this.textures.remove('Painting' + (i + 1) + 'Silhouette' + (k + 1))
       }
     }
   }

@@ -16,23 +16,21 @@ class HoverableButton extends Phaser.GameObjects.Image {
 	 * @param {number} y
 	 *  y coordinate
 	 * @param {Phaser.Textures.Texture | string} texture
-	 *  the texture object or string key referencing a texture object. Used as the default texture
-	 * @param {Phaser.Textures.Texture | string} hoverTexture
 	 *  the texture object or string key referencing a texture object. Used when hovered over
 	 * @param {function} clickFunction
 	 *  a function that executes when this object is clicked
 	 */
-	constructor(scene, x, y, texture, hoverTexture, clickFunction) {
+	constructor(scene, x, y, texture, clickFunction) {
 		// call Phaser.GameObjects.Image; must do first
 		super(scene, x, y, texture)
 		scene.add.existing(this)
+    this.setInteractive()
 		
 		// set default tint
-		this.setTint(0xdddddd)
+		this.setTint(0xeeeeee)
 
 		// save variables for event listeners
 		this.unHoverTexture = texture
-		this.hoverTexture = hoverTexture
 		this.onPointerUp = clickFunction
 
 		// add event listeners
@@ -46,7 +44,6 @@ class HoverableButton extends Phaser.GameObjects.Image {
 	 * handles tinting when pointer hovers over this object
 	 */
 	onPointerMove() {
-		this.setTexture(this.hoverTexture)
 		this.setTint(0xffffff)
 	}
 
@@ -54,8 +51,7 @@ class HoverableButton extends Phaser.GameObjects.Image {
 	 * handles tinting when pointer stops hovering over this object
 	 */
 	onPointerOut() {
-		this.setTexture(this.unHoverTexture)
-		this.setTint(0xdddddd)
+		this.setTint(0xeeeeee)
 	}
 
 	/**

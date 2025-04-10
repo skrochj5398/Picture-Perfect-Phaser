@@ -70,6 +70,8 @@ class Painting {
           bounds.rightBound - bounds.leftBound,
           bounds.bottomBound - bounds.topBound
         )
+        stickerImage.depth = 2
+
         // create a new hitArea for clicking interaction; the real fix
         stickerImage.input.hitArea = new Phaser.Geom.Rectangle(
           bounds.leftBound,
@@ -92,8 +94,11 @@ class Painting {
         const relativeStickerCenter = new Phaser.Math.Vector2(((bounds.leftBound + bounds.rightBound) / 2.0) * this.targetScale, ((bounds.topBound + bounds.bottomBound) / 2.0) * this.targetScale)
         console.log(relativeStickerCenter)
         const stickerGameOrigin = paintingTopLeft.add(relativeStickerCenter)
+        // set real position
         console.log(stickerGameOrigin)
         sticker.gameOrigin = stickerGameOrigin
+        //sticker.offset = (sticker.image.position - sticker.gameOrigin)
+        sticker.offset = new Phaser.Math.Vector2(sticker.image.x + 50, sticker.image.y - 25).subtract(sticker.gameOrigin)
 
         // loops through the rest
       }

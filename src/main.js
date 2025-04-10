@@ -13,6 +13,7 @@ import AlphaScene from './scenes/AlphaScene.js'
 import BetaScene from './scenes/BetaScene.js'
 import GameScene from './scenes/GameScene.js'
 import WinScene from './scenes/WinScene.js'
+import LevelSelectScene from './scenes/LevelSelectScene.js'
 
 const config = {
   // Configure Phaser graphics settings
@@ -58,4 +59,5 @@ game.scene.add('AlphaScene', AlphaScene)
 game.scene.add('BetaScene', BetaScene)
 game.scene.add('GameScene', GameScene)
 game.scene.add('WinScene', WinScene)
+game.scene.add('LevelSelectScene', LevelSelectScene)
 game.scene.start('StartScene')
