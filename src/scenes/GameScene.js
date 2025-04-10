@@ -2,6 +2,8 @@ import Phaser from 'phaser'
 import CONFIG from '../config.js'
 import Painting from '../models/Painting.js'
 import Silhouette from '../models/Silhouette.js'
+import InventoryView from '../models/InventoryView.js'
+import Inventory from '../models/Inventory.js'
 
 class GameScene extends Phaser.Scene {
   // initialization setup; takes the part of the json data for selected level
@@ -32,6 +34,7 @@ class GameScene extends Phaser.Scene {
 
     // inventory & frame
     this.load.image('Inventory', 'assets/Picture_Perfect_Inventory_3Slot_S_Claire.png')
+    this.load.image('InventorySlot', 'assets/InventorySlot.png')
     this.load.image('Frame', 'assets/Picture perfect- Frame.png')
     this.load.image('Frame2', 'assets/Picture perfect- Frame2.png')
     this.load.image('Frame3', 'assets/sprites/Picture perfect- Frame3.png')
@@ -92,13 +95,13 @@ class GameScene extends Phaser.Scene {
       for (let i = 0; i < painting.stickers.length; i++) {
         console.log('attaching event to sticker ', i)
         painting.stickers[i].image.on('pointerdown', () => { this.onStickerPointerDown(i) })
-        realInventory.addSticker(painting.stickers[i]);
+        realInventory.addSticker(painting.stickers[i])
       }
     }
 
     // create Inventory View
-    this.inventoryView = new InventoryView('InventorySlot', 960, 1035, 125, realInventory);
-    this.inventoryView.draw(this);
+    this.inventoryView = new InventoryView('InventorySlot', 960, 1035, 125, realInventory)
+    this.inventoryView.draw(this)
 
     // set first painting and position it
     this.updatePainting(0)
@@ -118,7 +121,7 @@ class GameScene extends Phaser.Scene {
 
   onStickerPointerDown (index) {
     console.log('running click function')
-    this.inventoryView.drawNewSticker(this.currentPainting.stickers[index], this);
+    this.inventoryView.drawNewSticker(this.currentPainting.stickers[index], this)
     this.emitter.emitParticleAt(this.currentPainting.stickers[index].gameOrigin.x, this.currentPainting.stickers[index].gameOrigin.y)
     console.log('particle emitted at: ', this.currentPainting.stickers[index].gameOrigin)
     //this.currentPainting.stickers[index].image.setPosition(-5000, 0)
