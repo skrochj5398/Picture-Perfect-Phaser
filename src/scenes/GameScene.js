@@ -72,7 +72,8 @@ class GameScene extends Phaser.Scene {
     )
 
     // add inventory visual. TODO swap with real inventory
-    this.add.image(1000, 1010, 'Inventory').setScale(0.5)
+    //this.add.image(1000, 1010, 'Inventory').setScale(0.5)
+    var realInventory = new Inventory();
 
     // Create and configure a particle emitter
     this.emitter = this.add.particles(0, 0, 'red', {
@@ -91,8 +92,13 @@ class GameScene extends Phaser.Scene {
       for (let i = 0; i < painting.stickers.length; i++) {
         console.log('attaching event to sticker ', i)
         painting.stickers[i].image.on('pointerdown', () => { this.onStickerPointerDown(i) })
+        realInventory.addSticker(painting.stickers[i]);
       }
     }
+
+    // create Inventory View
+    this.inventoryView = new InventoryView('InventorySlot', 960, 1035, 125, realInventory);
+    this.inventoryView.draw(this);
 
     // set first painting and position it
     this.updatePainting(0)
@@ -112,9 +118,10 @@ class GameScene extends Phaser.Scene {
 
   onStickerPointerDown (index) {
     console.log('running click function')
+    this.inventoryView.drawNewSticker(this.currentPainting.stickers[index], this);
     this.emitter.emitParticleAt(this.currentPainting.stickers[index].gameOrigin.x, this.currentPainting.stickers[index].gameOrigin.y)
     console.log('particle emitted at: ', this.currentPainting.stickers[index].gameOrigin)
-    this.currentPainting.stickers[index].image.setPosition(-5000, 0)
+    //this.currentPainting.stickers[index].image.setPosition(-5000, 0)
     this.currentPainting.removeSticker(this.currentPainting.stickers[index])
     // decrement num stickers left
     this.numStickersLeft--

@@ -46,29 +46,22 @@ class InventoryView {
   }
   // method to draw inventory with newly-added sticker
   drawNewSticker(sticker, scene){
-    console.log(sticker.image);
+    //console.log(sticker.image);
     console.log('Drawing new sticker');
     this.addSticker(sticker);
-    console.log(this.stickers[this.stickersFound]);
+    //console.log(this.stickers[this.stickersFound]);
     var location = new Phaser.Math.Vector2(this.slots[this.stickersFound].x,
       this.slots[this.stickersFound].y);
     //sticker.offset.x = location.x - sticker.gameOrigin.x;
     //sticker.offset.y = location.y - sticker.gameOrigin.y;
-    console.log(sticker.image.x - sticker.gameOrigin.x);
     sticker.offset.x = sticker.image.x - sticker.gameOrigin.x;
-    console.log(sticker.image.y - sticker.gameOrigin.y);
     sticker.offset.y = sticker.image.y - sticker.gameOrigin.y;
     var realPosition = new Phaser.Math.Vector2(location.x + sticker.offset.x,
       location.y + sticker.offset.y);
-    console.log(realPosition);
-    console.log(location);
-    console.log(sticker.offset);
     // scene.add.image(realPosition.x, realPosition.y, 
     //   this.stickers[this.stickersFound].texture);//.setScale(2.5);
     this.stickersFound++;
     sticker.setLocation(realPosition.x, realPosition.y);
-    console.log(sticker.image.x + sticker.offset.x);
-    console.log(sticker.image.y + sticker.offset.y);
     console.log('Done Drawing sticker');
   }
 }
