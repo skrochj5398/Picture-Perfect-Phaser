@@ -42,6 +42,12 @@ class StartScene extends Phaser.Scene {
       'assets/audio/gameAudioSprite.ac3'
     ])
 
+    // load options menu assets
+    this.load.image('optionsBackground', 'assets/UI/UI_Options_Claire_4_9_2025_v1.png')
+    this.load.image('optionsSliderBar', 'assets/UI/UI_Options_Menu_Bar_Off_Claire_4_9_2025_v1.png')
+    this.load.image('optionsSliderFill', 'assets/UI/UI_Options_Menu_Bar_On_Claire_4_9_2025_v1.png')
+    this.load.image('optionsSliderHandle', 'assets/UI/UI_Options_Menu_Slider_Claire_4_9_2025_v1.png')
+
     // load json
     this.load.json('levelData', 'assets/Levels/Levels.json')
   }

@@ -4,6 +4,7 @@ import Painting from '../models/Painting.js'
 import Silhouette from '../models/Silhouette.js'
 import InventoryView from '../models/InventoryView.js'
 import Inventory from '../models/Inventory.js'
+import HoverableButton from '../models/HoverableButton.js'
 
 class GameScene extends Phaser.Scene {
   // initialization setup; takes the part of the json data for selected level
@@ -23,8 +24,8 @@ class GameScene extends Phaser.Scene {
   preload () {
     // this is where to load images or in StartScene
     // temp images for left and right buttons
-    this.load.image('ArrowLeft', 'assets/sprites/Arrow_Left.png')
-    this.load.image('ArrowRight', 'assets/sprites/Arrow_Right.png')
+    this.load.image('ArrowLeft', 'assets/UI/UI_Arrow_Left_Claire_4_9_2025_v1.png')
+    this.load.image('ArrowRight', 'assets/UI/UI_Arrow_Right_Claire_4_9_2025_v1.png')
 
     // Load in particle effects
     this.load.image('red', 'assets/particles/red.png')
@@ -107,12 +108,10 @@ class GameScene extends Phaser.Scene {
     this.updatePainting(0)
 
     // attach functions to move up or down the array
-    this.arrowLeft = this.add.image(55, CONFIG.DEFAULT_HEIGHT / 2, 'ArrowLeft').setInteractive()
-    this.arrowRight = this.add.image(CONFIG.DEFAULT_WIDTH - 55, CONFIG.DEFAULT_HEIGHT / 2, 'ArrowRight').setInteractive()
-    this.arrowLeft.setScale(0.5)
-    this.arrowRight.setScale(0.5)
-    this.arrowLeft.on('pointerdown', () => { this.lastPainting() })
-    this.arrowRight.on('pointerdown', () => { this.nextPainting() })
+    this.arrowLeft = new HoverableButton(this, 0, 0, 'ArrowLeftButton', () => { this.lastPainting() })
+    this.arrowLeft.setPosition(this.arrowLeft.displayWidth / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0)
+    this.arrowRight = new HoverableButton(this, 0, 0, 'ArrowRightButton', () => { this.nextPainting() })
+    this.arrowRight.setPosition(CONFIG.DEFAULT_WIDTH - this.arrowRight.displayWidth / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0)
 
     // assign stickersLeft = stickers for each painting
     this.numStickersLeft = this.numStickers
