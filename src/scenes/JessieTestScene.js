@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import CONFIG from '../config.js'
 import Slider from '../models/Slider.js'
+import HoverableButton from '../models/HoverableButton.js'
 
 class JessieTestScene extends Phaser.Scene {
   preload () {
@@ -15,7 +16,7 @@ class JessieTestScene extends Phaser.Scene {
   create () {
 
     // create button to bring up menu
-    this.optionsButton = new HoverableButton(this, 0, 0, )
+    this.optionsButton = new HoverableButton(this, 0, 0, 'optionsButton')
 
     // create slider
     /*this.optionsSlider = new Slider(
