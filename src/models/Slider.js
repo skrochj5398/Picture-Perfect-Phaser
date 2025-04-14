@@ -62,6 +62,14 @@ class Slider extends Phaser.GameObjects.Image {
     const newXPos = distanceToHandle / 2 + leftBound
     fill.setPosition(newXPos, fill.y)
   }
+
+  setActive () {
+    // TODO
+  }
+
+  setVisible () {
+    // TODO
+  }
 }
 
 export default Slider

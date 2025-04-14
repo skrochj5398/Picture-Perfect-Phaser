@@ -5,21 +5,20 @@ import HoverableButton from '../models/HoverableButton.js'
 
 class JessieTestScene extends Phaser.Scene {
   preload () {
-    // this is where to load images
-    this.load.image('optionsButton', 'assets/UI/UI_Options_Claire_4_9_2025_v1.png')
-    this.load.image('optionsBackground', '')
-    this.load.image('optionsSliderBar', 'assets/UI/UI_Options_Menu_Bar_Off_Claire_4_9_2025_v1.png')
-    this.load.image('optionsSliderFill', 'assets/UI/UI_Options_Menu_Bar_On_Claire_4_9_2025_v1.png')
-    this.load.image('optionsSliderHandle', 'assets/UI/UI_Options_Menu_Slider_Claire_4_9_2025_v1.png')
+
   }
 
   create () {
-
     // create button to bring up menu
-    this.optionsButton = new HoverableButton(this, 0, 0, 'optionsButton')
+    this.optionsButton = new HoverableButton(this, 0, 0, 'optionsButton', () => { this.setOptionsVisibility(!this.optionsBackground.visible) })
+    // set position
+    this.optionsButton.setPosition(this.optionsButton.width / 2, this.optionsButton.height / 2)
 
+    // create menu
+    // create background
+    this.optionsBackground = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'optionsBackground')
     // create slider
-    /*this.optionsSlider = new Slider(
+    this.optionsSlider = new Slider(
       this, CONFIG.DEFAULT_WIDTH / 2,
       CONFIG.DEFAULT_HEIGHT / 2,
       'optionsSliderHandle',
@@ -28,7 +27,14 @@ class JessieTestScene extends Phaser.Scene {
       this.textures.getFrame('optionsSliderBar').height,
       'optionsSliderFill',
       0, 100
-    )*/
+    )
+    // make options menu invisible
+    this.setOptionsVisibility(false)
+  }
+
+  setOptionsVisibility(isVisible) {
+    this.optionsBackground.setActive(isVisible).setVisible(isVisible)
+    this.optionsSlider.setActive(isVisible).setVisible(isVisible)
   }
 }
 

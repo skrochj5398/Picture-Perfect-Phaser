@@ -43,7 +43,8 @@ class StartScene extends Phaser.Scene {
     ])
 
     // load options menu assets
-    this.load.image('optionsBackground', 'assets/UI/UI_Options_Claire_4_9_2025_v1.png')
+    this.load.image('optionsButton', 'assets/UI/UI_Options_Claire_4_9_2025_v1.png')
+    this.load.image('optionsBackground', 'assets/UI/UI_Options_Menu_Background_Claire_4_14_2025_v1.png')
     this.load.image('optionsSliderBar', 'assets/UI/UI_Options_Menu_Bar_Off_Claire_4_9_2025_v1.png')
     this.load.image('optionsSliderFill', 'assets/UI/UI_Options_Menu_Bar_On_Claire_4_9_2025_v1.png')
     this.load.image('optionsSliderHandle', 'assets/UI/UI_Options_Menu_Slider_Claire_4_9_2025_v1.png')
