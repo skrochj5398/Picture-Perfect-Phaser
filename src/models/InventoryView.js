@@ -56,12 +56,42 @@ class InventoryView {
     //sticker.offset.y = location.y - sticker.gameOrigin.y;
     sticker.offset.x = sticker.image.x - sticker.gameOrigin.x;
     sticker.offset.y = sticker.image.y - sticker.gameOrigin.y;
-    var realPosition = new Phaser.Math.Vector2(location.x + sticker.offset.x,
-      location.y + sticker.offset.y);
+    //var realPosition = new Phaser.Math.Vector2(location.x + sticker.offset.x,
+    //  location.y + sticker.offset.y);
     // scene.add.image(realPosition.x, realPosition.y, 
     //   this.stickers[this.stickersFound].texture);//.setScale(2.5);
     this.stickersFound++;
-    sticker.setLocation(realPosition.x, realPosition.y);
+    // desired scale = largest sticker can be while having x & y <= inventory slot's x & y
+    var ratio = sticker.image.scale;
+    while (sticker.realScale.x < this.slots[0].width || sticker.realScale.y < this.slots[0].height){
+      console.log('Bigger looping');
+      console.log(sticker.realScale.x);
+      console.log(sticker.realScale.y);
+      sticker.image.setScale(sticker.image.scale * 2);
+      sticker.realScale.x = (sticker.realScale.x * 2);
+      sticker.realScale.y = (sticker.realScale.y * 2);
+    }
+    while (sticker.realScale.x > this.slots[0].width || sticker.realScale.y > this.slots[0].height) {
+      console.log('Smaller looping');
+      sticker.image.setScale(sticker.image.scale / 2);
+      sticker.realScale.x = (sticker.realScale.x / 2);
+      sticker.realScale.y = (sticker.realScale.y / 2);
+    }  
+    sticker.image.setScale(sticker.image.scale/2);
+    console.log('Sticker scale: ' + sticker.image.scale);
+    //this.ratio = desired scale / current scale
+    ratio = sticker.image.scale / ratio;
+    console.log('Sticker ratio: ' + ratio);
+    // offset = offset * ratio
+    sticker.offset.x = sticker.offset.x * ratio;
+    sticker.offset.y = sticker.offset.y * ratio;
+    var realPosition = new Phaser.Math.Vector2(location.x + sticker.offset.x,
+      location.y + sticker.offset.y);
+    console.log('slot x: ' + this.slots[this.stickersFound - 1].x);
+    console.log('slot y: ' + this.slots[this.stickersFound - 1].y);
+    console.log('sticker x: ' + realPosition.x);
+    console.log('sticker y: ' + realPosition.y);
+    sticker.setLocation(realPosition.x, realPosition.y)
     console.log('Done Drawing sticker');
   }
 }

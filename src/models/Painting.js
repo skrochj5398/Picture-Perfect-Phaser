@@ -81,6 +81,8 @@ class Painting {
         )
         // create a Sticker around this sticker
         const sticker = new Sticker(stickerImage, null, 0)
+        sticker.realScale.x = bounds.rightBound - bounds.leftBound;
+        sticker.realScale.y = bounds.bottomBound - bounds.topBound;
         // add the Sticker to this.stickers
         this.stickers.push(sticker)
         // set position of the cropped sticker
