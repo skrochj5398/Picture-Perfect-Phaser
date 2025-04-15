@@ -48,6 +48,9 @@ class StartScene extends Phaser.Scene {
     this.load.image('optionsSliderBar', 'assets/UI/UI_Options_Menu_Bar_Off_Claire_4_9_2025_v1.png')
     this.load.image('optionsSliderFill', 'assets/UI/UI_Options_Menu_Bar_On_Claire_4_9_2025_v1.png')
     this.load.image('optionsSliderHandle', 'assets/UI/UI_Options_Menu_Slider_Claire_4_9_2025_v1.png')
+    this.load.image('optionsCloseButton', 'assets/UI/UI_Options_Menu_X_Claire_4_9_2025_v1.png')
+    this.load.image('optionsMusicLabel', 'assets/UI/UI_Options_Music_Claire_4_15_2025_v1.png')
+    this.load.image('optionsSoundLabel', 'assets/UI/UI_Options_Sound_Claire_4_15_2025_v1.png')
 
     // load json
     this.load.json('levelData', 'assets/Levels/Levels.json')

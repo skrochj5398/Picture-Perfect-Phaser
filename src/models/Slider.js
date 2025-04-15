@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 
 class Slider extends Phaser.GameObjects.Image {
-  constructor (scene, x, y, handleTexture, barTexture, barWidth, barHeight, fillTexture, min, max) {
+  constructor (scene, x, y, handleTexture, barTexture, barWidth, barHeight, fillTexture, min, max, dragFunction) {
     // construct object
     super(scene, x, y, handleTexture)
     this.barWidth = barWidth
@@ -10,6 +10,7 @@ class Slider extends Phaser.GameObjects.Image {
     this.min = min
     this.max = max
     this.value = (max + min) / 2
+    this.dragFunction = dragFunction
 
     // add to scene
     scene.add.existing(this)
@@ -22,12 +23,11 @@ class Slider extends Phaser.GameObjects.Image {
       // mafs
       const leftBound = x - this.bounds
       const distanceToHandle = this.x - leftBound
-      const fillScale = distanceToHandle / scene.textures.getFrame(fillTexture).width
-      // set x scale for fill
-      fill.setScale(fillScale, 1)
+      // set x width for fill
+      this.fill.width = distanceToHandle
       const newXPos = distanceToHandle / 2 + leftBound
       // set position so fill starts at left side of bar
-      fill.setPosition(newXPos, fill.y)
+      this.fill.setPosition(newXPos, this.fill.y)
       // set value... but mafs first
       const totalDistance = x + this.bounds - leftBound
       const fillPercent = distanceToHandle / totalDistance
@@ -36,39 +36,45 @@ class Slider extends Phaser.GameObjects.Image {
       this.value = (max - min) * fillPercent + min
       console.log(this.value)
     })
-    console.log(x + this.bounds)
+    // add personalized function
+    this.on('drag', this.dragFunction)
     // make in front of everything else (bar should be 10)
     this.setDepth(12)
 
     // create bar
-    const bar = scene.add.image(x, y, barTexture)
+    this.bar = scene.add.image(x, y, barTexture)
     // set depth
-    bar.setDepth(10)
+    this.bar.setDepth(10)
     // change scale to match width and height
-    bar.setScale(
+    this.bar.setScale(
       barWidth / scene.textures.getFrame(barTexture).width,
       barHeight / scene.textures.getFrame(barTexture).height
     )
 
     // create fill
-    const fill = scene.add.image(x, y, fillTexture)
+    this.fill = scene.add.nineslice(x, y, fillTexture, 0, scene.textures.getFrame(fillTexture).width, scene.textures.getFrame(fillTexture).height, 15, 15, 0, 0)
     // set depth 11
-    fill.setDepth(11)
+    this.fill.setDepth(11)
     // change scale and position to match starting position
     const leftBound = x - this.bounds
     const distanceToHandle = this.x - leftBound
-    const fillScale = distanceToHandle / scene.textures.getFrame(fillTexture).width
-    fill.setScale(fillScale, 1)
+    this.fill.width = distanceToHandle
     const newXPos = distanceToHandle / 2 + leftBound
-    fill.setPosition(newXPos, fill.y)
+    this.fill.setPosition(newXPos, this.fill.y)
   }
 
-  setActive () {
-    // TODO
+  setActive (isActive) {
+    super.setActive(isActive)
+    this.bar.setActive(isActive)
+    this.fill.setActive(isActive)
+    return this
   }
 
-  setVisible () {
-    // TODO
+  setVisible (isVisible) {
+    super.setVisible(isVisible)
+    this.bar.setVisible(isVisible)
+    this.fill.setVisible(isVisible)
+    return this
   }
 }
 
