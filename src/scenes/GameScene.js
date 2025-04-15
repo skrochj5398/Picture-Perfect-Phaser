@@ -70,7 +70,7 @@ class GameScene extends Phaser.Scene {
     this.paintingFrame = this.add.nineslice(
       CONFIG.DEFAULT_WIDTH / 2,
       CONFIG.DEFAULT_HEIGHT / 2,
-      'Frame', 0, 1920, 1080,
+      'Frame3', 0, 1920, 1080,
       81, 81, 81, 81
     )
 
