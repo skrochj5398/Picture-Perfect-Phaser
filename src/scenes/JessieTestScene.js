@@ -62,6 +62,7 @@ class JessieTestScene extends Phaser.Scene {
     )
     // make options menu invisible
     this.setOptionsVisibility(false)
+    this.setOptionsDepth(10)
   }
 
   setOptionsVisibility(isVisible) {
@@ -72,7 +73,15 @@ class JessieTestScene extends Phaser.Scene {
     this.optionsSoundLabel.setActive(isVisible).setVisible(isVisible)
     this.optionsSoundSlider.setActive(isVisible).setVisible(isVisible)
   }
-}
 
+  setOptionsDepth (depth) {
+    this.optionsBackground.setDepth(depth)
+    this.optionsCloseButton.setDepth(depth)
+    this.optionsMusicLabel.setDepth(depth)
+    this.optionsMusicSlider.setDepth(depth)
+    this.optionsSoundLabel.setDepth(depth)
+    this.optionsSoundSlider.setDepth(depth)
+  }
+}
 
 export default JessieTestScene

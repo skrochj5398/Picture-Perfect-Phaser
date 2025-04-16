@@ -35,11 +35,14 @@ class StartScene extends Phaser.Scene {
     })
 
     // Pre-load the entire audio sprite
-    this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [
-      'assets/audio/gameAudioSprite.ogg',
-      'assets/audio/gameAudioSprite.m4a',
-      'assets/audio/gameAudioSprite.mp3',
-      'assets/audio/gameAudioSprite.ac3'
+    // this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [
+    //   'assets/audio/gameAudioSprite.ogg',
+    //   'assets/audio/gameAudioSprite.m4a',
+    //   'assets/audio/gameAudioSprite.mp3',
+    //   'assets/audio/gameAudioSprite.ac3'
+    // ])
+    this.load.audioSprite('bgMusic', 'assets/audio/bgMusic.json', [
+      'assets/audio/MUS_GameTheme1_PP_demo1.wav'
     ])
 
     // load options menu assets
@@ -131,7 +134,7 @@ class StartScene extends Phaser.Scene {
     this.input.keyboard.on('keyup', this.keyReleased, this)
 
     // Load and play background music
-    this.music = this.sound.addAudioSprite('gameAudio')
+    this.music = this.sound.addAudioSprite('bgMusic')
     //this.music.play('freeVertexStudioTrack1')
   }
 

@@ -76,6 +76,11 @@ class Slider extends Phaser.GameObjects.Image {
     this.fill.setVisible(isVisible)
     return this
   }
+
+  setDepth (depth) {
+    super.setDepth(depth + 2)
+    return this
+  }
 }
 
 export default Slider
