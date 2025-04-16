@@ -132,7 +132,7 @@ class StartScene extends Phaser.Scene {
 
     // Load and play background music
     this.music = this.sound.addAudioSprite('gameAudio')
-    this.music.play('freeVertexStudioTrack1')
+    //this.music.play('freeVertexStudioTrack1')
   }
 
   // use this just to enter test scenes

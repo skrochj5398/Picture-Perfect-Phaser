@@ -14,6 +14,10 @@ class JessieTestScene extends Phaser.Scene {
     // set position
     this.optionsButton.setPosition(this.optionsButton.width / 2, this.optionsButton.height / 2)
 
+    // play music
+    this.music = this.sound.addAudioSprite('gameAudio')
+    this.music.play('freeVertexStudioTrack1')
+
     // create menu
     const labelToSliderOffset = 90
     const centerOfMenuX = CONFIG.DEFAULT_WIDTH / 2
@@ -40,7 +44,7 @@ class JessieTestScene extends Phaser.Scene {
       this.textures.getFrame('optionsSliderBar').height,
       'optionsSliderFill',
       0, 100,
-      () => {}
+      () => { this.music.volume = this.optionsMusicSlider.value / 100 }
     )
     // create sound label
     this.optionsSoundLabel = this.add.image(centerOfMenuX, centerOfMenuY + 60, 'optionsSoundLabel')
