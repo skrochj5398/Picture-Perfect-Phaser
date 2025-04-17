@@ -109,9 +109,9 @@ class GameScene extends Phaser.Scene {
     this.updatePainting(0)
 
     // attach functions to move up or down the array
-    this.arrowLeft = new HoverableButton(this, 0, 0, 'ArrowLeftButton', () => { this.lastPainting() })
+    this.arrowLeft = new HoverableButton(this, 0, 0, 'ArrowLeft', () => { this.lastPainting() })
     this.arrowLeft.setPosition(this.arrowLeft.displayWidth / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0)
-    this.arrowRight = new HoverableButton(this, 0, 0, 'ArrowRightButton', () => { this.nextPainting() })
+    this.arrowRight = new HoverableButton(this, 0, 0, 'ArrowRight', () => { this.nextPainting() })
     this.arrowRight.setPosition(CONFIG.DEFAULT_WIDTH - this.arrowRight.displayWidth / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0)
 
     // assign stickersLeft = stickers for each painting

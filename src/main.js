@@ -14,6 +14,7 @@ import BetaScene from './scenes/BetaScene.js'
 import GameScene from './scenes/GameScene.js'
 import WinScene from './scenes/WinScene.js'
 import LevelSelectScene from './scenes/LevelSelectScene.js'
+import TutorialScene from './scenes/TutorialScene.js'
 
 const config = {
   // Configure Phaser graphics settings
@@ -60,4 +61,5 @@ game.scene.add('BetaScene', BetaScene)
 game.scene.add('GameScene', GameScene)
 game.scene.add('WinScene', WinScene)
 game.scene.add('LevelSelectScene', LevelSelectScene)
+game.scene.add('TutorialScene', TutorialScene)
 game.scene.start('StartScene')
