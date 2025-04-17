@@ -10,8 +10,8 @@ class LevelSelectScene extends Phaser.Scene {
 
   preload () {
     // load swap buttons
-    this.load.image('ArrowLeftButton', 'assets/sprites/Arrow_Left.png')
-    this.load.image('ArrowRightButton', 'assets/sprites/Arrow_Right.png')
+    this.load.image('ArrowLeftButton', 'assets/UI/UI_Arrow_Left_Claire_4_9_2025_v1.png')
+    this.load.image('ArrowRightButton', 'assets/UI/UI_Arrow_Right_Claire_4_9_2025_v1.png')
     // load level buttons
     this.load.image('BlueBox', 'assets/BlueBox.png')
     // load back button
@@ -26,15 +26,15 @@ class LevelSelectScene extends Phaser.Scene {
     background.setScale(CONFIG.DEFAULT_WIDTH / background.width, CONFIG.DEFAULT_HEIGHT / background.height)
     // add stationary UI objects
     // left button
-    const leftButton = new HoverableButton(this, 0, 0, 'ArrowLeftButton', () => {this.scrollLeft()}).setScale(0.5)
+    const leftButton = new HoverableButton(this, 0, 0, 'ArrowLeftButton', () => { this.scrollLeft() })
     leftButton.setPosition(leftButton.displayWidth / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0)
 
     // right button
-    const rightButton = new HoverableButton(this, 0, 0, 'ArrowRightButton', () => {this.scrollRight()}).setScale(0.5)
+    const rightButton = new HoverableButton(this, 0, 0, 'ArrowRightButton', () => { this.scrollRight() })
     rightButton.setPosition(CONFIG.DEFAULT_WIDTH - rightButton.displayWidth / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0)
 
     // return button
-    const returnButton = new HoverableButton(this, 0, 0, 'ReturnButton', () => {this.goBack()})
+    const returnButton = new HoverableButton(this, 0, 0, 'ReturnButton', () => { this.goBack() })
     returnButton.setPosition(returnButton.displayWidth / 2.0, returnButton.displayHeight / 2.0)
 
     // get number of levels from json

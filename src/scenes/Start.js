@@ -35,12 +35,25 @@ class StartScene extends Phaser.Scene {
     })
 
     // Pre-load the entire audio sprite
-    this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [
-      'assets/audio/gameAudioSprite.ogg',
-      'assets/audio/gameAudioSprite.m4a',
-      'assets/audio/gameAudioSprite.mp3',
-      'assets/audio/gameAudioSprite.ac3'
+    // this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [
+    //   'assets/audio/gameAudioSprite.ogg',
+    //   'assets/audio/gameAudioSprite.m4a',
+    //   'assets/audio/gameAudioSprite.mp3',
+    //   'assets/audio/gameAudioSprite.ac3'
+    // ])
+    this.load.audioSprite('bgMusic', 'assets/audio/bgMusic.json', [
+      'assets/audio/MUS_GameTheme1_PP_demo1.wav'
     ])
+
+    // load options menu assets
+    this.load.image('optionsButton', 'assets/UI/UI_Options_Claire_4_9_2025_v1.png')
+    this.load.image('optionsBackground', 'assets/UI/UI_Options_Menu_Background_Claire_4_14_2025_v1.png')
+    this.load.image('optionsSliderBar', 'assets/UI/UI_Options_Menu_Bar_Off_Claire_4_9_2025_v1.png')
+    this.load.image('optionsSliderFill', 'assets/UI/UI_Options_Menu_Bar_On_Claire_4_9_2025_v1.png')
+    this.load.image('optionsSliderHandle', 'assets/UI/UI_Options_Menu_Slider_Claire_4_9_2025_v1.png')
+    this.load.image('optionsCloseButton', 'assets/UI/UI_Options_Menu_X_Claire_4_9_2025_v1.png')
+    this.load.image('optionsMusicLabel', 'assets/UI/UI_Options_Music_Claire_4_15_2025_v1.png')
+    this.load.image('optionsSoundLabel', 'assets/UI/UI_Options_Sound_Claire_4_15_2025_v1.png')
 
     // load json
     this.load.json('levelData', 'assets/Levels/Levels.json')
@@ -121,8 +134,8 @@ class StartScene extends Phaser.Scene {
     this.input.keyboard.on('keyup', this.keyReleased, this)
 
     // Load and play background music
-    this.music = this.sound.addAudioSprite('gameAudio')
-    this.music.play('freeVertexStudioTrack1')
+    this.music = this.sound.addAudioSprite('bgMusic')
+    //this.music.play('freeVertexStudioTrack1')
   }
 
   // use this just to enter test scenes

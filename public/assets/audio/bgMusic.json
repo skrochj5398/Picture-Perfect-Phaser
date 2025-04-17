@@ -1,0 +1,12 @@
+{
+    "resources": [
+      "assets/audio/MUS_GameTheme1_PP_demo1.wav"
+    ],
+    "spritemap": {
+      "bgMusic1": {
+        "start": 0,
+        "end": 58.0,
+        "loop": true
+      }
+    }
+  }
