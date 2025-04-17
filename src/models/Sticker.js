@@ -9,6 +9,7 @@ class Sticker {
     //this.realPosition = new Phaser.Math.Vector2(this.position - this.gameOrigin)
     this.offset = (0, 0);
     //this.of
+    this.bounds = null
   }
 
   // test method
