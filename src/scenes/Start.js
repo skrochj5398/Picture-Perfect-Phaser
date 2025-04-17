@@ -89,44 +89,39 @@ class StartScene extends Phaser.Scene {
     const startScreen_2 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'startScreen_2')
     startScreen_2.setScale(
       // rescales the image to aspect ratio of the game
-    CONFIG.DEFAULT_WIDTH / startScreen_2.width,
-    CONFIG.DEFAULT_HEIGHT / startScreen_2.height
+      CONFIG.DEFAULT_WIDTH / startScreen_2.width,
+      CONFIG.DEFAULT_HEIGHT / startScreen_2.height
     )
 
     // Add background image 3
     const startScreen_3 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.7, 'startScreen_3')
     startScreen_3.setScale()
-    
-   
-
-
-
 
     // start button
     this.startButton = new HoverableButton(
       this, 
-      CONFIG.DEFAULT_WIDTH / 2.0, 
-      CONFIG.DEFAULT_HEIGHT / 1.65, 
-      'StartButton', 
-      () => {this.toLevelSelect()}
+      CONFIG.DEFAULT_WIDTH / 2.0,
+      CONFIG.DEFAULT_HEIGHT / 1.65,
+      'StartButton',
+      () => { this.toLevelSelect() }
     ).setInteractive().setScale(0.8)
 
     // options button
     this.optionsButton = new HoverableButton(
-      this, 
-      CONFIG.DEFAULT_WIDTH / 2.0, 
-      CONFIG.DEFAULT_HEIGHT / 1.4, 
-      'OptionsButton', 
-      () => {this.toOptions()}
+      this,
+      CONFIG.DEFAULT_WIDTH / 2.0,
+      CONFIG.DEFAULT_HEIGHT / 1.4,
+      'OptionsButton',
+      () => { this.toOptions() }
     ).setInteractive().setScale(0.8)
 
     // credits button
     this.creditsButton = new HoverableButton(
-      this, 
-      CONFIG.DEFAULT_WIDTH / 2.0, 
-      CONFIG.DEFAULT_HEIGHT / 1.23, 
-      'BlueBox', 
-      () => {this.toCredits()}
+      this,
+      CONFIG.DEFAULT_WIDTH / 2.0,
+      CONFIG.DEFAULT_HEIGHT / 1.23,
+      'BlueBox',
+      () => { this.toCredits() }
     ).setInteractive().setScale(1, 0.3)
 
 
@@ -135,7 +130,8 @@ class StartScene extends Phaser.Scene {
 
     // Load and play background music
     this.music = this.sound.addAudioSprite('bgMusic')
-    //this.music.play('freeVertexStudioTrack1')
+
+    this.isTutCompleted = false
   }
 
   // use this just to enter test scenes
@@ -177,8 +173,15 @@ class StartScene extends Phaser.Scene {
    */
   toLevelSelect () {
     console.log('toLevelSelect')
-    this.scene.stop('StartScene')
-    this.scene.start('LevelSelectScene', this.data)
+    this.scene.sleep('StartScene')
+    // check if tutorial has been done
+    if (this.isTutCompleted) {
+      this.scene.start('LevelSelectScene', this.data)
+    } else {
+      if (this.data.levels.length > 0) {
+        this.scene.start('TutorialScene', { levelData: this.data.levels[0] })
+      }
+    }
   }
 
   /**
@@ -188,7 +191,7 @@ class StartScene extends Phaser.Scene {
    */
   toOptions () {
     console.log('toOptions')
-    //this.scene.stop('StartScene')
+    //this.scene.sleep('StartScene')
     //this.scene.start('')
   }
 
@@ -199,7 +202,7 @@ class StartScene extends Phaser.Scene {
    */
   toCredits () {
     console.log('toCredits')
-    //this.scene.stop('StartScene')
+    //this.scene.sleep('StartScene')
     //this.scene.start('')
   }
 
