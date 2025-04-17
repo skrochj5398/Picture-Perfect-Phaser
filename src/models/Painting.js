@@ -83,6 +83,8 @@ class Painting {
         const sticker = new Sticker(stickerImage, null, 0)
         // set bounds on sticker object for tut use
         sticker.bounds = bounds
+        sticker.realScale.x = bounds.rightBound - bounds.leftBound;
+        sticker.realScale.y = bounds.bottomBound - bounds.topBound;
         // add the Sticker to this.stickers
         this.stickers.push(sticker)
         // set position of the cropped sticker

@@ -10,6 +10,7 @@ class Sticker {
     this.offset = (0, 0);
     //this.of
     this.bounds = null
+    this.realScale = new Phaser.Math.Vector2(0, 0);
   }
 
   // test method

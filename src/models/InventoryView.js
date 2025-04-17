@@ -52,16 +52,28 @@ class InventoryView {
     //console.log(this.stickers[this.stickersFound]);
     var location = new Phaser.Math.Vector2(this.slots[this.stickersFound].x,
       this.slots[this.stickersFound].y);
-    //sticker.offset.x = location.x - sticker.gameOrigin.x;
-    //sticker.offset.y = location.y - sticker.gameOrigin.y;
     sticker.offset.x = sticker.image.x - sticker.gameOrigin.x;
     sticker.offset.y = sticker.image.y - sticker.gameOrigin.y;
+    this.stickersFound++;
+    // desired scale = largest sticker can be while having x & y <= inventory slot's x & y
+    var ratio = sticker.image.scale;
+    // Scale should be the smaller of the ratios between the slots x and y and the sticker's x and y
+    var xRatio = this.slots[0].width / sticker.realScale.x;
+    var yRatio = this.slots[0].height / sticker.realScale.y;
+    ratio = Math.min(xRatio, yRatio);
+
+    // offset = offset * ratio
+    sticker.image.setScale(sticker.image.scale * ratio);
+    sticker.image.setScale(sticker.image.scale / 2);
+    sticker.offset.x = sticker.offset.x * ratio / 2;
+    sticker.offset.y = sticker.offset.y * ratio / 2;
     var realPosition = new Phaser.Math.Vector2(location.x + sticker.offset.x,
       location.y + sticker.offset.y);
-    // scene.add.image(realPosition.x, realPosition.y, 
-    //   this.stickers[this.stickersFound].texture);//.setScale(2.5);
-    this.stickersFound++;
-    sticker.setLocation(realPosition.x, realPosition.y);
+    console.log('slot x: ' + this.slots[this.stickersFound - 1].x);
+    console.log('slot y: ' + this.slots[this.stickersFound - 1].y);
+    console.log('sticker x: ' + realPosition.x);
+    console.log('sticker y: ' + realPosition.y);
+    sticker.setLocation(realPosition.x, realPosition.y)
     console.log('Done Drawing sticker');
   }
 }
