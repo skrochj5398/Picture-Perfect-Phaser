@@ -131,7 +131,7 @@ class StartScene extends Phaser.Scene {
     // Load and play background music
     this.music = this.sound.addAudioSprite('bgMusic')
 
-    this.isTutCompleted = false
+    this.isTutCompleted = true
   }
 
   // use this just to enter test scenes
