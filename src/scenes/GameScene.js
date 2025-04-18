@@ -214,6 +214,7 @@ class GameScene extends Phaser.Scene {
 
   win () {
     console.log('you win!')
+    this.music.stop()// why
     // stop current scene
     this.game.scene.stop('GameScene')
     // fix textures persisting
