@@ -3,7 +3,7 @@ import CONFIG from '../config.js'
 
 class WinScene extends Phaser.Scene {
   preload () {
-    this.load.image('WinScreen', 'assets/TempWinScreen.png')
+    this.load.image('WinScreen', 'assets/WinScreen.png')
   }
 
   create () {
