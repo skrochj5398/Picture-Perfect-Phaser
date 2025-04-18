@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import CONFIG from '../config.js'
 import HoverableButton from '../models/HoverableButton.js'
+import Slider from '../models/Slider.js'
 
 class StartScene extends Phaser.Scene {
   init (data) {
@@ -17,12 +18,13 @@ class StartScene extends Phaser.Scene {
   preload () {
     // Load the image assets needed for THIS scene
     // this.load.image('StartScreen', 'assets/Menus/Main/Picture_Perfect_Main_Menu_Claire.png')
-    this.load.image('startScreen_1', 'assets/Main_Menu_Backround_Claire_4_2_2025_v1.png')
+    this.load.image('startScreen_1', 'assets/UI/UI_Main_Menu_Backround_Claire_4_9_2025_v4.png')
     this.load.image('startScreen_2', 'assets/Main_Menu_Frame_Claire_4_2_2025_v1.png')
-    this.load.image('startScreen_3', 'assets/Main_Menu_Title_4_1_2025_Claire_v1.png')
+    this.load.image('startScreen_3', 'assets/UI/UI_Title_Claire_4_16_2025_v2.png')
 
-    this.load.image('StartButton', 'assets/UI_Play_Button_Claire_3_31_2025_v1.png')
-    this.load.image('OptionsButton', 'assets/UI_Options_Button_Claire_3_31_2025_v1.png')
+    this.load.image('StartButton', 'assets/UI/UI_Main_Menu_Play_Claire_4_16_2025_v2.png')
+    this.load.image('OptionsButton', 'assets/UI/UI_Main_Menu_Options_Claire_4_16_2025_v2.png')
+    this.load.image('CreditsButton', 'assets/UI/UI_Main_Menu_Credits_Claire_4_16_2025_v2.png')
 
     this.load.image('RedBox', 'assets/RedBox.png')
     this.load.image('BlueBox', 'assets/BlueBox.png')
@@ -49,13 +51,13 @@ class StartScene extends Phaser.Scene {
 
     // load options menu assets
     this.load.image('optionsButton', 'assets/UI/UI_Options_Claire_4_9_2025_v1.png')
-    this.load.image('optionsBackground', 'assets/UI/UI_Options_Menu_Background_Claire_4_14_2025_v1.png')
+    this.load.image('optionsBackground', 'assets/UI/UI_Options_Menu_Backround_Claire_4_16_2025_v2.png')
     this.load.image('optionsSliderBar', 'assets/UI/UI_Options_Menu_Bar_Off_Claire_4_9_2025_v1.png')
     this.load.image('optionsSliderFill', 'assets/UI/UI_Options_Menu_Bar_On_Claire_4_9_2025_v1.png')
     this.load.image('optionsSliderHandle', 'assets/UI/UI_Options_Menu_Slider_Claire_4_9_2025_v1.png')
-    this.load.image('optionsCloseButton', 'assets/UI/UI_Options_Menu_X_Claire_4_9_2025_v1.png')
-    this.load.image('optionsMusicLabel', 'assets/UI/UI_Options_Music_Claire_4_15_2025_v1.png')
-    this.load.image('optionsSoundLabel', 'assets/UI/UI_Options_Sound_Claire_4_15_2025_v1.png')
+    this.load.image('optionsCloseButton', 'assets/UI/UI_Options_Menu_X_Claire_4_16_2025_v2.png')
+    this.load.image('optionsMusicLabel', 'assets/UI/UI_Options_Music_Claire_4_16_2025_v2.png')
+    this.load.image('optionsSoundLabel', 'assets/UI/UI_Options_Sound_Claire_4_16_2025_v2.png')
 
     // load json
     this.load.json('levelData', 'assets/Levels/Levels.json')
@@ -97,7 +99,7 @@ class StartScene extends Phaser.Scene {
 
     // Add background image 3
     const startScreen_3 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.7, 'startScreen_3')
-    startScreen_3.setScale()
+    startScreen_3.setScale(0.8)
 
     // start button
     this.startButton = new HoverableButton(
@@ -106,7 +108,7 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / 1.65,
       'StartButton',
       () => { this.toLevelSelect() }
-    ).setInteractive().setScale(0.8)
+    ).setInteractive()
 
     // options button
     this.optionsButton = new HoverableButton(
@@ -115,23 +117,86 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / 1.4,
       'OptionsButton',
       () => { this.toOptions() }
-    ).setInteractive().setScale(0.8)
+    ).setInteractive()
 
     // credits button
     this.creditsButton = new HoverableButton(
       this,
       CONFIG.DEFAULT_WIDTH / 2.0,
       CONFIG.DEFAULT_HEIGHT / 1.23,
-      'BlueBox',
+      'CreditsButton',
       () => { this.toCredits() }
-    ).setInteractive().setScale(1, 0.3)
-
+    ).setInteractive()
 
     // Add a callback when a key is released
     this.input.keyboard.on('keyup', this.keyReleased, this)
 
     // Load and play background music
     this.music = this.sound.addAudioSprite('bgMusic')
+
+    // create options menu
+    const labelToSliderOffset = 90
+    const centerOfMenuX = CONFIG.DEFAULT_WIDTH / 2
+    const centerOfMenuY = CONFIG.DEFAULT_HEIGHT / 2
+    // create background
+    this.optionsBackground = this.add.image(centerOfMenuX, centerOfMenuY, 'optionsBackground')
+    // create close button
+    this.optionsCloseButton = new HoverableButton(
+      this,
+      centerOfMenuX,
+      centerOfMenuY + this.optionsBackground.height / 2 - 25,
+      'optionsCloseButton',
+      () => { this.setOptionsVisibility(!this.optionsBackground.visible) }
+    )
+    // create music label
+    this.optionsMusicLabel = this.add.image(centerOfMenuX, centerOfMenuY - 150, 'optionsMusicLabel')
+    // create music slider
+    this.optionsMusicSlider = new Slider(
+      this, centerOfMenuX,
+      this.optionsMusicLabel.y + labelToSliderOffset,
+      'optionsSliderHandle',
+      'optionsSliderBar',
+      this.textures.getFrame('optionsSliderBar').width,
+      this.textures.getFrame('optionsSliderBar').height,
+      'optionsSliderFill',
+      0, 100,
+      () => { this.music.volume = this.optionsMusicSlider.value / 100 }
+    )
+    // create sound label
+    this.optionsSoundLabel = this.add.image(centerOfMenuX, centerOfMenuY + 60, 'optionsSoundLabel')
+    // create sound slider
+    this.optionsSoundSlider = new Slider(
+      this, centerOfMenuX,
+      this.optionsSoundLabel.y + labelToSliderOffset,
+      'optionsSliderHandle',
+      'optionsSliderBar',
+      this.textures.getFrame('optionsSliderBar').width,
+      this.textures.getFrame('optionsSliderBar').height,
+      'optionsSliderFill',
+      0, 100,
+      () => {}
+    )
+    // make options menu invisible
+    this.setOptionsVisibility(false)
+    this.setOptionsDepth(10)
+  }
+
+  setOptionsDepth (depth) {
+    this.optionsBackground.setDepth(depth)
+    this.optionsCloseButton.setDepth(depth)
+    this.optionsMusicLabel.setDepth(depth)
+    this.optionsMusicSlider.setDepth(depth)
+    this.optionsSoundLabel.setDepth(depth)
+    this.optionsSoundSlider.setDepth(depth)
+  }
+
+  setOptionsVisibility (isVisible) {
+    this.optionsBackground.setActive(isVisible).setVisible(isVisible)
+    this.optionsCloseButton.setActive(isVisible).setVisible(isVisible)
+    this.optionsMusicLabel.setActive(isVisible).setVisible(isVisible)
+    this.optionsMusicSlider.setActive(isVisible).setVisible(isVisible)
+    this.optionsSoundLabel.setActive(isVisible).setVisible(isVisible)
+    this.optionsSoundSlider.setActive(isVisible).setVisible(isVisible)
   }
 
   // use this just to enter test scenes
@@ -192,8 +257,7 @@ class StartScene extends Phaser.Scene {
    */
   toOptions () {
     console.log('toOptions')
-    //this.scene.sleep('StartScene')
-    //this.scene.start('')
+    this.setOptionsVisibility(true)
   }
 
   /**
