@@ -84,6 +84,8 @@ class LevelSelectScene extends Phaser.Scene {
       }
     }
     this.currentPage = 0
+
+    this.input.keyboard.on('keyup', this.keyReleased, this)
   }
 
   scrollLeft () {
@@ -147,6 +149,14 @@ class LevelSelectScene extends Phaser.Scene {
   goBack () {
     this.game.scene.stop('LevelSelectScene')
     this.game.scene.start('StartScene')
+  }
+
+  keyReleased (event) {
+    console.log('Key released', event.code)
+    if (event.code === 'KeyP') {
+      this.scene.stop('LevelSelectScene')
+      this.scene.start('TutorialScene', { levelData: this.data.levels[0] })
+    }
   }
 }
 

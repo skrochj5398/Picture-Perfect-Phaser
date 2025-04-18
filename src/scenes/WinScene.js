@@ -18,7 +18,7 @@ class WinScene extends Phaser.Scene {
     // check if enough time has passed
     if (this.timeElapsed >= 3000) {
       this.game.scene.stop('WinScene')
-      this.game.scene.start('StartScene')
+      this.game.scene.start('StartScene', { tut: true })
     }
   }
 }

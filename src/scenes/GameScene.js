@@ -213,12 +213,15 @@ class GameScene extends Phaser.Scene {
   }
 
   win () {
+    console.log('you win!')
     // stop current scene
     this.game.scene.stop('GameScene')
-    // fix textures persisting TODO
+    // fix textures persisting
     this.removePaintingTextures(this.levelData)
+    console.log('removed assets')
     // start win scene
     this.game.scene.start('WinScene')
+    console.log('started next scene')
   }
 
   nextPainting () {
@@ -311,21 +314,26 @@ class GameScene extends Phaser.Scene {
     const numPaintings = levelData.numPaintings
     // loop through them
     for (let i = 0; i < numPaintings; i++) {
+      console.log('looping through painting ' + (i + 1) + '...')
       // get thisPainting
       const thisPainting = levelData.paintings[i]
       // remove
+      console.log('Painting' + (i + 1))
       this.textures.remove('Painting' + (i + 1))
       // get number of stickers
       console.log('numStickers: ' + thisPainting.numStickers)
       const numStickers = thisPainting.numStickers
       // loop and remove
       for (let j = 0; j < numStickers; j++) {
+        console.log('Painting' + (i + 1) + 'Sticker' + (j + 1))
         this.textures.remove('Painting' + (i + 1) + 'Sticker' + (j + 1))
       }
       // get number of silhouettes
+      console.log('numSilhouettes: ' + thisPainting.numSilhouettes)
       const numSilhouettes = thisPainting.numSilhouettes
       // loop and remove
       for (let k = 0; k < numSilhouettes; k++) {
+        console.log('Painting' + (i + 1) + 'Silhouette' + (k + 1))
         this.textures.remove('Painting' + (i + 1) + 'Silhouette' + (k + 1))
       }
     }

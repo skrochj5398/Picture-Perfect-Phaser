@@ -1,5 +1,6 @@
 import GameScene from '../scenes/GameScene.js'
 import CONFIG from '../config.js'
+import Phaser from 'phaser'
 
 class TutorialScene extends GameScene {
   create () {
@@ -30,6 +31,18 @@ class TutorialScene extends GameScene {
   setArrowsVisibility (isVisible) {
     this.arrowLeft.setActive(isVisible).setVisible(isVisible)
     this.arrowRight.setActive(isVisible).setVisible(isVisible)
+  }
+
+  win () {
+    console.log('you win!')
+    // stop current scene
+    this.game.scene.stop('TutorialScene')
+    // fix textures persisting
+    this.removePaintingTextures(this.levelData)
+    console.log('removed assets')
+    // start win scene
+    this.game.scene.start('WinScene')
+    console.log('started next scene')
   }
 }
 

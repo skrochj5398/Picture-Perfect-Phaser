@@ -3,13 +3,15 @@ import CONFIG from '../config.js'
 import HoverableButton from '../models/HoverableButton.js'
 
 class StartScene extends Phaser.Scene {
-  init () {
+  init (data) {
     this.loadingText = this.add.text(
       CONFIG.DEFAULT_WIDTH / 2,
       CONFIG.DEFAULT_HEIGHT / 2,
       'Loading...', { font: '16pt Arial', color: '#FFFFFF', align: 'center' }
     )
     this.loadingText.setOrigin(0.5, 0.5)
+
+    this.isTutCompleted = data.tut
   }
 
   preload () {
@@ -130,8 +132,6 @@ class StartScene extends Phaser.Scene {
 
     // Load and play background music
     this.music = this.sound.addAudioSprite('bgMusic')
-
-    this.isTutCompleted = false
   }
 
   // use this just to enter test scenes
@@ -178,7 +178,8 @@ class StartScene extends Phaser.Scene {
     if (this.isTutCompleted) {
       this.scene.start('LevelSelectScene', this.data)
     } else {
-      if (this.data.levels.length > 0) {
+      if (this.data.numLevels > 0) {
+        this.isTutCompleted = true
         this.scene.start('TutorialScene', { levelData: this.data.levels[0] })
       }
     }
