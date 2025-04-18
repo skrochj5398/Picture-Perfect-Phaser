@@ -64,30 +64,45 @@ class GameScene extends Phaser.Scene {
       // pass them to the Painting constructor
       const paintingObj = new Painting('Painting' + (i + 1), stickers, silhouettes, this)
       this.paintings.push(paintingObj)
+
+      for (const sticker of paintingObj.stickers) {
+        sticker.image.on('drag', (pointer, dragX, dragY) => sticker.image.setPosition(dragX, dragY))
+      }
     }
 
     // nineslice the frame so it can be adjusted to fit painting
     this.paintingFrame = this.add.nineslice(
       CONFIG.DEFAULT_WIDTH / 2,
       CONFIG.DEFAULT_HEIGHT / 2,
-      'Frame', 0, 1920, 1080,
+      'Frame3', 0, 1920, 1080,
       81, 81, 81, 81
     )
 
     // add inventory visual. TODO swap with real inventory
-    //this.add.image(1000, 1010, 'Inventory').setScale(0.5)
     var realInventory = new Inventory();
 
     // Create and configure a particle emitter
     this.emitter = this.add.particles(0, 0, 'red', {
-      speed: 100,
+      speed: 500,
       lifespan: 1000,
       quantity: 20,
-      frequency: 10,
-      scale: { start: 1, end: 0 },
+      frequency: 20,
+      //gravityY: 3000,
+      scale: { start: 0.3, end: 1 },
       blendMode: 'ADD',
       emitting: false
     })
+
+    this.emitter.addEmitZone({
+      type: 'edge',
+      source: new Phaser.Geom.Circle(0, 0, 160)
+    })
+
+    /*this.tweens.add({
+      targets: this.emitter,
+      ease: 'linear',
+      yoyo: true
+    })*/
 
     // attach a function to a sticker; should attach all of them
     console.log('about to attach click function')
@@ -95,7 +110,7 @@ class GameScene extends Phaser.Scene {
       for (let i = 0; i < painting.stickers.length; i++) {
         console.log('attaching event to sticker ', i)
         painting.stickers[i].image.on('pointerdown', () => { this.onStickerPointerDown(i) })
-        realInventory.addSticker(painting.stickers[i])
+        realInventory.addSticker(painting.stickers[i], this)
       }
     }
 
@@ -120,6 +135,7 @@ class GameScene extends Phaser.Scene {
   }
 
   onStickerPointerDown (index) {
+    //This is where the clicking for sticker is happening
     console.log('running click function')
     this.inventoryView.drawNewSticker(this.currentPainting.stickers[index], this)
     this.emitter.emitParticleAt(this.currentPainting.stickers[index].gameOrigin.x, this.currentPainting.stickers[index].gameOrigin.y)
