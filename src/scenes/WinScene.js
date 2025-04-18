@@ -22,7 +22,7 @@ class WinScene extends Phaser.Scene {
     })
 
     this.Curtain = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, "WinScreenAnim")
-    this.Curtain.setScale(1.2)
+    this.Curtain.setScale(1.5)
     this.Curtain.play("Curtains",true)
     // this.player = this.add.sprite(1000, 500, "Test anim")
     // this.player.setScale(1.2)
