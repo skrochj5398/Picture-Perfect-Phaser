@@ -24,7 +24,7 @@ class PrototypeScene extends Phaser.Scene {
     this.load.image('Frame3', 'assets/sprites/Picture perfect- Frame3.png')
 
     //Load in particle effects
-    this.load.image('red' , 'assets/particles/red.png')
+    this.load.image('red', 'assets/particles/red.png')
   }
 
   /*sticker = {
@@ -35,11 +35,10 @@ class PrototypeScene extends Phaser.Scene {
     }
   } */
 
-    static inventory1 = new Inventory()
-    static slots = new InventoryView('InventorySlot');
+    //static inventory1 = new Inventory()
+    //static slots = new InventoryView('InventorySlot');
 
   create () {
-
 
     const cowFarm = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.06, 'CowFarm')
 
@@ -48,7 +47,7 @@ class PrototypeScene extends Phaser.Scene {
 
     
     ss.silhouetteOne = this.add.nineslice(1000, 1010, 'Inventory', 0, 1000, 300, 32, 32, 32, 32).setScale(.5)
-    ss.stickerOne = this.add.image(400, 700, 'BuffaloSticker').setInteractive().setScale(.8)
+    ss.stickerOne = this.add.image(400, 700, 'BuffaloSticker').setInteractive({ draggable: true }).setScale(.8)
 
     // Create and configure a particle emitter
     this.emitter = this.add.particles(0, 0, 'red', {
@@ -111,7 +110,7 @@ class PrototypeScene extends Phaser.Scene {
   handleBlueBoxPointerDown (pointer) {
     this.emitter.emitParticleAt(ss.stickerOne.x, ss.stickerOne.y)
     Util.handlePointerDown(pointer, ss.stickerOne, ss.silhouetteOne)
-    ss.stickerOne.disableInteractive()
+    ss.stickerOne.on('drag', (pointer, dragX, dragY) => ss.stickerOne.setPosition(dragX, dragY))
     //doesn't work cuz scope or something
     //this.handlePointerDown(pointer, this.BlueBox, this.RedBox)
   } 
