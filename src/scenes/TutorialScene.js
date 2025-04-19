@@ -35,6 +35,7 @@ class TutorialScene extends GameScene {
 
   win () {
     console.log('you win!')
+    this.music.stop()
     // stop current scene
     this.game.scene.stop('TutorialScene')
     // fix textures persisting

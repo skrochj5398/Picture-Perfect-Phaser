@@ -12,7 +12,11 @@ class StartScene extends Phaser.Scene {
     )
     this.loadingText.setOrigin(0.5, 0.5)
 
+    // mark tutorial complete or not
     this.isTutCompleted = data.tut
+
+    // get music
+    this.music = data.music
   }
 
   preload () {
@@ -45,6 +49,8 @@ class StartScene extends Phaser.Scene {
     //   'assets/audio/gameAudioSprite.mp3',
     //   'assets/audio/gameAudioSprite.ac3'
     // ])
+
+    // load music
     this.load.audioSprite('bgMusic', 'assets/audio/bgMusic.json', [
       'assets/audio/MUS_GameTheme1_PP_demo1.wav'
     ])
@@ -69,6 +75,13 @@ class StartScene extends Phaser.Scene {
 
     // create json object on this
     this.data = this.cache.json.get('levelData')
+
+    // check if music exists
+    if (this.music == null) {
+      // make new music
+      this.music = this.sound.addAudioSprite('bgMusic')
+      this.music.play('MenuMusic1', { volume: CONFIG.musicVol })
+    }
 
     // Add background image
     const startScreen_1 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'startScreen_1')
@@ -132,7 +145,8 @@ class StartScene extends Phaser.Scene {
     this.input.keyboard.on('keyup', this.keyReleased, this)
 
     // Load and play background music
-    this.music = this.sound.addAudioSprite('bgMusic')
+    // this.music = this.sound.addAudioSprite('bgMusic')
+    // this.music.play('MenuMusic1', { volume: 0.5 })
 
     // create options menu
     const labelToSliderOffset = 90
@@ -227,9 +241,10 @@ class StartScene extends Phaser.Scene {
       this.scene.stop('StartScene')
       this.scene.start('GameScene', { levelData: this.data.levels[2] })
     }
-    // this.music.stop()
+    if (event.code === 'Digit0') {
+      this.music.stop()
+    }
   }
-
 
   /**
    * Runs when pointerup event triggers on startButton.
@@ -238,13 +253,21 @@ class StartScene extends Phaser.Scene {
    */
   toLevelSelect () {
     console.log('toLevelSelect')
-    this.scene.sleep('StartScene')
+    // music keeps playing until entering a level
+    // stop scene so assets clear
+    this.scene.stop('StartScene')
     // check if tutorial has been done
     if (this.isTutCompleted) {
-      this.scene.start('LevelSelectScene', this.data)
+      // tutorial complete
+      this.scene.start('LevelSelectScene', { json: this.data, music: this.music })
     } else {
+      // tutorial not complete. check if a level exists (just to be safe)
       if (this.data.numLevels > 0) {
+        // stop music when entering tutorial
+        this.music.stop()
+        // set tutorial as completed
         this.isTutCompleted = true
+        // enter tutorial and pass level json
         this.scene.start('TutorialScene', { levelData: this.data.levels[0] })
       }
     }
@@ -263,11 +286,11 @@ class StartScene extends Phaser.Scene {
   /**
    * Runs when pointerup event triggers on creditsButton.
    * Runs when Credits Button is clicked.
-   * Changes the scene to credits. 
+   * Changes the scene to credits.
    */
   toCredits () {
     console.log('toCredits')
-    //this.scene.sleep('StartScene')
+    //this.scene.stop('StartScene')
     //this.scene.start('')
   }
 

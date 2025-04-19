@@ -2,12 +2,25 @@ import Phaser from 'phaser'
 import CONFIG from '../config.js'
 
 class WinScene extends Phaser.Scene {
+  init (data) {
+    // get music
+    this.music = data.music
+    // check if music exists
+    if (this.music == null) {
+      // make new music
+      this.music = this.sound.addAudioSprite('bgMusic')
+      this.music.play('MenuMusic1', { volume: CONFIG.musicVol })
+    }
+  }
+
   preload () {
     this.load.image('WinScreen', 'assets/WinScreen.png')
     this.load.spritesheet("WinScreenAnim", "assets/Animation/WinScreenAnim.png", {
       frameWidth: 1280,
       frameHeight: 720
     })
+    // get json to pass to levelSelect
+    this.data = this.cache.json.get('levelData')
   }
 
   create () {
@@ -27,7 +40,6 @@ class WinScene extends Phaser.Scene {
     // this.player = this.add.sprite(1000, 500, "Test anim")
     // this.player.setScale(1.2)
     // this.player.play("grass",true)
-
   }
 
   update () {
@@ -37,7 +49,7 @@ class WinScene extends Phaser.Scene {
     // check if enough time has passed
     if (this.timeElapsed >= 3000) {
       this.game.scene.stop('WinScene')
-      this.game.scene.start('StartScene', { tut: true })
+      this.game.scene.start('LevelSelectScene', { json: this.data, music: this.music })
     }
   }
 }

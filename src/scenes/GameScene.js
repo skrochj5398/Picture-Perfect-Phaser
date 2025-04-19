@@ -9,7 +9,7 @@ import Slider from '../models/Slider.js'
 
 class GameScene extends Phaser.Scene {
   // initialization setup; takes the part of the json data for selected level
-  init (jsonData) {
+  init (data) {
     // create loading text
     this.loadingText = this.add.text(
       CONFIG.DEFAULT_WIDTH / 2,
@@ -19,7 +19,20 @@ class GameScene extends Phaser.Scene {
     this.loadingText.setOrigin(0.5, 0.5)
 
     // save json to scene
-    this.levelData = jsonData.levelData
+    this.levelData = data.levelData
+
+    // get music
+    this.music = data.music
+    // check if music exists
+    if (this.music == null) {
+      // make new music
+      this.music = this.sound.addAudioSprite('bgMusic')
+      this.music.play('MenuMusic1', { volume: CONFIG.musicVol })
+    }
+
+    // change music played
+    this.music.stop()
+    //this.music.start('') TODO add gameplay bgMusic files
   }
 
   preload () {
@@ -118,14 +131,14 @@ class GameScene extends Phaser.Scene {
     this.numStickersLeft = this.numStickers
     this.numStickersLeftPerPainting = this.numStickersPerPainting
 
+    // create button to return to level select
+    const returnButton = new HoverableButton(this, 0, 0, 'ReturnButton', () => { this.goBack() })
+    returnButton.setPosition(returnButton.displayWidth / 2.0 + CONFIG.HUD_MARGIN, returnButton.displayHeight / 2.0 + CONFIG.HUD_MARGIN)
+
     // create button to bring up options menu
     this.optionsButton = new HoverableButton(this, 0, 0, 'optionsButton', () => { this.setOptionsVisibility(!this.optionsBackground.visible) })
     // set position
     this.optionsButton.setPosition(this.optionsButton.width / 2, this.optionsButton.height / 2)
-
-    // play music
-    this.music = this.sound.addAudioSprite('bgMusic')
-    this.music.play('bgMusic1', { volume: 0.5 })
 
     // create options menu
     const labelToSliderOffset = 90
@@ -214,15 +227,25 @@ class GameScene extends Phaser.Scene {
 
   win () {
     console.log('you win!')
-    this.music.stop()// why
+    this.music.stop()
     // stop current scene
     this.game.scene.stop('GameScene')
     // fix textures persisting
     this.removePaintingTextures(this.levelData)
     console.log('removed assets')
     // start win scene
-    this.game.scene.start('WinScene')
+    this.game.scene.start('WinScene', { music: this.music })
     console.log('started next scene')
+  }
+
+  goBack() {
+    this.music.stop()
+    // stop current scene
+    this.game.scene.stop('GameScene')
+    // fix textures persisting
+    this.removePaintingTextures(this.levelData)
+    // start levelSelect
+    this.game.scene.start('LevelSelectScene', { music: this.music })
   }
 
   nextPainting () {

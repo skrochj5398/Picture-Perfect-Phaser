@@ -3,9 +3,17 @@ import CONFIG from '../config.js'
 import HoverableButton from '../models/HoverableButton.js'
 
 class LevelSelectScene extends Phaser.Scene {
-  init (jsonData) {
+  init (data) {
     // get json
-    this.data = jsonData
+    this.data = this.cache.json.get('levelData')
+    // get music
+    this.music = data.music
+    // check if music exists
+    if (this.music == null) {
+      // make new music
+      this.music = this.sound.addAudioSprite('bgMusic')
+      this.music.play('MenuMusic1', { volume: CONFIG.musicVol })
+    }
   }
 
   preload () {
@@ -15,7 +23,7 @@ class LevelSelectScene extends Phaser.Scene {
     // load level buttons
     this.load.image('BlueBox', 'assets/BlueBox.png')
     // load back button
-    this.load.image('ReturnButton', '/assets/UI_Options_Menu_X_Claire_4_8_2025_v1.png')
+    this.load.image('ReturnButton', '/assets/UI/UI_Return_Claire_4_16_2025_v2.png')
     // load background image TODO
     this.load.image('Background', 'assets/Background_Claire_4_9_2025_v1.png')
   }
@@ -35,7 +43,7 @@ class LevelSelectScene extends Phaser.Scene {
 
     // return button
     const returnButton = new HoverableButton(this, 0, 0, 'ReturnButton', () => { this.goBack() })
-    returnButton.setPosition(returnButton.displayWidth / 2.0, returnButton.displayHeight / 2.0)
+    returnButton.setPosition(returnButton.displayWidth / 2.0 + CONFIG.HUD_MARGIN, returnButton.displayHeight / 2.0 + CONFIG.HUD_MARGIN)
 
     // get number of levels from json
     const numLevels = this.data.numLevels
@@ -67,7 +75,11 @@ class LevelSelectScene extends Phaser.Scene {
       // create a  button
       console.log('adding button')
       const button = new HoverableButton(this, x, y, 'BlueBox', () => {
+        // stop music
+        this.music.stop()
+        // stop this scene to remove assets
         this.game.scene.stop('LevelSelectScene')
+        // start game scene, passing json for level
         this.game.scene.start('GameScene', { levelData: this.data.levels[i] })
       })
       const text = this.add.text(x, y, this.data.levels[i].name,
@@ -148,7 +160,7 @@ class LevelSelectScene extends Phaser.Scene {
 
   goBack () {
     this.game.scene.stop('LevelSelectScene')
-    this.game.scene.start('StartScene')
+    this.game.scene.start('StartScene', { music: this.music, tut: true })
   }
 
   keyReleased (event) {
