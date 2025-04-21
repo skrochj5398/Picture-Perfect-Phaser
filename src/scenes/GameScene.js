@@ -32,7 +32,7 @@ class GameScene extends Phaser.Scene {
 
     // change music played
     this.music.stop()
-    //this.music.start('') TODO add gameplay bgMusic files
+    //this.music.start('') TODO add gameplay bgMusic
   }
 
   preload () {
@@ -138,7 +138,7 @@ class GameScene extends Phaser.Scene {
     // create button to bring up options menu
     this.optionsButton = new HoverableButton(this, 0, 0, 'optionsButton', () => { this.setOptionsVisibility(!this.optionsBackground.visible) })
     // set position
-    this.optionsButton.setPosition(this.optionsButton.width / 2, this.optionsButton.height / 2)
+    this.optionsButton.setPosition(returnButton.x + returnButton.displayWidth / 2 + CONFIG.HUD_MARGIN * 2 + this.optionsButton.width / 2, this.optionsButton.height / 2 + CONFIG.HUD_MARGIN)
 
     // create options menu
     const labelToSliderOffset = 90
@@ -166,7 +166,11 @@ class GameScene extends Phaser.Scene {
       this.textures.getFrame('optionsSliderBar').height,
       'optionsSliderFill',
       0, 100,
-      () => { this.music.volume = this.optionsMusicSlider.value / 100 }
+      () => {
+        CONFIG.musicVol = this.optionsMusicSlider.value / 100
+        this.music.volume = CONFIG.musicVol
+      },
+      CONFIG.musicVol
     )
     // create sound label
     this.optionsSoundLabel = this.add.image(centerOfMenuX, centerOfMenuY + 60, 'optionsSoundLabel')
@@ -180,7 +184,11 @@ class GameScene extends Phaser.Scene {
       this.textures.getFrame('optionsSliderBar').height,
       'optionsSliderFill',
       0, 100,
-      () => {}
+      () => {
+        CONFIG.sfxVol = this.optionsSoundSlider.value / 100
+        this.sfx.volume = CONFIG.sfxVol
+      },
+      CONFIG.sfxVol
     )
     // make options menu invisible
     this.setOptionsVisibility(false)
@@ -238,7 +246,7 @@ class GameScene extends Phaser.Scene {
     console.log('started next scene')
   }
 
-  goBack() {
+  goBack () {
     this.music.stop()
     // stop current scene
     this.game.scene.stop('GameScene')

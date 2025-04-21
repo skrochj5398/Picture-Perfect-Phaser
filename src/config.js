@@ -1,4 +1,4 @@
-const CONFIG = {
+export const CONFIG = {
   DEFAULT_HEIGHT: 1080,
   DEFAULT_WIDTH: 1920,
   DEFAULT_GRAVITY: 200,
@@ -7,6 +7,11 @@ const CONFIG = {
   HUD_MARGIN: 10,
   musicVol: 0.3,
   sfxVol: 0.3
+}
+export const OPTIONS_MENU = {
+  X: CONFIG.DEFAULT_WIDTH / 2,
+  Y: CONFIG.DEFAULT_HEIGHT / 2,
+  LABEL_SLIDER_OFFSET: 90
 }
 
 export default CONFIG

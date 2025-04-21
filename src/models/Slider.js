@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 
 class Slider extends Phaser.GameObjects.Image {
-  constructor (scene, x, y, handleTexture, barTexture, barWidth, barHeight, fillTexture, min, max, dragFunction) {
+  constructor (scene, x, y, handleTexture, barTexture, barWidth, barHeight, fillTexture, min, max, dragFunction, initialValue = (min + max) / 2) {
     // construct object
     super(scene, x, y, handleTexture)
     this.barWidth = barWidth
@@ -9,7 +9,7 @@ class Slider extends Phaser.GameObjects.Image {
     this.bounds = barWidth / 2
     this.min = min
     this.max = max
-    this.value = (max + min) / 2
+    this.value = initialValue
     this.dragFunction = dragFunction
 
     // add to scene
@@ -61,6 +61,8 @@ class Slider extends Phaser.GameObjects.Image {
     this.fill.width = distanceToHandle
     const newXPos = distanceToHandle / 2 + leftBound
     this.fill.setPosition(newXPos, this.fill.y)
+
+    this.updateSlider(this.value)
   }
 
   setActive (isActive) {
@@ -80,6 +82,18 @@ class Slider extends Phaser.GameObjects.Image {
   setDepth (depth) {
     super.setDepth(depth + 2)
     return this
+  }
+
+  updateSlider (value) {
+    // find the appropriate x given the value
+    const distanceFromLeft = this.barWidth * value
+    const leftBound = this.bar.x - this.bounds
+    const actualX = leftBound + distanceFromLeft
+    this.x = actualX
+    const distanceToHandle = this.x - leftBound
+    this.fill.width = distanceToHandle
+    const newFillXPos = distanceToHandle / 2 + leftBound
+    this.fill.setPosition(newFillXPos, this.fill.y)
   }
 }
 

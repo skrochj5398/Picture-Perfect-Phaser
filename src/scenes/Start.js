@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import CONFIG from '../config.js'
+import { CONFIG, OPTIONS_MENU } from '../config.js'
 import HoverableButton from '../models/HoverableButton.js'
 import Slider from '../models/Slider.js'
 
@@ -32,6 +32,9 @@ class StartScene extends Phaser.Scene {
 
     this.load.image('RedBox', 'assets/RedBox.png')
     this.load.image('BlueBox', 'assets/BlueBox.png')
+
+    // load back button
+    this.load.image('ReturnButton', '/assets/UI/UI_Return_Claire_4_16_2025_v2.png')
 
     // Load the image assets needed for 'ExampleScene'
     this.load.image('sky', 'assets/skies/space3.png')
@@ -149,46 +152,51 @@ class StartScene extends Phaser.Scene {
     // this.music.play('MenuMusic1', { volume: 0.5 })
 
     // create options menu
-    const labelToSliderOffset = 90
-    const centerOfMenuX = CONFIG.DEFAULT_WIDTH / 2
-    const centerOfMenuY = CONFIG.DEFAULT_HEIGHT / 2
     // create background
-    this.optionsBackground = this.add.image(centerOfMenuX, centerOfMenuY, 'optionsBackground')
+    this.optionsBackground = this.add.image(OPTIONS_MENU.X, OPTIONS_MENU.Y, 'optionsBackground')
     // create close button
     this.optionsCloseButton = new HoverableButton(
       this,
-      centerOfMenuX,
-      centerOfMenuY + this.optionsBackground.height / 2 - 25,
+      OPTIONS_MENU.X,
+      OPTIONS_MENU.Y + this.optionsBackground.height / 2 - 25,
       'optionsCloseButton',
       () => { this.setOptionsVisibility(!this.optionsBackground.visible) }
     )
     // create music label
-    this.optionsMusicLabel = this.add.image(centerOfMenuX, centerOfMenuY - 150, 'optionsMusicLabel')
+    this.optionsMusicLabel = this.add.image(OPTIONS_MENU.X, OPTIONS_MENU.Y - 150, 'optionsMusicLabel')
     // create music slider
     this.optionsMusicSlider = new Slider(
-      this, centerOfMenuX,
-      this.optionsMusicLabel.y + labelToSliderOffset,
+      this, OPTIONS_MENU.X,
+      this.optionsMusicLabel.y + OPTIONS_MENU.LABEL_SLIDER_OFFSET,
       'optionsSliderHandle',
       'optionsSliderBar',
       this.textures.getFrame('optionsSliderBar').width,
       this.textures.getFrame('optionsSliderBar').height,
       'optionsSliderFill',
       0, 100,
-      () => { this.music.volume = this.optionsMusicSlider.value / 100 }
+      () => {
+        CONFIG.musicVol = this.optionsMusicSlider.value / 100
+        this.music.volume = CONFIG.musicVol
+      },
+      CONFIG.musicVol
     )
     // create sound label
-    this.optionsSoundLabel = this.add.image(centerOfMenuX, centerOfMenuY + 60, 'optionsSoundLabel')
+    this.optionsSoundLabel = this.add.image(OPTIONS_MENU.X, OPTIONS_MENU.Y + 60, 'optionsSoundLabel')
     // create sound slider
     this.optionsSoundSlider = new Slider(
-      this, centerOfMenuX,
-      this.optionsSoundLabel.y + labelToSliderOffset,
+      this, OPTIONS_MENU.X,
+      this.optionsSoundLabel.y + OPTIONS_MENU.LABEL_SLIDER_OFFSET,
       'optionsSliderHandle',
       'optionsSliderBar',
       this.textures.getFrame('optionsSliderBar').width,
       this.textures.getFrame('optionsSliderBar').height,
       'optionsSliderFill',
       0, 100,
-      () => {}
+      () => {
+        CONFIG.sfxVol = this.optionsSoundSlider.value / 100
+        this.sfx.volume = CONFIG.sfxVol
+      },
+      CONFIG.sfxVol
     )
     // make options menu invisible
     this.setOptionsVisibility(false)

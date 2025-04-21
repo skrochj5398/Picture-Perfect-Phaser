@@ -22,9 +22,7 @@ class LevelSelectScene extends Phaser.Scene {
     this.load.image('ArrowRightButton', 'assets/UI/UI_Arrow_Right_Claire_4_9_2025_v1.png')
     // load level buttons
     this.load.image('BlueBox', 'assets/BlueBox.png')
-    // load back button
-    this.load.image('ReturnButton', '/assets/UI/UI_Return_Claire_4_16_2025_v2.png')
-    // load background image TODO
+    // load background image
     this.load.image('Background', 'assets/Background_Claire_4_9_2025_v1.png')
   }
 
