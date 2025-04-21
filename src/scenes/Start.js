@@ -23,7 +23,7 @@ class StartScene extends Phaser.Scene {
     // Load the image assets needed for THIS scene
     // this.load.image('StartScreen', 'assets/Menus/Main/Picture_Perfect_Main_Menu_Claire.png')
     this.load.image('startScreen_1', 'assets/UI/UI_Main_Menu_Backround_Claire_4_9_2025_v4.png')
-    this.load.image('startScreen_2', 'assets/Main_Menu_Frame_Claire_4_2_2025_v1.png')
+    this.load.image('startScreen_2', 'assets/UI/Main_Menu_Frame_Claire_4_17_2025_v1.png')
     this.load.image('startScreen_3', 'assets/UI/UI_Title_Claire_4_16_2025_v2.png')
 
     this.load.image('StartButton', 'assets/UI/UI_Main_Menu_Play_Claire_4_16_2025_v2.png')
@@ -60,7 +60,7 @@ class StartScene extends Phaser.Scene {
 
     // load options menu assets
     this.load.image('optionsButton', 'assets/UI/UI_Options_Claire_4_9_2025_v1.png')
-    this.load.image('optionsBackground', 'assets/UI/UI_Options_Menu_Backround_Claire_4_16_2025_v2.png')
+    this.load.image('optionsBackground', 'assets/UI/UI_Options_Menu_Backround_Claire_4_18_2025_v3.png')
     this.load.image('optionsSliderBar', 'assets/UI/UI_Options_Menu_Bar_Off_Claire_4_9_2025_v1.png')
     this.load.image('optionsSliderFill', 'assets/UI/UI_Options_Menu_Bar_On_Claire_4_9_2025_v1.png')
     this.load.image('optionsSliderHandle', 'assets/UI/UI_Options_Menu_Slider_Claire_4_9_2025_v1.png')
