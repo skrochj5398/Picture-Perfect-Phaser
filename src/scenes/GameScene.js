@@ -33,6 +33,15 @@ class GameScene extends Phaser.Scene {
     // change music played
     this.music.stop()
     //this.music.start('') TODO add gameplay bgMusic
+
+    console.log('making new transition')
+    // make new transition
+    this.transition = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'CurtainsTransition')
+    this.transition.setScale(1.5).setDepth(1000)
+    // initialize currentAnim
+    this.transition.play('Curtains', true)
+    // set transition to be closed curtains
+    this.transition = this.transition.anims.pause(this.transition.anims.currentAnim.frames[22])
   }
 
   preload () {
@@ -193,6 +202,17 @@ class GameScene extends Phaser.Scene {
     // make options menu invisible
     this.setOptionsVisibility(false)
     this.setOptionsDepth(10)
+
+    // entering transition
+    // destroy transition so it doesn't stay on screen
+    console.log('DESTROY transition')
+    this.transition.destroy()
+    // make new transition   :'(
+    this.transition = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'CurtainsTransition')
+    this.transition.setScale(1.5).setDepth(1000)
+    // play transition close
+    console.log('play transition')
+    this.transition.play({ key: 'Curtains', startFrame: 23 }, true)
   }
 
   setOptionsDepth (depth) {
@@ -218,7 +238,6 @@ class GameScene extends Phaser.Scene {
     this.inventoryView.drawNewSticker(this.currentPainting.stickers[index], this)
     this.emitter.emitParticleAt(this.currentPainting.stickers[index].gameOrigin.x, this.currentPainting.stickers[index].gameOrigin.y)
     console.log('particle emitted at: ', this.currentPainting.stickers[index].gameOrigin)
-    //this.currentPainting.stickers[index].image.setPosition(-5000, 0)
     this.currentPainting.removeSticker(this.currentPainting.stickers[index])
     // decrement num stickers left
     this.numStickersLeft--
@@ -228,6 +247,17 @@ class GameScene extends Phaser.Scene {
     console.log(this.numStickersLeftPerPainting)
     // check if any stickers are left
     if (this.numStickersLeft === 0) {
+      // create transition
+      this.transition = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'CurtainsTransition')
+      this.transition.setScale(1.5).setDepth(1000)
+      // play transition open
+      console.log('play transition')
+      this.transition.play({ key: 'Curtains', startFrame: 0 }, true)
+    }
+  }
+
+  update () {
+    if (this.transition != null && this.transition.anims.currentFrame.index === 22) {
       // go to win scene
       this.win()
     }
@@ -242,7 +272,7 @@ class GameScene extends Phaser.Scene {
     this.removePaintingTextures(this.levelData)
     console.log('removed assets')
     // start win scene
-    this.game.scene.start('WinScene', { music: this.music })
+    this.game.scene.start('WinScene', { music: this.music, levelId: this.levelData.name })
     console.log('started next scene')
   }
 
