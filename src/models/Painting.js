@@ -112,6 +112,56 @@ class Painting {
     console.log('painting constructor finished')
   }
 
+  getPixels(textures, key) {
+    var textureFrame = textures.getFrame(key);
+
+    // based on https://github.com/phaserjs/phaser/blob/master/src/textures/TextureManager.js
+    var cd = textureFrame.canvasData
+
+    var canvas = Phaser.Display.Canvas.CanvasPool.create2D(this, cd.width, cd.height)
+    var ctx = canvas.getContext('2d', { willReadFrequently: true })
+
+    if (cd.width > 0 && cd.height > 0)
+    {
+        ctx.drawImage(
+            textureFrame.source.image,
+            cd.x,
+            cd.y,
+            cd.width,
+            cd.height,
+            0,
+            0,
+            cd.width,
+            cd.height
+        )
+    }
+
+    var imgData = ctx.getImageData(0, 0, cd.width, cd.height)
+
+    Phaser.Display.Canvas.CanvasPool.remove(canvas)
+
+    // return object that encapsulates efficiently querying the image data
+    return {
+      get: function(x, y) {
+        // image data is packed into an array with groups of 4 elements representing each RGBA pixel
+        var start = 4 * (y * cd.width + x)
+        if (start < imgData.data.length) {
+          // use a simple JSON object rather than Phaser.Display.Color for performance
+          return {
+            red: imgData.data[start],
+            green: imgData.data[start + 1],
+            blue: imgData.data[start + 2], 
+            alpha: imgData.data[start + 3]
+          }
+        }
+        else {
+          // match behavior of Phaser's getPixel() function and return null if out of bounds
+          return null
+        }
+      }
+    }
+  }
+
   /**
    * loops through the pixels in the given texture (found by the key string) and returns all
    *  bounds where pixels have alpha values, getting those values from the Frame passed
@@ -135,9 +185,11 @@ class Painting {
     let x = 1
     let y = 1
     let boundsFound = false
+    
+    const pixelData = this.getPixels(textures, key)
 
     // store result of pixel Alpha
-    let result = textures.getPixel(x, y, key)
+    let result = pixelData.get(x, y)
     // end condition is when a new row is started and comes back as null
     // (result == null && x == 1) inverse for loop condition
     while (result !== null || x !== 1) {
@@ -176,7 +228,7 @@ class Painting {
         x += STEP
       }
       // get next pixel
-      result = textures.getPixel(x, y, key)
+      result = pixelData.get(x, y) 
     }
     // check if bounds were found
     if (!boundsFound) {
