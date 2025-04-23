@@ -145,7 +145,7 @@ class Painting {
       get: function(x, y) {
         // image data is packed into an array with groups of 4 elements representing each RGBA pixel
         var start = 4 * (y * cd.width + x)
-        if (start < imgData.data.length) {
+        if (x < cd.width && y < cd.height) {
           // use a simple JSON object rather than Phaser.Display.Color for performance
           return {
             red: imgData.data[start],
