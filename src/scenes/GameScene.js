@@ -4,6 +4,7 @@ import Painting from '../models/Painting.js'
 import Silhouette from '../models/Silhouette.js'
 import InventoryView from '../models/InventoryView.js'
 import Inventory from '../models/Inventory.js'
+import Sticker from '../models/Sticker.js'
 
 class GameScene extends Phaser.Scene {
   // initialization setup; takes the part of the json data for selected level
@@ -59,14 +60,26 @@ class GameScene extends Phaser.Scene {
       // fill an array with silhouette keys
       const silhouettes = []
       for (let k = 0; k < painting.numSilhouettes; k++) {
-        silhouettes.push(new Silhouette(this.add.image(0, 0, 'Painting' + (i + 1) + 'Silhouette' + (k + 1)), null, i * 10 + k))
+        silhouettes.push('Painting' + (i + 1) + 'Silhouette' + (k + 1))
       }
       // pass them to the Painting constructor
       const paintingObj = new Painting('Painting' + (i + 1), stickers, silhouettes, this)
       this.paintings.push(paintingObj)
 
+      // Dragging the stickers
       for (const sticker of paintingObj.stickers) {
-        sticker.image.on('drag', (pointer, dragX, dragY) => sticker.image.setPosition(dragX, dragY))
+        sticker.image.on('drag', (pointer, dragX, dragY) => {
+          sticker.image.off('pointerdown')
+          sticker.image.setPosition(dragX, dragY)
+        })
+      }
+      // Making sure the correct Sticker goes to the correct Silhouette
+      for (const sticker of paintingObj.stickers) {
+        sticker.image.on('dragend', (pointer) => {
+          if (sticker.image.x >= sticker.silhouette.x + sticker.silhouette.offset.x - (sticker.silhouette.bounds.rightbound - sticker.silhouette.bounds.leftbound) / 2) {
+            sticker.image.disableInteractive()
+          }
+        })
       }
     }
 
@@ -79,7 +92,7 @@ class GameScene extends Phaser.Scene {
     )
 
     // add inventory visual. TODO swap with real inventory
-    var realInventory = new Inventory();
+    const realInventory = new Inventory()
 
     // Create and configure a particle emitter
     this.emitter = this.add.particles(0, 0, 'red', {
@@ -87,7 +100,7 @@ class GameScene extends Phaser.Scene {
       lifespan: 1000,
       quantity: 20,
       frequency: 20,
-      //gravityY: 3000,
+      // gravityY: 3000,
       scale: { start: 0.3, end: 1 },
       blendMode: 'ADD',
       emitting: false
@@ -98,11 +111,11 @@ class GameScene extends Phaser.Scene {
       source: new Phaser.Geom.Circle(0, 0, 160)
     })
 
-    /*this.tweens.add({
+    /* this.tweens.add({
       targets: this.emitter,
       ease: 'linear',
       yoyo: true
-    })*/
+    }) */
 
     // attach a function to a sticker; should attach all of them
     console.log('about to attach click function')
@@ -135,12 +148,12 @@ class GameScene extends Phaser.Scene {
   }
 
   onStickerPointerDown (index) {
-    //This is where the clicking for sticker is happening
+    // This is where the clicking for sticker is happening
     console.log('running click function')
     this.inventoryView.drawNewSticker(this.currentPainting.stickers[index], this)
     this.emitter.emitParticleAt(this.currentPainting.stickers[index].gameOrigin.x, this.currentPainting.stickers[index].gameOrigin.y)
     console.log('particle emitted at: ', this.currentPainting.stickers[index].gameOrigin)
-    //this.currentPainting.stickers[index].image.setPosition(-5000, 0)
+    // this.currentPainting.stickers[index].image.setPosition(-5000, 0)
     this.currentPainting.removeSticker(this.currentPainting.stickers[index])
     // decrement num stickers left
     this.numStickersLeft--
