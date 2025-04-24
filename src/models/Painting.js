@@ -25,10 +25,6 @@ class Painting {
     this.stickerKeys = stickerKeys
     this.silhouettes = silhouettes
 
-    // Getting Painting Height and Width
-    // scene.textures.getFrame(img).height
-    // scene.textures.getFrame(img).width
-
     // Scaling every painting to fix into the frame without messing with the aspect ratio.
     const targetWidth = 1920 - 160
     const widthScale = targetWidth / scene.textures.getFrame(img).width
@@ -48,6 +44,8 @@ class Painting {
     } else {
       console.log('passed silhouettes is not a Silhouette')
     }
+
+    //TODO point stickers at associated silhouette
 
     // find the bounds for all stickers
     console.log('about to loop over stickers...')

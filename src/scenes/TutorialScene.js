@@ -33,17 +33,22 @@ class TutorialScene extends GameScene {
     this.arrowRight.setActive(isVisible).setVisible(isVisible)
   }
 
-  win () {
-    console.log('you win!')
-    this.music.stop()
-    // stop current scene
-    this.game.scene.stop('TutorialScene')
-    // fix textures persisting
-    this.removePaintingTextures(this.levelData)
-    console.log('removed assets')
-    // start win scene
-    this.game.scene.start('WinScene')
-    console.log('started next scene')
+  update () {
+    if (this.transition != null && this.transition.anims.currentFrame.index === 22) {
+      this.music.stop()
+      // stop current scene
+      this.game.scene.stop('TutorialScene')
+      if (this.numStickersLeft === 0) {
+        // go to win scene
+        console.log('you win!')
+        // start win scene
+        this.game.scene.start('WinScene', { music: this.music, levelId: this.levelData.name })
+      } else {
+        // start level select scene
+        this.game.scene.start('LevelSelectScene', { music: this.music })
+      }
+      console.log('started next scene')
+    }
   }
 }
 

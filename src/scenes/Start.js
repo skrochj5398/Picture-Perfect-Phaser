@@ -301,7 +301,7 @@ class StartScene extends Phaser.Scene {
 
   update () {
     // console.log(this.transition)
-    if (this.transition != null && this.transition.anims.currentFrame.index === 22) {
+    if (this.transition != null && this.transition.anims != null && this.transition.anims.currentFrame.index === 22) {
       console.log('transition done')
       // stop music when entering tutorial
       this.music.stop()

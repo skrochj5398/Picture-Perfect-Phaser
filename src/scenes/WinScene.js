@@ -34,10 +34,11 @@ class WinScene extends Phaser.Scene {
   create () {
     this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'WinScreen')
 
-    // get the level index from this.data
+    // get levelIndex
     for (const level of this.data.levels) {
-      if (level.id === this.levelCompleted) {
+      if (level.name === this.levelCompleted) {
         this.levelIndex = this.data.levels.indexOf(level)
+        console.log('found level index: ', this.data.levels.indexOf(level))
         break
       }
     }
