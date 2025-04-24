@@ -23,7 +23,8 @@ class Painting {
     this.img = scene.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, img)
     this.stickers = []
     this.stickerKeys = stickerKeys
-    this.silhouettes = silhouettes
+    this.silhouettes = []
+    this.silhouetteKeys = silhouettes
 
     // Scaling every painting to fix into the frame without messing with the aspect ratio.
     const targetWidth = 1920 - 160
@@ -35,11 +36,48 @@ class Painting {
     this.targetScale = widthScale < heightScale ? widthScale : heightScale
     this.img.setScale(this.targetScale)
 
+    console.log('silhouettes:'+this.silhouetteKeys)
     // place silhouettes
-    if (silhouettes instanceof Array && silhouettes[0] instanceof Silhouette) {
-      for (const silhouette of this.silhouettes) {
-        silhouette.image.setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2).setScale(this.targetScale)
-        silhouette.image.depth = 1
+    if (silhouettes != null) {
+      for (let i = 0; i < silhouettes.length; i++) {
+        // get a bound of a sticker
+        console.log('Searching pixels of key: ', silhouettes[i])
+        const bounds = this.findSticker(scene.textures, silhouettes[i])
+
+        console.log(bounds)
+
+        console.log("sticker texture height", scene.textures.getFrame(silhouettes[i]).height)
+
+        // create an image on the scene for this sticker key
+        const silhouettesImage = scene.add.image(0, 0, silhouettes[i]).setScale(this.targetScale)
+        // crop to just around the visible parts; unclear whether this matters
+        silhouettesImage.setCrop(
+          bounds.leftBound,
+          bounds.topBound,
+          bounds.rightBound - bounds.leftBound,
+          bounds.bottomBound - bounds.topBound
+        )
+        silhouettesImage.depth = 2
+        // create a Sticker around this sticker
+        const silhouette = new Silhouette(silhouettesImage, null, 0)
+        silhouette.bounds = bounds
+        // add the Sticker to this.stickers
+        this.silhouettes.push(silhouette)
+        // set position of the cropped sticker
+        silhouettesImage.setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2)
+        console.log(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2)
+
+        const paintingLoc = new Phaser.Math.Vector2(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2)
+        console.log(paintingLoc)
+        const paintingTopLeft = paintingLoc.subtract(new Phaser.Math.Vector2((this.img.width / 2.0) * this.targetScale, (this.img.height / 2.0) * this.targetScale))
+        console.log(paintingTopLeft)
+        const relativeStickerCenter = new Phaser.Math.Vector2(((bounds.leftBound + bounds.rightBound) / 2.0) * this.targetScale, ((bounds.topBound + bounds.bottomBound) / 2.0) * this.targetScale)
+        console.log(relativeStickerCenter)
+        const silhouetteGameOrigin = paintingTopLeft.add(relativeStickerCenter)
+        // set real position
+        console.log(silhouetteGameOrigin)
+        silhouette.gameOrigin = silhouetteGameOrigin
+        silhouette.offset = new Phaser.Math.Vector2(silhouette.image.x + 50, silhouette.image.y - 25).subtract(silhouette.gameOrigin)
       }
     } else {
       console.log('passed silhouettes is not a Silhouette')
@@ -49,6 +87,7 @@ class Painting {
 
     // find the bounds for all stickers
     console.log('about to loop over stickers...')
+    console.log('stickers'+this.stickerKeys)
     if (this.stickerKeys != null) {
       for (let i = 0; i < this.stickerKeys.length; i++) {
         // get a bound of a sticker
@@ -60,7 +99,7 @@ class Painting {
         console.log("sticker texture height", scene.textures.getFrame(stickerKeys[i]).height)
 
         // create an image on the scene for this sticker key
-        const stickerImage = scene.add.image(0, 0, stickerKeys[i]).setInteractive().setScale(this.targetScale)
+        const stickerImage = scene.add.image(0, 0, stickerKeys[i]).setInteractive({ draggable: true }).setScale(this.targetScale)
         // crop to just around the visible parts; unclear whether this matters
         stickerImage.setCrop(
           bounds.leftBound,
@@ -110,6 +149,56 @@ class Painting {
     console.log('painting constructor finished')
   }
 
+  getPixels(textures, key) {
+    var textureFrame = textures.getFrame(key);
+
+    // based on https://github.com/phaserjs/phaser/blob/master/src/textures/TextureManager.js
+    var cd = textureFrame.canvasData
+
+    var canvas = Phaser.Display.Canvas.CanvasPool.create2D(this, cd.width, cd.height)
+    var ctx = canvas.getContext('2d', { willReadFrequently: true })
+
+    if (cd.width > 0 && cd.height > 0)
+    {
+        ctx.drawImage(
+            textureFrame.source.image,
+            cd.x,
+            cd.y,
+            cd.width,
+            cd.height,
+            0,
+            0,
+            cd.width,
+            cd.height
+        )
+    }
+
+    var imgData = ctx.getImageData(0, 0, cd.width, cd.height)
+
+    Phaser.Display.Canvas.CanvasPool.remove(canvas)
+
+    // return object that encapsulates efficiently querying the image data
+    return {
+      get: function(x, y) {
+        // image data is packed into an array with groups of 4 elements representing each RGBA pixel
+        var start = 4 * (y * cd.width + x)
+        if (x < cd.width && y < cd.height) {
+          // use a simple JSON object rather than Phaser.Display.Color for performance
+          return {
+            red: imgData.data[start],
+            green: imgData.data[start + 1],
+            blue: imgData.data[start + 2], 
+            alpha: imgData.data[start + 3]
+          }
+        }
+        else {
+          // match behavior of Phaser's getPixel() function and return null if out of bounds
+          return null
+        }
+      }
+    }
+  }
+
   /**
    * loops through the pixels in the given texture (found by the key string) and returns all
    *  bounds where pixels have alpha values, getting those values from the Frame passed
@@ -120,6 +209,9 @@ class Painting {
    * the key is the string identifier given to a Phaser.Image object when it is created
    */
   findSticker (textures, key) {
+    console.log('searching for ' + key)
+    console.log(textures.get(key))
+
     // step distance; change to balance speed and accuracy
     const STEP = 4
     // make temp variables to take max/min for each coordinate
@@ -133,9 +225,13 @@ class Painting {
     let x = 1
     let y = 1
     let boundsFound = false
+    
+    const pixelData = this.getPixels(textures, key)
+
+    const texData = textures.getBase64(key)
 
     // store result of pixel Alpha
-    let result = textures.getPixel(x, y, key)
+    let result = pixelData.get(x, y)
     // end condition is when a new row is started and comes back as null
     // (result == null && x == 1) inverse for loop condition
     while (result !== null || x !== 1) {
@@ -173,8 +269,9 @@ class Painting {
         // move to next column
         x += STEP
       }
+
       // get next pixel
-      result = textures.getPixel(x, y, key)
+      result = pixelData.get(x, y) 
     }
     // check if bounds were found
     if (!boundsFound) {

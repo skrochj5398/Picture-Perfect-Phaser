@@ -6,6 +6,7 @@ import InventoryView from '../models/InventoryView.js'
 import Inventory from '../models/Inventory.js'
 import HoverableButton from '../models/HoverableButton.js'
 import Slider from '../models/Slider.js'
+import Sticker from '../models/Sticker.js'
 
 class GameScene extends Phaser.Scene {
   // initialization setup; takes the part of the json data for selected level
@@ -93,6 +94,22 @@ class GameScene extends Phaser.Scene {
       // pass them to the Painting constructor
       const paintingObj = new Painting(painting.name, stickers, silhouettes, this)
       this.paintings.push(paintingObj)
+
+      // Dragging the stickers
+      for (const sticker of paintingObj.stickers) {
+        sticker.image.on('drag', (pointer, dragX, dragY) => {
+          sticker.image.off('pointerdown')
+          sticker.image.setPosition(dragX, dragY)
+        })
+      }
+      // Making sure the correct Sticker goes to the correct Silhouette
+      for (const sticker of paintingObj.stickers) {
+        sticker.image.on('dragend', (pointer) => {
+          if (sticker.image.x >= sticker.silhouette.x + sticker.silhouette.offset.x - (sticker.silhouette.bounds.rightbound - sticker.silhouette.bounds.leftbound) / 2) {
+            sticker.image.disableInteractive()
+          }
+        })
+      }
     }
     // add all stickers to an array
     this.stickerList = []
@@ -141,23 +158,35 @@ class GameScene extends Phaser.Scene {
       CONFIG.DEFAULT_WIDTH / 2,
       CONFIG.DEFAULT_HEIGHT / 2,
       'Frame3', 0, 1920, 1080,
+      'Frame3', 0, 1920, 1080,
       81, 81, 81, 81
     )
 
     // add inventory visual. TODO swap with real inventory
-    //this.add.image(1000, 1010, 'Inventory').setScale(0.5)
-    var realInventory = new Inventory();
+    const realInventory = new Inventory()
 
     // Create and configure a particle emitter
     this.emitter = this.add.particles(0, 0, 'red', {
-      speed: 100,
+      speed: 500,
       lifespan: 1000,
       quantity: 20,
-      frequency: 10,
-      scale: { start: 1, end: 0 },
+      frequency: 20,
+      // gravityY: 3000,
+      scale: { start: 0.3, end: 1 },
       blendMode: 'ADD',
       emitting: false
     })
+
+    this.emitter.addEmitZone({
+      type: 'edge',
+      source: new Phaser.Geom.Circle(0, 0, 160)
+    })
+
+    /* this.tweens.add({
+      targets: this.emitter,
+      ease: 'linear',
+      yoyo: true
+    }) */
 
     // attach a function to a sticker; should attach all of them
     console.log('about to attach click function')
@@ -165,7 +194,7 @@ class GameScene extends Phaser.Scene {
       for (let i = 0; i < painting.stickers.length; i++) {
         console.log('attaching event to sticker ', i)
         painting.stickers[i].image.on('pointerdown', () => { this.onStickerPointerDown(i) })
-        realInventory.addSticker(painting.stickers[i])
+        realInventory.addSticker(painting.stickers[i], this)
       }
     }
 
@@ -289,6 +318,7 @@ class GameScene extends Phaser.Scene {
   }
 
   onStickerPointerDown (index) {
+    // This is where the clicking for sticker is happening
     console.log('running click function')
     console.log('targetSilhouette: ', this.currentPainting.stickers[index].silhouette)
     this.inventoryView.drawNewSticker(this.currentPainting.stickers[index], this)

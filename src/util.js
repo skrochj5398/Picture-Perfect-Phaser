@@ -14,7 +14,6 @@ class Util {
     //move the image to RedBox
     console.log(silhouette.x, silhouette.y)
     sticker.setPosition(silhouette.x, silhouette.y+17)
-    inventory1.addSticker(sticker);
   }
 }
 
