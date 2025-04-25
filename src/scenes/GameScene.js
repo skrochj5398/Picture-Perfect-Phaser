@@ -87,9 +87,9 @@ class GameScene extends Phaser.Scene {
       // fill an array with silhouette keys
       const silhouettes = []
       for (let k = 0; k < painting.numSilhouettes; k++) {
-        const silhouette = new Silhouette(this.add.image(0, 0, painting.name + painting.silhouettes[k]), null, i * 10 + k)
-        silhouettes.push(silhouette)
-        allSilhouettes.push(silhouette)
+        //const silhouette = new Silhouette(this.add.image(0, 0, ), null, i * 10 + k)
+        silhouettes.push(painting.name + painting.silhouettes[k])
+        //allSilhouettes.push(silhouette)
       }
       // pass them to the Painting constructor
       const paintingObj = new Painting(painting.name, stickers, silhouettes, this)
@@ -149,7 +149,7 @@ class GameScene extends Phaser.Scene {
         }
         // set the sticker's silhouette to the correct one
         stickerObj.setSilhouette(silhouette)
-        console.log('sticker: ', stickerObj.image.texture.key, 'silhouette: ', silhouette.image.texture.key)
+        //console.log('sticker: ', stickerObj.image.texture.key, 'silhouette: ', silhouette.image.texture.key)
       }
     }
 
