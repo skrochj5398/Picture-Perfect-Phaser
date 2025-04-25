@@ -35,9 +35,8 @@ class PrototypeScene extends Phaser.Scene {
     const Frame = this.add.nineslice(CONFIG.DEFAULT_WIDTH / 1.98, CONFIG.DEFAULT_HEIGHT / 1.96, 'Frame', 0, 1920, 1080, 32, 32, 32, 32)
 
     ss.silhouetteOne = this.add.nineslice(1000, 1010, 'Inventory', 0, 1000, 300, 32, 32, 32, 32).setScale(0.5)
-    ss.stickerOne = this.add.image(400, 700, 'BuffaloSticker').setInteractive({ draggable: true }).setScale(0.8)
     const cowNegative = this.add.image(1500, 600, 'cowNegative').setScale(0.6)
-
+    ss.stickerOne = this.add.image(400, 700, 'BuffaloSticker').setInteractive({ draggable: true }).setScale(0.8)
 
     // Create and configure a particle emitter
     this.emitter = this.add.particles(0, 0, 'red', {
@@ -48,11 +47,25 @@ class PrototypeScene extends Phaser.Scene {
       emitting: false
     })
     ss.stickerOne.on('pointerdown', () => { this.handleBlueBoxPointerDown() })
+
+    ss.stickerOne.on('drop', (pointer) => {
+      ss.stickerOne.x = cowNegative.x
+      ss.stickerOne.y = cowNegative.y
+
+      ss.stickerOne.input.enabled = false
+    })
+
+    ss.stickerOne.on('dragend', (pointer, dropped) => {
+      if (!dropped) {
+        ss.stickerOne.disableInteractive()
+      }
+    })
   }
 
   handleBlueBoxPointerDown (pointer) {
     this.emitter.emitParticleAt(ss.stickerOne.x, ss.stickerOne.y)
     Util.handlePointerDown(pointer, ss.stickerOne, ss.silhouetteOne)
+    ss.stickerOne.off('pointerdown')
     ss.stickerOne.on('drag', (pointer, dragX, dragY) => ss.stickerOne.setPosition(dragX, dragY))
     // doesn't work cuz scope or something
     // this.handlePointerDown(pointer, this.BlueBox, this.RedBox)
