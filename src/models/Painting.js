@@ -36,7 +36,7 @@ class Painting {
     this.targetScale = widthScale < heightScale ? widthScale : heightScale
     this.img.setScale(this.targetScale)
 
-    console.log('silhouettes:'+this.silhouetteKeys)
+    console.log('silhouettes:' + this.silhouetteKeys)
     // place silhouettes
     if (silhouettes != null) {
       for (let i = 0; i < silhouettes.length; i++) {
@@ -46,7 +46,7 @@ class Painting {
 
         console.log(bounds)
 
-        console.log("sticker texture height", scene.textures.getFrame(silhouettes[i]).height)
+        console.log('sticker texture height', scene.textures.getFrame(silhouettes[i]).height)
 
         // create an image on the scene for this sticker key
         const silhouettesImage = scene.add.image(0, 0, silhouettes[i]).setScale(this.targetScale)
@@ -87,7 +87,7 @@ class Painting {
 
     // find the bounds for all stickers
     console.log('about to loop over stickers...')
-    console.log('stickers'+this.stickerKeys)
+    console.log('stickers' + this.stickerKeys)
     if (this.stickerKeys != null) {
       for (let i = 0; i < this.stickerKeys.length; i++) {
         // get a bound of a sticker
@@ -96,7 +96,7 @@ class Painting {
 
         console.log(bounds)
 
-        console.log("sticker texture height", scene.textures.getFrame(stickerKeys[i]).height)
+        console.log('sticker texture height', scene.textures.getFrame(stickerKeys[i]).height)
 
         // create an image on the scene for this sticker key
         const stickerImage = scene.add.image(0, 0, stickerKeys[i]).setInteractive({ draggable: true }).setScale(this.targetScale)
@@ -120,8 +120,8 @@ class Painting {
         const sticker = new Sticker(stickerImage, null, 0)
         // set bounds on sticker object for tut use
         sticker.bounds = bounds
-        sticker.realScale.x = bounds.rightBound - bounds.leftBound;
-        sticker.realScale.y = bounds.bottomBound - bounds.topBound;
+        sticker.realScale.x = bounds.rightBound - bounds.leftBound
+        sticker.realScale.y = bounds.bottomBound - bounds.topBound
         // add the Sticker to this.stickers
         this.stickers.push(sticker)
         // set position of the cropped sticker
@@ -138,7 +138,7 @@ class Painting {
         // set real position
         console.log(stickerGameOrigin)
         sticker.gameOrigin = stickerGameOrigin
-        //sticker.offset = (sticker.image.position - sticker.gameOrigin)
+        // sticker.offset = (sticker.image.position - sticker.gameOrigin)
         sticker.offset = new Phaser.Math.Vector2(sticker.image.x + 50, sticker.image.y - 25).subtract(sticker.gameOrigin)
 
         // loops through the rest
@@ -149,49 +149,47 @@ class Painting {
     console.log('painting constructor finished')
   }
 
-  getPixels(textures, key) {
-    var textureFrame = textures.getFrame(key);
+  getPixels (textures, key) {
+    const textureFrame = textures.getFrame(key)
 
     // based on https://github.com/phaserjs/phaser/blob/master/src/textures/TextureManager.js
-    var cd = textureFrame.canvasData
+    const cd = textureFrame.canvasData
 
-    var canvas = Phaser.Display.Canvas.CanvasPool.create2D(this, cd.width, cd.height)
-    var ctx = canvas.getContext('2d', { willReadFrequently: true })
+    const canvas = Phaser.Display.Canvas.CanvasPool.create2D(this, cd.width, cd.height)
+    const ctx = canvas.getContext('2d', { willReadFrequently: true })
 
-    if (cd.width > 0 && cd.height > 0)
-    {
-        ctx.drawImage(
-            textureFrame.source.image,
-            cd.x,
-            cd.y,
-            cd.width,
-            cd.height,
-            0,
-            0,
-            cd.width,
-            cd.height
-        )
+    if (cd.width > 0 && cd.height > 0) {
+      ctx.drawImage(
+        textureFrame.source.image,
+        cd.x,
+        cd.y,
+        cd.width,
+        cd.height,
+        0,
+        0,
+        cd.width,
+        cd.height
+      )
     }
 
-    var imgData = ctx.getImageData(0, 0, cd.width, cd.height)
+    const imgData = ctx.getImageData(0, 0, cd.width, cd.height)
 
     Phaser.Display.Canvas.CanvasPool.remove(canvas)
 
     // return object that encapsulates efficiently querying the image data
     return {
-      get: function(x, y) {
+      get: function (x, y) {
         // image data is packed into an array with groups of 4 elements representing each RGBA pixel
-        var start = 4 * (y * cd.width + x)
+        const start = 4 * (y * cd.width + x)
         if (x < cd.width && y < cd.height) {
           // use a simple JSON object rather than Phaser.Display.Color for performance
           return {
             red: imgData.data[start],
             green: imgData.data[start + 1],
-            blue: imgData.data[start + 2], 
+            blue: imgData.data[start + 2],
             alpha: imgData.data[start + 3]
           }
-        }
-        else {
+        } else {
           // match behavior of Phaser's getPixel() function and return null if out of bounds
           return null
         }
@@ -225,7 +223,7 @@ class Painting {
     let x = 1
     let y = 1
     let boundsFound = false
-    
+
     const pixelData = this.getPixels(textures, key)
 
     const texData = textures.getBase64(key)
@@ -271,7 +269,7 @@ class Painting {
       }
 
       // get next pixel
-      result = pixelData.get(x, y) 
+      result = pixelData.get(x, y)
     }
     // check if bounds were found
     if (!boundsFound) {

@@ -52,7 +52,7 @@ class GameScene extends Phaser.Scene {
     this.load.image('ArrowRight', 'assets/UI/UI_Arrow_Right_Claire_4_9_2025_v1.png')
 
     // Load in particle effects
-    this.load.image('red', 'assets/particles/red.png')
+    this.load.image('star', 'assets/UI/Particle_01_Claire_4_16_2025_v1.png')
 
     // json loading
     this.keys = this.loadPaintingsFromJson(this.levelData)
@@ -158,7 +158,6 @@ class GameScene extends Phaser.Scene {
       CONFIG.DEFAULT_WIDTH / 2,
       CONFIG.DEFAULT_HEIGHT / 2,
       'Frame3', 0, 1920, 1080,
-      'Frame3', 0, 1920, 1080,
       81, 81, 81, 81
     )
 
@@ -166,7 +165,7 @@ class GameScene extends Phaser.Scene {
     const realInventory = new Inventory()
 
     // Create and configure a particle emitter
-    this.emitter = this.add.particles(0, 0, 'red', {
+    this.emitter = this.add.particles(0, 0, 'star', {
       speed: 500,
       lifespan: 1000,
       quantity: 20,
@@ -324,6 +323,7 @@ class GameScene extends Phaser.Scene {
     this.inventoryView.drawNewSticker(this.currentPainting.stickers[index], this)
     this.emitter.emitParticleAt(this.currentPainting.stickers[index].gameOrigin.x, this.currentPainting.stickers[index].gameOrigin.y)
     console.log('particle emitted at: ', this.currentPainting.stickers[index].gameOrigin)
+    // this.currentPainting.stickers[index].image.setPosition(-5000, 0)
     this.currentPainting.removeSticker(this.currentPainting.stickers[index])
     // decrement num stickers left
     this.numStickersLeft--
