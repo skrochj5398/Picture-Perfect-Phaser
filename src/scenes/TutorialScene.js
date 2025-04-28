@@ -42,10 +42,10 @@ class TutorialScene extends GameScene {
         // go to win scene
         console.log('you win!')
         // start win scene
-        this.game.scene.start('WinScene', { music: this.music, levelId: this.levelData.name })
+        this.game.scene.start('WinScene', { levelId: this.levelData.name })
       } else {
         // start level select scene
-        this.game.scene.start('LevelSelectScene', { music: this.music })
+        this.game.scene.start('LevelSelectScene')
       }
       console.log('started next scene')
     }

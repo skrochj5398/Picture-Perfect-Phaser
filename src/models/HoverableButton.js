@@ -1,4 +1,5 @@
-
+import CONFIG from '../config.js'
+import Phaser from 'phaser'
 
 /**
  * a class that is a Phaser.GameObjects.Image as a button with different textures when hovering
@@ -20,7 +21,7 @@ class HoverableButton extends Phaser.GameObjects.Image {
    * @param {function} clickFunction
    *  a function that executes when this object is clicked
    */
-  constructor(scene, x, y, texture, clickFunction) {
+  constructor (scene, x, y, texture, clickFunction) {
     // call Phaser.GameObjects.Image; must do first
     super(scene, x, y, texture)
     scene.add.existing(this)

@@ -1,0 +1,12 @@
+{
+  "resources": [
+    "assets/audio/SFX/LongChime/LongChimeMain2.mp3"
+  ],
+  "spritemap": {
+    "sound": {
+      "start": 0,
+      "end": 9.0,
+      "loop": false
+    }
+  }
+}

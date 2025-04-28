@@ -56,8 +56,73 @@ class StartScene extends Phaser.Scene {
     this.load.image('ReplayButton', 'assets/UI/UI_Replay_Claire_4_16_2025_v2.png')
 
     // load music
-    this.load.audioSprite('bgMusic', 'assets/audio/bgMusic.json', [
+    this.load.audioSprite('bgMusic', 'assets/audio/menuMusic1.json', [
       'assets/audio/MUS_GameTheme1_PP_demo1.wav'
+    ])
+    this.load.audioSprite('levelBg', 'assets/audio/levelBg1.json', [
+      'assets/audio/PicPer_track3-levelsoft_conrade.mp3'
+    ])
+
+    // load sfx
+    this.load.audioSprite('buttonSound1', 'assets/audio/SFX/LongChime/buttonSound1.json', [
+      'assets/audio/SFX/LongChime/LongChimeDownOctave1.mp3'
+    ])
+    this.load.audioSprite('buttonSound2', 'assets/audio/SFX/LongChime/buttonSound2.json', [
+      'assets/audio/SFX/LongChime/LongChimeMain2.mp3'
+    ])
+    this.load.audioSprite('buttonSound3', 'assets/audio/SFX/LongChime/buttonSound3.json', [
+      'assets/audio/SFX/LongChime/LongChimePitchedDown1.mp3'
+    ])
+    this.load.audioSprite('buttonSound4', 'assets/audio/SFX/LongChime/buttonSound4.json', [
+      'assets/audio/SFX/LongChime/LongChimePitchedUp1.mp3'
+    ])
+    this.load.audioSprite('buttonSound5', 'assets/audio/SFX/LongChime/buttonSound5.json', [
+      'assets/audio/SFX/LongChime/LongChimeUpOctave1.mp3'
+    ])
+    this.load.audioSprite('missSound1', 'assets/audio/SFX/Loss/missSound1.json', [
+      'assets/audio/SFX/Loss/NonAwardSoundMain1.mp3'
+    ])
+    this.load.audioSprite('missSound2', 'assets/audio/SFX/Loss/missSound2.json', [
+      'assets/audio/SFX/Loss/NonAwardSoundPitchedDown1.mp3'
+    ])
+    this.load.audioSprite('missSound3', 'assets/audio/SFX/Loss/missSound3.json', [
+      'assets/audio/SFX/Loss/NonAwardSoundPitchedUp2.mp3'
+    ])
+    this.load.audioSprite('missSound4', 'assets/audio/SFX/Loss/missSound4.json', [
+      'assets/audio/SFX/Loss/NonAwardSoundPitchedUp3.mp3'
+    ])
+    this.load.audioSprite('missSound5', 'assets/audio/SFX/Loss/missSound5.json', [
+      'assets/audio/SFX/Loss/NonAwardSoundUpOctave1.mp3'
+    ])
+    this.load.audioSprite('shortButtonSound1', 'assets/audio/SFX/ShortChime/shortButtonSound1.json', [
+      'assets/audio/SFX/ShortChime/ShortChimeDownOctave1.mp3'
+    ])
+    this.load.audioSprite('shortButtonSound2', 'assets/audio/SFX/ShortChime/shortButtonSound2.json', [
+      'assets/audio/SFX/ShortChime/ShortChimeMain1.mp3'
+    ])
+    this.load.audioSprite('shortButtonSound3', 'assets/audio/SFX/ShortChime/shortButtonSound3.json', [
+      'assets/audio/SFX/ShortChime/ShortChimePitchedDown1.mp3'
+    ])
+    this.load.audioSprite('shortButtonSound4', 'assets/audio/SFX/ShortChime/shortButtonSound4.json', [
+      'assets/audio/SFX/ShortChime/ShortChimePitchedUp1.mp3'
+    ])
+    this.load.audioSprite('shortButtonSound5', 'assets/audio/SFX/ShortChime/shortButtonSound5.json', [
+      'assets/audio/SFX/ShortChime/ShortChimeUpOctave1.mp3'
+    ])
+    this.load.audioSprite('hitSound1', 'assets/audio/SFX/Win/hitSound1.json', [
+      'assets/audio/SFX/Win/AwardSoundDownOctave1.mp3'
+    ])
+    this.load.audioSprite('hitSound2', 'assets/audio/SFX/Win/hitSound2.json', [
+      'assets/audio/SFX/Win/AwardSoundMain1.mp3'
+    ])
+    this.load.audioSprite('hitSound3', 'assets/audio/SFX/Win/hitSound3.json', [
+      'assets/audio/SFX/Win/AwardSoundPitchedDown1.mp3'
+    ])
+    this.load.audioSprite('hitSound4', 'assets/audio/SFX/Win/hitSound4.json', [
+      'assets/audio/SFX/Win/AwardSoundPitchedUp1.mp3'
+    ])
+    this.load.audioSprite('hitSound5', 'assets/audio/SFX/Win/hitSound5.json', [
+      'assets/audio/SFX/Win/AwardSoundUpOctave1.mp3'
     ])
 
     // load options menu assets
@@ -133,7 +198,7 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / 1.65,
       'StartButton',
       () => { this.toLevelSelect() }
-    ).setInteractive()
+    ).setInteractive().on('pointerup', () => { this.pickRandomSfx() })
 
     // options button
     this.optionsButton = new HoverableButton(
@@ -142,7 +207,7 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / 1.4,
       'OptionsButton',
       () => { this.toOptions() }
-    ).setInteractive()
+    ).setInteractive().on('pointerup', () => { this.pickRandomSfx() })
 
     // credits button
     this.creditsButton = new HoverableButton(
@@ -151,7 +216,7 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / 1.23,
       'CreditsButton',
       () => { this.toCredits() }
-    ).setInteractive()
+    ).setInteractive().on('pointerup', () => { this.pickRandomSfx() })
 
     // Add a callback when a key is released
     this.input.keyboard.on('keyup', this.keyReleased, this)
@@ -277,7 +342,7 @@ class StartScene extends Phaser.Scene {
     if (this.isTutCompleted) {
       console.log('tutorial complete')
       // tutorial complete
-      this.scene.start('LevelSelectScene', { json: this.data, music: this.music })
+      this.scene.start('LevelSelectScene', { json: this.data, music: this.music, doTransition: true })
     } else {
       console.log('tutorial not complete')
       // tutorial not complete. check if a level exists (just to be safe)
@@ -335,6 +400,20 @@ class StartScene extends Phaser.Scene {
     //this.scene.start('')
   }
 
+  pickRandomSfx () {
+    // check if array already exists
+    if (this.sfxArray == null) {
+      this.sfxArray = [
+        this.sound.addAudioSprite('shortButtonSound1'), this.sound.addAudioSprite('shortButtonSound2'),
+        this.sound.addAudioSprite('shortButtonSound3'), this.sound.addAudioSprite('shortButtonSound4'),
+        this.sound.addAudioSprite('shortButtonSound5')]
+    }
+    // pick a random sfx from the array
+    const randomIndex = Math.floor(Math.random() * this.sfxArray.length)
+    const randomSfx = this.sfxArray[randomIndex]
+    // play the sound
+    randomSfx.play('sound', { volume: CONFIG.sfxVol })
+  }
 }
 
 export default StartScene
