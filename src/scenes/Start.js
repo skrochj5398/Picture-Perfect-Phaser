@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import CONFIG from '../config.js'
+import { CONFIG, OPTIONS_MENU } from '../config.js'
 import HoverableButton from '../models/HoverableButton.js'
 import Slider from '../models/Slider.js'
 
@@ -12,7 +12,11 @@ class StartScene extends Phaser.Scene {
     )
     this.loadingText.setOrigin(0.5, 0.5)
 
+    // mark tutorial complete or not
     this.isTutCompleted = data.tut
+
+    // get music
+    this.music = data.music
   }
 
   preload () {
@@ -29,6 +33,9 @@ class StartScene extends Phaser.Scene {
     this.load.image('RedBox', 'assets/RedBox.png')
     this.load.image('BlueBox', 'assets/BlueBox.png')
 
+    // load back button
+    this.load.image('ReturnButton', '/assets/UI/UI_Return_Claire_4_16_2025_v2.png')
+
     // Load the image assets needed for 'ExampleScene'
     this.load.image('sky', 'assets/skies/space3.png')
     this.load.image('logo', 'assets/sprites/phaser3-logo.png')
@@ -38,13 +45,17 @@ class StartScene extends Phaser.Scene {
       frameHeight: 1080
     })
 
-    // Pre-load the entire audio sprite
-    // this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [
-    //   'assets/audio/gameAudioSprite.ogg',
-    //   'assets/audio/gameAudioSprite.m4a',
-    //   'assets/audio/gameAudioSprite.mp3',
-    //   'assets/audio/gameAudioSprite.ac3'
-    // ])
+    // load spritesheet for animation
+    this.load.spritesheet('CurtainsTransition', 'assets/Animation/WinScreenAnim.png', {
+      frameWidth: 1280,
+      frameHeight: 720
+    })
+    // load winScene background
+    this.load.image('WinScreen', 'assets/WinScreen.png')
+    // load replay button
+    this.load.image('ReplayButton', 'assets/UI/UI_Replay_Claire_4_16_2025_v2.png')
+
+    // load music
     this.load.audioSprite('bgMusic', 'assets/audio/bgMusic.json', [
       'assets/audio/MUS_GameTheme1_PP_demo1.wav'
     ])
@@ -67,8 +78,22 @@ class StartScene extends Phaser.Scene {
     // Remove loading text
     this.loadingText.destroy()
 
+    this.anims.create({
+      key: 'Curtains',
+      frames: this.anims.generateFrameNumbers('CurtainsTransition', { frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31] }),
+      frameRate: 12,
+      repeat: 0
+    })
+
     // create json object on this
     this.data = this.cache.json.get('levelData')
+
+    // check if music exists
+    if (this.music == null) {
+      // make new music
+      this.music = this.sound.addAudioSprite('bgMusic')
+      this.music.play('MenuMusic1', { volume: CONFIG.musicVol })
+    }
 
     // Add background image
     const startScreen_1 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'startScreen_1')
@@ -132,49 +157,55 @@ class StartScene extends Phaser.Scene {
     this.input.keyboard.on('keyup', this.keyReleased, this)
 
     // Load and play background music
-    this.music = this.sound.addAudioSprite('bgMusic')
+    // this.music = this.sound.addAudioSprite('bgMusic')
+    // this.music.play('MenuMusic1', { volume: 0.5 })
 
     // create options menu
-    const labelToSliderOffset = 90
-    const centerOfMenuX = CONFIG.DEFAULT_WIDTH / 2
-    const centerOfMenuY = CONFIG.DEFAULT_HEIGHT / 2
     // create background
-    this.optionsBackground = this.add.image(centerOfMenuX, centerOfMenuY, 'optionsBackground')
+    this.optionsBackground = this.add.image(OPTIONS_MENU.X, OPTIONS_MENU.Y, 'optionsBackground')
     // create close button
     this.optionsCloseButton = new HoverableButton(
       this,
-      centerOfMenuX,
-      centerOfMenuY + this.optionsBackground.height / 2 - 25,
+      OPTIONS_MENU.X,
+      OPTIONS_MENU.Y + this.optionsBackground.height / 2 - 25,
       'optionsCloseButton',
       () => { this.setOptionsVisibility(!this.optionsBackground.visible) }
     )
     // create music label
-    this.optionsMusicLabel = this.add.image(centerOfMenuX, centerOfMenuY - 150, 'optionsMusicLabel')
+    this.optionsMusicLabel = this.add.image(OPTIONS_MENU.X, OPTIONS_MENU.Y - 150, 'optionsMusicLabel')
     // create music slider
     this.optionsMusicSlider = new Slider(
-      this, centerOfMenuX,
-      this.optionsMusicLabel.y + labelToSliderOffset,
+      this, OPTIONS_MENU.X,
+      this.optionsMusicLabel.y + OPTIONS_MENU.LABEL_SLIDER_OFFSET,
       'optionsSliderHandle',
       'optionsSliderBar',
       this.textures.getFrame('optionsSliderBar').width,
       this.textures.getFrame('optionsSliderBar').height,
       'optionsSliderFill',
       0, 100,
-      () => { this.music.volume = this.optionsMusicSlider.value / 100 }
+      () => {
+        CONFIG.musicVol = this.optionsMusicSlider.value / 100
+        this.music.volume = CONFIG.musicVol
+      },
+      CONFIG.musicVol
     )
     // create sound label
-    this.optionsSoundLabel = this.add.image(centerOfMenuX, centerOfMenuY + 60, 'optionsSoundLabel')
+    this.optionsSoundLabel = this.add.image(OPTIONS_MENU.X, OPTIONS_MENU.Y + 60, 'optionsSoundLabel')
     // create sound slider
     this.optionsSoundSlider = new Slider(
-      this, centerOfMenuX,
-      this.optionsSoundLabel.y + labelToSliderOffset,
+      this, OPTIONS_MENU.X,
+      this.optionsSoundLabel.y + OPTIONS_MENU.LABEL_SLIDER_OFFSET,
       'optionsSliderHandle',
       'optionsSliderBar',
       this.textures.getFrame('optionsSliderBar').width,
       this.textures.getFrame('optionsSliderBar').height,
       'optionsSliderFill',
       0, 100,
-      () => {}
+      () => {
+        CONFIG.sfxVol = this.optionsSoundSlider.value / 100
+        this.sfx.volume = CONFIG.sfxVol
+      },
+      CONFIG.sfxVol
     )
     // make options menu invisible
     this.setOptionsVisibility(false)
@@ -227,9 +258,10 @@ class StartScene extends Phaser.Scene {
       this.scene.stop('StartScene')
       this.scene.start('GameScene', { levelData: this.data.levels[2] })
     }
-    // this.music.stop()
+    if (event.code === 'Digit0') {
+      this.music.stop()
+    }
   }
-
 
   /**
    * Runs when pointerup event triggers on startButton.
@@ -238,15 +270,47 @@ class StartScene extends Phaser.Scene {
    */
   toLevelSelect () {
     console.log('toLevelSelect')
-    this.scene.sleep('StartScene')
+    // music keeps playing until entering a level
+    // stop scene so assets clear
+    //this.scene.stop('StartScene')
     // check if tutorial has been done
     if (this.isTutCompleted) {
-      this.scene.start('LevelSelectScene', this.data)
+      console.log('tutorial complete')
+      // tutorial complete
+      this.scene.start('LevelSelectScene', { json: this.data, music: this.music })
     } else {
+      console.log('tutorial not complete')
+      // tutorial not complete. check if a level exists (just to be safe)
       if (this.data.numLevels > 0) {
-        this.isTutCompleted = true
-        this.scene.start('TutorialScene', { levelData: this.data.levels[0] })
+        // start transition
+        this.startTransition('TutorialScene', { levelData: this.data.levels[0], music: this.music })
       }
+    }
+  }
+
+  startTransition (transitionTarget, transitionData) {
+    // make new transition   :'(
+    this.transition = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'CurtainsTransition')
+    this.transition.setScale(1.5).setDepth(1000)
+    // play transition open
+    this.transition.play({ key: 'Curtains', startFrame: 0 }, true)
+    // save target scene
+    this.targetScene = transitionTarget
+    this.transitionData = transitionData
+  }
+
+  update () {
+    // console.log(this.transition)
+    if (this.transition != null && this.transition.anims != null && this.transition.anims.currentFrame.index === 22) {
+      console.log('transition done')
+      // stop music when entering tutorial
+      this.music.stop()
+      // set tutorial as completed
+      this.isTutCompleted = true
+      // stop this scene to remove assets
+      this.game.scene.stop('StartScene')
+      // start game scene, passing json for level
+      this.game.scene.start(this.targetScene, this.transitionData)
     }
   }
 
@@ -263,11 +327,11 @@ class StartScene extends Phaser.Scene {
   /**
    * Runs when pointerup event triggers on creditsButton.
    * Runs when Credits Button is clicked.
-   * Changes the scene to credits. 
+   * Changes the scene to credits.
    */
   toCredits () {
     console.log('toCredits')
-    //this.scene.sleep('StartScene')
+    //this.scene.stop('StartScene')
     //this.scene.start('')
   }
 

@@ -11,7 +11,7 @@ import EMITTER from '../models/Emitter.js'
 
 class PrototypeScene extends Phaser.Scene {
   preload () {
-    //this is where to load images or in StartScene
+    // this is where to load images or in StartScene
     this.load.image('BlueBox', 'assets/BlueBox.png')
     this.load.image('RedBox', 'assets/RedBox.png')
     this.load.image('CowFarm', 'assets/wivenhoe_park,_essex_1942.9.10.png')
@@ -22,17 +22,16 @@ class PrototypeScene extends Phaser.Scene {
     this.load.image('Frame4', 'assets/Picture perfect- Frame2.png')
     this.load.image('Frame2', 'assets/sprites/Picture perfect- Frame2 (extra).png')
     this.load.image('Frame3', 'assets/sprites/Picture perfect- Frame3.png')
+    this.load.image('cowNegative', 'assets/Levels/CustomLevel1/Painting1/Buffalo Negative.png')
 
-    //Load in particle effects
-    this.load.image('red' , 'assets/particles/red.png')
+    // Load in particle effects
+    this.load.image('red', 'assets/particles/red.png')
   }
 
     static inventory1 = new Inventory()
     static slots = new InventoryView('InventorySlot');
 
   create () {
-
-
     const cowFarm = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.06, 'CowFarm')
     cowFarm.on('pointerdown', () => {this.onPlayerClicked()})
     cowFarm.setInteractive();
@@ -53,6 +52,7 @@ class PrototypeScene extends Phaser.Scene {
       blendMode: 'ADD',
       emitting: false
     })
+    ss.stickerOne.on('pointerdown', () => { this.handleBlueBoxPointerDown() })
 
 
     //ss.stickerOne.on('pointerdown', () => {this.handleBlueBoxPointerDown()})
@@ -80,7 +80,4 @@ class PrototypeScene extends Phaser.Scene {
   }
 
 }
-
-
-
 export default PrototypeScene

@@ -6,19 +6,31 @@
 		"paintings": [{
 			"name": "basket_of_fruits_1992.51.1.png",
 			"numStickers": 1,
-			"stickers": ["Shell Sticker.png"],
+			"stickers": [{
+				"name": "Shell Sticker.png",
+				"silhouette": "Shell Negative.png"
+			}],
 			"numSilhouettes": 2,
 			"silhouettes": ["Peach Negative.png", "Pear Negative.png"]
 		},{
 			"name": "dishes_with_oysters,_fruit,_and_wine_1995.32.1.png",
 			"numStickers": 2,
-			"stickers": ["Pear Sticker.png", "Pitcher Sticker.png"],
+			"stickers": [{
+				"name": "Pear Sticker.png",
+				"silhouette": "Pear Negative.png"
+			}, {
+				"name": "Pitcher Sticker.png",
+				"silhouette": "Pitcher Negative.png"
+			}],
 			"numSilhouettes": 1,
 			"silhouettes": ["Shell Negative.png"]
 		},{
 			"name": "still_life_with_stoneware_jug_and_pipe_2019.13.1.png",
 			"numStickers": 1,
-			"stickers": ["Peach Sticker.png"],
+			"stickers": [{
+				"name": "Peach Sticker.png",
+				"silhouette": "Peach Negative.png"
+			}],
 			"numSilhouettes": 1,
 			"silhouettes": ["Pitcher Negative.png"]
 		}]
@@ -28,25 +40,49 @@
 		"paintings": [{
 			"name": "wooded_landscape_with_travelers_2020.26.1.png",
 			"numStickers": 3,
-			"stickers": ["Fishing Boat Sticker.png", "Trumpet Rider Sticker.png", "Windmill Sticker.png"],
+			"stickers": [{
+				"name": "Fishing Boat Sticker.png",
+				"silhouette": "Fishing Boat Negative.png"
+			}, {
+				"name": "Trumpet Rider Sticker.png",
+				"silhouette": "Trumpet Rider Negative.png"
+			}, {
+				"name": "Windmill Sticker.png",
+				"silhouette": "Windmill Negative.png"
+			}],
 			"numSilhouettes": 2,
 			"silhouettes": ["Boar Negative.png", "Horse Carriage Negative.png"]
 		},{
 			"name": "the_marketplace_in_bergen_op_zoom_1979.50.1.png",
 			"numStickers": 2,
-			"stickers": ["Boar Sticker.png", "Horse Carriage Sticker.png"],
+			"stickers": [{
+				"name": "Boar Sticker.png",
+				"silhouette": "Boar Negative.png"
+			}, {
+				"name": "Horse Carriage Sticker.png",
+				"silhouette": "Horse Carriage Negative.png"
+			}],
 			"numSilhouettes": 2,
 			"silhouettes": ["Trumpet Rider Negative.png", "Drummer Negative.png"]
 		},{
 			"name": "river_landscape_2000.4.1.png",
 			"numStickers": 1,
-			"stickers": ["Hockey Skater Sticker.png"],
+			"stickers": [{
+				"name": "Hockey Skater Sticker.png",
+				"silhouette": "Hockey Skater Negative.png"
+			}],
 			"numSilhouettes": 2,
 			"silhouettes": ["Fishing Boat Negative.png", "Boat Negative.png"]
 		},{
 			"name": "skating_on_the_frozen_amstel_river_2010.20.1.png",
 			"numStickers": 2,
-			"stickers": ["Boat Sticker.png", "Drummer Sticker.png"],
+			"stickers": [{
+				"name": "Boat Sticker.png",
+				"silhouette": "Boat Negative.png"
+			}, {
+				"name": "Drummer Sticker.png",
+				"silhouette": "Drummer Negative.png"
+			}],
 			"numSilhouettes": 2,
 			"silhouettes": ["Windmill Negative.png", "Hockey Skater Negative.png"]
 		}]
@@ -56,25 +92,46 @@
 		"paintings": [{
 			"name": "the_last_of_the_buffalo_2014.79.5.png",
 			"numStickers": 1,
-			"stickers": ["Soldier Sticker.png"],
+			"stickers": [{
+				"name": "Soldier Sticker.png",
+				"silhouette": "Soldier Negative.png"
+			}],
 			"numSilhouettes": 2,
 			"silhouettes": ["Buffalo Negative.png", "Skull Negative.png"]
 		},{
 			"name": "joshua_commanding_the_sun_to_stand_still_upon_gibeon_2004.64.1.png",
 			"numStickers": 1,
-			"stickers": ["Angel Sticker.png"],
+			"stickers": [{
+				"name": "Angel Sticker.png",
+				"silhouette": "Angel Negative.png"
+			}],
 			"numSilhouettes": 2,
 			"silhouettes": ["Charging Soldier Negative.png", "Soldier Negative.png"]
 		},{
 			"name": "wivenhoe_park,_essex_1942.9.10.png",
 			"numStickers": 2,
-			"stickers": ["Buffalo Sticker.png", "Charging Soldier Sticker.png"],
+			"stickers": [{
+				"name": "Buffalo Sticker.png",
+				"silhouette": "Buffalo Negative.png"
+			}, {
+				"name": "Charging Soldier Sticker.png",
+				"silhouette": "Charging Soldier Negative.png"
+			}],
 			"numSilhouettes": 2,
 			"silhouettes": ["Boat Negative.png", "Cow Negative.png"]
 		},{
 			"name": "the_voyage_of_life__youth_1971.16.2.png",
 			"numStickers": 3,
-			"stickers": ["Boat Sticker.png", "Cow Sticker.png", "Skull Sticker.png"],
+			"stickers": [{
+				"name": "Boat Sticker.png",
+				"silhouette": "Boat Negative.png"
+			}, {
+				"name": "Cow Sticker.png",
+				"silhouette": "Cow Negative.png"
+			}, {
+				"name": "Skull Sticker.png",
+				"silhouette": "Skull Negative.png"
+			}],
 			"numSilhouettes": 1,
 			"silhouettes": ["Angel Negative.png"]
 		}]

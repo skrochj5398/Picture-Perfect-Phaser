@@ -6,10 +6,11 @@ import InventoryView from '../models/InventoryView.js'
 import Inventory from '../models/Inventory.js'
 import HoverableButton from '../models/HoverableButton.js'
 import Slider from '../models/Slider.js'
+import Sticker from '../models/Sticker.js'
 
 class GameScene extends Phaser.Scene {
   // initialization setup; takes the part of the json data for selected level
-  init (jsonData) {
+  init (data) {
     // create loading text
     this.loadingText = this.add.text(
       CONFIG.DEFAULT_WIDTH / 2,
@@ -19,7 +20,29 @@ class GameScene extends Phaser.Scene {
     this.loadingText.setOrigin(0.5, 0.5)
 
     // save json to scene
-    this.levelData = jsonData.levelData
+    this.levelData = data.levelData
+
+    // get music
+    this.music = data.music
+    // check if music exists
+    if (this.music == null) {
+      // make new music
+      this.music = this.sound.addAudioSprite('bgMusic')
+      this.music.play('MenuMusic1', { volume: CONFIG.musicVol })
+    }
+
+    // change music played
+    this.music.stop()
+    //this.music.start('') TODO add gameplay bgMusic
+
+    console.log('making new transition')
+    // make new transition
+    this.transition = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'CurtainsTransition')
+    this.transition.setScale(1.5).setDepth(1000)
+    // initialize currentAnim
+    this.transition.play('Curtains', true)
+    // set transition to be closed curtains
+    this.transition = this.transition.anims.pause(this.transition.anims.currentAnim.frames[22])
   }
 
   preload () {
@@ -29,10 +52,10 @@ class GameScene extends Phaser.Scene {
     this.load.image('ArrowRight', 'assets/UI/UI_Arrow_Right_Claire_4_9_2025_v1.png')
 
     // Load in particle effects
-    this.load.image('red', 'assets/particles/red.png')
+    this.load.image('star', 'assets/UI/Particle_01_Claire_4_16_2025_v1.png')
 
     // json loading
-    this.loadPaintingsFromJson(this.levelData)
+    this.keys = this.loadPaintingsFromJson(this.levelData)
 
     // inventory & frame
     this.load.image('Inventory', 'assets/Picture_Perfect_Inventory_3Slot_S_Claire.png')
@@ -50,26 +73,85 @@ class GameScene extends Phaser.Scene {
     // define after Frame so frame doesn't block click events (must more blood be shed!?)
     // create an array to fill with Paintings
     this.paintings = []
+    const targetSilhouettes = []
+    const allSilhouettes = []
     // read values from this.levelData to know how many stickers/silhouettes to pass
     for (let i = 0; i < this.levelData.numPaintings; i++) {
       const painting = this.levelData.paintings[i]
       // fill an array with sticker keys
       const stickers = []
       for (let j = 0; j < painting.numStickers; j++) {
-        stickers.push('Painting' + (i + 1) + 'Sticker' + (j + 1))
+        stickers.push(painting.name + painting.stickers[j].name)
+        targetSilhouettes.push(painting.stickers[j].silhouette)
       }
       // fill an array with silhouette keys
       const silhouettes = []
       for (let k = 0; k < painting.numSilhouettes; k++) {
-        silhouettes.push(new Silhouette(this.add.image(0, 0, 'Painting' + (i + 1) + 'Silhouette' + (k + 1)), null, i * 10 + k))
-        //silhouettes[k].image.input.hitArea.destroy()
+        //const silhouette = new Silhouette(this.add.image(0, 0, ), null, i * 10 + k)
+        silhouettes.push(painting.name + painting.silhouettes[k])
+        //allSilhouettes.push(silhouette)
       }
       // pass them to the Painting constructor
-      const paintingObj = new Painting('Painting' + (i + 1), stickers, silhouettes, this)
-      // add painting to rating system
-      paintingObj.img.on('pointerdown', () => {this.onPlayerClicked()})
-
+      const paintingObj = new Painting(painting.name, stickers, silhouettes, this)
+      paintingObj.img.on('pointerdown', ()=> {this.this.onPlayerClicked()})
       this.paintings.push(paintingObj)
+
+      // Dragging the stickers
+      for (const sticker of paintingObj.stickers) {
+        sticker.image.on('drag', (pointer, dragX, dragY) => {
+          sticker.image.off('pointerdown')
+          sticker.image.setPosition(dragX, dragY)
+        })
+      }
+      // Making sure the correct Sticker goes to the correct Silhouette
+      for (const sticker of paintingObj.stickers) {
+        sticker.image.on('dragend', (pointer) => {
+          if (sticker.image.x >= sticker.silhouette.x + sticker.silhouette.offset.x - (sticker.silhouette.bounds.rightbound - sticker.silhouette.bounds.leftbound) / 2) {
+            sticker.image.disableInteractive()
+          }
+        })
+      }
+    }
+    // add all stickers to an array
+    this.stickerList = []
+    for (const painting of this.paintings) {
+      for (const sticker of painting.stickers) {
+        this.stickerList.push(sticker)
+      }
+    }
+    // use targetSilhouettes to find the correct silhouette for each sticker
+    for (let i = 0; i < this.levelData.paintings.length; i++) {
+      const painting = this.levelData.paintings[i]
+      for (let j = 0; j < painting.stickers.length; j++) {
+        // get the sticker
+        const sticker = painting.stickers[j]
+        // get the silhouette
+        let silhouette = null
+        let silhouetteIndex = 0
+        while (silhouette == null && silhouetteIndex < allSilhouettes.length) {
+          const sil = allSilhouettes[silhouetteIndex]
+          for (const loopPainting of this.levelData.paintings) {
+            console.log('checking: ', loopPainting.name + sticker.silhouette, '\nagainst: ', sil.image.texture.key)
+            if (loopPainting.name + sticker.silhouette === sil.image.texture.key) {
+              console.log('found silhouette: ', sil.image.texture.key)
+              silhouette = sil
+              break
+            }
+          }
+          silhouetteIndex++
+        }
+        // now find the sticker 0_0
+        let stickerObj = null
+        for (const loopSticker of this.stickerList) {
+          if (loopSticker.image.texture.key === painting.name + sticker.name) {
+            stickerObj = loopSticker
+            break
+          }
+        }
+        // set the sticker's silhouette to the correct one
+        stickerObj.setSilhouette(silhouette)
+        //console.log('sticker: ', stickerObj.image.texture.key, 'silhouette: ', silhouette.image.texture.key)
+      }
     }
 
     // nineslice the frame so it can be adjusted to fit painting
@@ -81,19 +163,30 @@ class GameScene extends Phaser.Scene {
     )
 
     // add inventory visual. TODO swap with real inventory
-    //this.add.image(1000, 1010, 'Inventory').setScale(0.5)
-    var realInventory = new Inventory();
+    const realInventory = new Inventory()
 
     // Create and configure a particle emitter
-    this.emitter = this.add.particles(0, 0, 'red', {
-      speed: 100,
+    this.emitter = this.add.particles(0, 0, 'star', {
+      speed: 500,
       lifespan: 1000,
       quantity: 20,
-      frequency: 10,
-      scale: { start: 1, end: 0 },
+      frequency: 20,
+      // gravityY: 3000,
+      scale: { start: 0.3, end: 1 },
       blendMode: 'ADD',
       emitting: false
     })
+
+    this.emitter.addEmitZone({
+      type: 'edge',
+      source: new Phaser.Geom.Circle(0, 0, 160)
+    })
+
+    /* this.tweens.add({
+      targets: this.emitter,
+      ease: 'linear',
+      yoyo: true
+    }) */
 
     // attach a function to a sticker; should attach all of them
     console.log('about to attach click function')
@@ -124,14 +217,14 @@ class GameScene extends Phaser.Scene {
     this.numStickersLeft = this.numStickers
     this.numStickersLeftPerPainting = this.numStickersPerPainting
 
+    // create button to return to level select
+    const returnButton = new HoverableButton(this, 0, 0, 'ReturnButton', () => { this.startTransition() })
+    returnButton.setPosition(returnButton.displayWidth / 2.0 + CONFIG.HUD_MARGIN, returnButton.displayHeight / 2.0 + CONFIG.HUD_MARGIN)
+
     // create button to bring up options menu
     this.optionsButton = new HoverableButton(this, 0, 0, 'optionsButton', () => { this.setOptionsVisibility(!this.optionsBackground.visible) })
     // set position
-    this.optionsButton.setPosition(this.optionsButton.width / 2, this.optionsButton.height / 2)
-
-    // play music
-    this.music = this.sound.addAudioSprite('bgMusic')
-    this.music.play('bgMusic1', { volume: 0.5 })
+    this.optionsButton.setPosition(returnButton.x + returnButton.displayWidth / 2 + CONFIG.HUD_MARGIN * 2 + this.optionsButton.width / 2, this.optionsButton.height / 2 + CONFIG.HUD_MARGIN)
 
     // create options menu
     const labelToSliderOffset = 90
@@ -159,7 +252,11 @@ class GameScene extends Phaser.Scene {
       this.textures.getFrame('optionsSliderBar').height,
       'optionsSliderFill',
       0, 100,
-      () => { this.music.volume = this.optionsMusicSlider.value / 100 }
+      () => {
+        CONFIG.musicVol = this.optionsMusicSlider.value / 100
+        this.music.volume = CONFIG.musicVol
+      },
+      CONFIG.musicVol
     )
     // create sound label
     this.optionsSoundLabel = this.add.image(centerOfMenuX, centerOfMenuY + 60, 'optionsSoundLabel')
@@ -173,11 +270,35 @@ class GameScene extends Phaser.Scene {
       this.textures.getFrame('optionsSliderBar').height,
       'optionsSliderFill',
       0, 100,
-      () => {}
+      () => {
+        CONFIG.sfxVol = this.optionsSoundSlider.value / 100
+        this.sfx.volume = CONFIG.sfxVol
+      },
+      CONFIG.sfxVol
     )
     // make options menu invisible
     this.setOptionsVisibility(false)
     this.setOptionsDepth(10)
+
+    // entering transition
+    // destroy transition so it doesn't stay on screen
+    console.log('DESTROY transition')
+    this.transition.destroy()
+    // make new transition   :'(
+    this.transition = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'CurtainsTransition')
+    this.transition.setScale(1.5).setDepth(1000)
+    // play transition close
+    console.log('play transition')
+    this.transition.play({ key: 'Curtains', startFrame: 23 }, true)
+  }
+
+  startTransition () {
+    // create transition
+    this.transition = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'CurtainsTransition')
+    this.transition.setScale(1.5).setDepth(1000)
+    // play transition open
+    console.log('play transition')
+    this.transition.play({ key: 'Curtains', startFrame: 0 }, true)
   }
 
   setOptionsDepth (depth) {
@@ -199,11 +320,13 @@ class GameScene extends Phaser.Scene {
   }
 
   onStickerPointerDown (index) {
+    // This is where the clicking for sticker is happening
     console.log('running click function')
+    console.log('targetSilhouette: ', this.currentPainting.stickers[index].silhouette)
     this.inventoryView.drawNewSticker(this.currentPainting.stickers[index], this)
     this.emitter.emitParticleAt(this.currentPainting.stickers[index].gameOrigin.x, this.currentPainting.stickers[index].gameOrigin.y)
     console.log('particle emitted at: ', this.currentPainting.stickers[index].gameOrigin)
-    //this.currentPainting.stickers[index].image.setPosition(-5000, 0)
+    // this.currentPainting.stickers[index].image.setPosition(-5000, 0)
     this.currentPainting.removeSticker(this.currentPainting.stickers[index])
     // decrement num stickers left
     this.numStickersLeft--
@@ -213,8 +336,7 @@ class GameScene extends Phaser.Scene {
     console.log(this.numStickersLeftPerPainting)
     // check if any stickers are left
     if (this.numStickersLeft === 0) {
-      // go to win scene
-      this.win()
+      this.startTransition()
     }
   }
 
@@ -223,19 +345,22 @@ class GameScene extends Phaser.Scene {
     CONFIG.timesClicked++;
     console.log('Click!');
   }
-
-  win () {
-    console.log('you win!')
-    this.music.stop()// why
-    // stop current scene
-    this.game.scene.stop('GameScene')
-    // fix textures persisting
-    this.removePaintingTextures(this.levelData)
-    console.log('removed assets')
-    // start win scene
-    this.game.scene.start('WinScene')
-    console.log('started next scene')
-  }
+  update () {
+    if (this.transition != null && this.transition.anims.currentFrame.index === 22) {
+      this.music.stop()
+      // stop current scene
+      this.game.scene.stop('GameScene')
+      if (this.numStickersLeft === 0) {
+        // go to win scene
+        console.log('you win!')
+        // start win scene
+        this.game.scene.start('WinScene', { music: this.music, levelId: this.levelData.name })
+      } else {
+        // start level select scene
+        this.game.scene.start('LevelSelectScene', { music: this.music })
+      }
+      console.log('started next scene')
+    }
 
   nextPainting () {
     // move the current painting offscreen
@@ -279,6 +404,8 @@ class GameScene extends Phaser.Scene {
   }
 
   loadPaintingsFromJson (levelData) {
+    const paintingKeys = []
+    const stickerKeys = []
     // add name to path
     const path = 'assets/Levels/' + levelData.name + '/'
     // get number of paintings in level
@@ -295,16 +422,22 @@ class GameScene extends Phaser.Scene {
       this.numStickersPerPainting.push(0)
       // load the painting
       console.log('loading painting: ' + thisPainting.name)
-      this.load.image('Painting' + (i + 1), path + 'Painting' + (i + 1) + '/' + thisPainting.name)
+      const paintingKey = thisPainting.name
+      const paintingPath = path + 'Painting' + (i + 1) + '/'
+      this.load.image(paintingKey, paintingPath + thisPainting.name)
+      paintingKeys.push(paintingKey)
       // get number of stickers
       console.log('numStickers: ' + thisPainting.numStickers)
       const numStickers = thisPainting.numStickers
       // loop and load
       for (let j = 0; j < numStickers; j++) {
+        const stickerName = thisPainting.stickers[j].name
         // load
-        const stickerPath = path + 'Painting' + (i + 1) + '/' + thisPainting.stickers[j]
+        const stickerKey = paintingKey + stickerName
+        const stickerPath = paintingPath + stickerName
         console.log('loading sticker: ' + stickerPath)
-        this.load.image('Painting' + (i + 1) + 'Sticker' + (j + 1), stickerPath)
+        this.load.image(stickerKey, stickerPath)
+        stickerKeys.push(stickerKey)
         // increment number of stickers in level
         this.numStickers++
         // increment number of stickers in painting
@@ -314,10 +447,12 @@ class GameScene extends Phaser.Scene {
       const numSilhouettes = thisPainting.numSilhouettes
       // loop and load
       for (let k = 0; k < numSilhouettes; k++) {
+        const silhouetteName = thisPainting.silhouettes[k]
         // load
-        const silhouettePath = path + 'Painting' + (i + 1) + '/' + thisPainting.silhouettes[k]
+        const silhouetteKey = paintingKey + silhouetteName
+        const silhouettePath = paintingPath + silhouetteName
         console.log('loading silhouette: ' + silhouettePath)
-        this.load.image('Painting' + (i + 1) + 'Silhouette' + (k + 1), silhouettePath)
+        this.load.image(silhouetteKey, silhouettePath)
       }
     }
   }

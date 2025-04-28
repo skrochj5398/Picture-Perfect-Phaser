@@ -43,7 +43,7 @@ class BetaScene extends Phaser.Scene {
       'assets/Levels/Level3/Painting4/the_voyage_of_life__youth_1971.16.2.png'
     )
 
-    this.load.image('InventorySlot', 'assets/InventorySlot.png');
+    this.load.image('InventorySlot', 'assets/InventorySlot.png')
     // load paintings from json file
     this.load.json('levelData', 'assets/Levels/Levels.json')
     // create json object
@@ -207,7 +207,8 @@ class BetaScene extends Phaser.Scene {
     this.paintings = new Array(painting1, painting2, painting3, painting4)
 
     // create inventory
-    var realInventory = new Inventory();
+    var realInventory = new Inventory()
+    
     this.paintingFrame = this.add.nineslice(
       CONFIG.DEFAULT_WIDTH / 2,
       CONFIG.DEFAULT_HEIGHT / 2,
@@ -232,15 +233,15 @@ class BetaScene extends Phaser.Scene {
         console.log('attaching event to sticker ', i)
         //numStickers++
         painting.stickers[i].image.on('pointerdown', () => {this.handleTestStickerPointerDown(i)})
-        realInventory.addSticker(painting.stickers[i]);
+        realInventory.addSticker(painting.stickers[i], this)
       }
     }
 
     // Testing some nonsense
     //var gameWidth = CONFIG.DEFAULT_WIDTH;
     //var gameHeight = CONFIG.DEFAULT_HEIGHT;
-    this.inventoryView = new InventoryView('InventorySlot', 960, 1035, 125, realInventory);
-    this.inventoryView.draw(this);
+    this.inventoryView = new InventoryView('InventorySlot', 960, 1035, 125, realInventory)
+    this.inventoryView.draw(this)
     //console.log('drawing inventory');
     // stickerArray = new Array();
     // stickerArray = stickerArray.concat()
@@ -262,7 +263,7 @@ class BetaScene extends Phaser.Scene {
 
   handleTestStickerPointerDown (index) {
     console.log("running click function")
-    this.inventoryView.drawNewSticker(this.currentPainting.stickers[index], this);
+    this.inventoryView.drawNewSticker(this.currentPainting.stickers[index], this)
     this.emitter.emitParticleAt(this.currentPainting.stickers[index].gameOrigin.x, this.currentPainting.stickers[index].gameOrigin.y)
     console.log('particle emitted at: ', this.currentPainting.stickers[index].gameOrigin)
     //this.currentPainting.stickers[index].image.setPosition(-5000, 0)

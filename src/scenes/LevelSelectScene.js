@@ -3,9 +3,26 @@ import CONFIG from '../config.js'
 import HoverableButton from '../models/HoverableButton.js'
 
 class LevelSelectScene extends Phaser.Scene {
-  init (jsonData) {
+  init (data) {
     // get json
-    this.data = jsonData
+    this.data = this.cache.json.get('levelData')
+    // get music
+    this.music = data.music
+    // check if music exists
+    if (this.music == null) {
+      // make new music
+      this.music = this.sound.addAudioSprite('bgMusic')
+      this.music.play('MenuMusic1', { volume: CONFIG.musicVol })
+    }
+
+    console.log('making new transition')
+    // make new transition
+    this.transition = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'CurtainsTransition')
+    this.transition.setScale(1.5).setDepth(1000)
+    // initialize currentAnim
+    this.transition.play('Curtains', true)
+    // set transition to be closed curtains
+    this.transition = this.transition.anims.pause(this.transition.anims.currentAnim.frames[22])
   }
 
   preload () {
@@ -14,9 +31,7 @@ class LevelSelectScene extends Phaser.Scene {
     this.load.image('ArrowRightButton', 'assets/UI/UI_Arrow_Right_Claire_4_9_2025_v1.png')
     // load level buttons
     this.load.image('BlueBox', 'assets/BlueBox.png')
-    // load back button
-    this.load.image('ReturnButton', '/assets/UI_Options_Menu_X_Claire_4_8_2025_v1.png')
-    // load background image TODO
+    // load background image
     this.load.image('Background', 'assets/Background_Claire_4_9_2025_v1.png')
   }
 
@@ -35,7 +50,7 @@ class LevelSelectScene extends Phaser.Scene {
 
     // return button
     const returnButton = new HoverableButton(this, 0, 0, 'ReturnButton', () => { this.goBack() })
-    returnButton.setPosition(returnButton.displayWidth / 2.0, returnButton.displayHeight / 2.0)
+    returnButton.setPosition(returnButton.displayWidth / 2.0 + CONFIG.HUD_MARGIN, returnButton.displayHeight / 2.0 + CONFIG.HUD_MARGIN)
 
     // get number of levels from json
     const numLevels = this.data.numLevels
@@ -67,8 +82,10 @@ class LevelSelectScene extends Phaser.Scene {
       // create a  button
       console.log('adding button')
       const button = new HoverableButton(this, x, y, 'BlueBox', () => {
-        this.game.scene.stop('LevelSelectScene')
-        this.game.scene.start('GameScene', { levelData: this.data.levels[i] })
+        // stop music
+        this.music.stop()
+        // start transition
+        this.startTransition('GameScene', { levelData: this.data.levels[i], music: this.music })
       })
       const text = this.add.text(x, y, this.data.levels[i].name,
         { font: '16pt Arial', color: '#FFFFFF', align: 'center' })
@@ -86,6 +103,33 @@ class LevelSelectScene extends Phaser.Scene {
     this.currentPage = 0
 
     this.input.keyboard.on('keyup', this.keyReleased, this)
+
+    // destroy transition so it doesn't stay on screen
+    console.log('DESTROY transition')
+    this.transition.destroy()
+    // make new transition   :'(
+    this.transition = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'CurtainsTransition')
+    this.transition.setScale(1.5).setDepth(1000)
+    // play transition close
+    console.log('play transition')
+    this.transition.play({ key: 'Curtains', startFrame: 23 }, true)
+  }
+
+  startTransition (transitionTarget, transitionData) {
+    // play transition open
+    this.transition.play({ key: 'Curtains', startFrame: 0 }, true)
+    // save target scene
+    this.targetScene = transitionTarget
+    this.transitionData = transitionData
+  }
+
+  update () {
+    if (this.transition.anims.currentFrame.index === 22) {
+      // stop this scene to remove assets
+      this.game.scene.stop('LevelSelectScene')
+      // start game scene, passing json for level
+      this.game.scene.start(this.targetScene, this.transitionData)
+    }
   }
 
   scrollLeft () {
@@ -148,7 +192,7 @@ class LevelSelectScene extends Phaser.Scene {
 
   goBack () {
     this.game.scene.stop('LevelSelectScene')
-    this.game.scene.start('StartScene')
+    this.game.scene.start('StartScene', { music: this.music, tut: true })
   }
 
   keyReleased (event) {

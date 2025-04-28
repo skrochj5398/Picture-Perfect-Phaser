@@ -1,32 +1,69 @@
 import Phaser from 'phaser'
 import CONFIG from '../config.js'
+import HoverableButton from '../models/HoverableButton.js'
 
 class WinScene extends Phaser.Scene {
+  init (data) {
+    // get music
+    this.music = data.music
+    // check if music exists
+    if (this.music == null) {
+      // make new music
+      this.music = this.sound.addAudioSprite('bgMusic')
+    }
+    this.music.play('MenuMusic1', { volume: CONFIG.musicVol })
+
+    console.log('making new transition')
+    // make new transition
+    this.transition = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'CurtainsTransition')
+    this.transition.setScale(1.5).setDepth(1000)
+    // initialize currentAnim
+    this.transition.play('Curtains', true)
+    // set transition to be closed curtains
+    this.transition = this.transition.anims.pause(this.transition.anims.currentAnim.frames[22])
+
+    // collect level completed
+    this.levelCompleted = data.levelId
+  }
+
   preload () {
-    this.load.image('WinScreen', 'assets/WinScreen.png')
-    this.load.spritesheet("WinScreenAnim", "assets/Animation/WinScreenAnim.png", {
-      frameWidth: 1280,
-      frameHeight: 720
-    })
+    // get json to pass to levelSelect
+    this.data = this.cache.json.get('levelData')
   }
 
   create () {
     this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'WinScreen')
-    this.timeCheck = this.game.getTime()
-    
-    this.anims.create({
-      key: "Curtains",
-      frames: this.anims.generateFrameNumbers("WinScreenAnim", {frames:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]}),
-      frameRate: 12,
-      repeat: 0
-    })
 
-    this.Curtain = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, "WinScreenAnim")
-    this.Curtain.setScale(1.5)
-    this.Curtain.play("Curtains",true)
-    // this.player = this.add.sprite(1000, 500, "Test anim")
-    // this.player.setScale(1.2)
-    // this.player.play("grass",true)
+    // get levelIndex
+    for (const level of this.data.levels) {
+      if (level.name === this.levelCompleted) {
+        this.levelIndex = this.data.levels.indexOf(level)
+        console.log('found level index: ', this.data.levels.indexOf(level))
+        break
+      }
+    }
+
+        // create return button
+        const returnButtonX = CONFIG.DEFAULT_WIDTH / 5 * 2
+        const returnButtonY = CONFIG.DEFAULT_HEIGHT / 4 * 3
+        const returnButton = new HoverableButton(this, 0, 0, 'ReturnButton', () => { this.startTransition('LevelSelectScene', { json: this.data, music: this.music }) })
+        returnButton.setPosition(returnButtonX, returnButtonY)
+    
+        // create return button
+        const replayButtonX = CONFIG.DEFAULT_WIDTH / 5 * 3
+        const replayButtonY = CONFIG.DEFAULT_HEIGHT / 4 * 3
+        const replayButton = new HoverableButton(this, 0, 0, 'ReplayButton', () => { this.startTransition('GameScene', { levelData: this.data.levels[this.levelIndex], music: this.music }) })
+        replayButton.setPosition(replayButtonX, replayButtonY)
+    
+        // destroy transition so it doesn't stay on screen
+        console.log('DESTROY transition')
+        this.transition.destroy()
+        // make new transition   :'(
+        this.transition = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'CurtainsTransition')
+        this.transition.setScale(1.5).setDepth(1000)
+        // play transition close
+        console.log('play transition')
+        this.transition.play({ key: 'Curtains', startFrame: 23 }, true)
 
 
     // TESTING PURPOSES ONLY: Printing times clicked and then resetting variable
@@ -41,17 +78,21 @@ class WinScene extends Phaser.Scene {
     CONFIG.timesClicked = 0;
   }
 
+  startTransition (targetScene, data = {}) {
+    // play transition open
+    this.transition.play({ key: 'Curtains', startFrame: 0 }, true)
+    // save target scene
+    this.targetScene = targetScene
+    this.transitionData = data
+
   update () {
-    // increment time?
-    this.timeElapsed = this.game.getTime() - this.timeCheck
-    console.log(this.timeElapsed)
-    // if (this.timeElapsed >= 2400){
-    //   this.Curtain.play("Curtains", false)
-    // }
-    // check if enough time has passed
-    if (this.timeElapsed >= 3000) {
+    // check if transition is done
+    if (this.transition.anims.currentFrame.index === 22) {
+      // go to target scene
+      // stop this scene
       this.game.scene.stop('WinScene')
-      this.game.scene.start('StartScene', { tut: true })
+      // start level select scene
+      this.game.scene.start(this.targetScene, this.transitionData)
     }
   }
 }
