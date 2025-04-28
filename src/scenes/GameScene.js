@@ -62,9 +62,13 @@ class GameScene extends Phaser.Scene {
       const silhouettes = []
       for (let k = 0; k < painting.numSilhouettes; k++) {
         silhouettes.push(new Silhouette(this.add.image(0, 0, 'Painting' + (i + 1) + 'Silhouette' + (k + 1)), null, i * 10 + k))
+        //silhouettes[k].image.input.hitArea.destroy()
       }
       // pass them to the Painting constructor
       const paintingObj = new Painting('Painting' + (i + 1), stickers, silhouettes, this)
+      // add painting to rating system
+      paintingObj.img.on('pointerdown', () => {this.onPlayerClicked()})
+
       this.paintings.push(paintingObj)
     }
 
@@ -97,6 +101,8 @@ class GameScene extends Phaser.Scene {
       for (let i = 0; i < painting.stickers.length; i++) {
         console.log('attaching event to sticker ', i)
         painting.stickers[i].image.on('pointerdown', () => { this.onStickerPointerDown(i) })
+        // add sticker to rating system
+        painting.stickers[i].image.on('pointerdown', () => {this.onPlayerClicked()})
         realInventory.addSticker(painting.stickers[i])
       }
     }
@@ -210,6 +216,12 @@ class GameScene extends Phaser.Scene {
       // go to win scene
       this.win()
     }
+  }
+
+  // Method for paintings and stickers to handle clicks for scoring
+  onPlayerClicked(){
+    CONFIG.timesClicked++;
+    console.log('Click!');
   }
 
   win () {

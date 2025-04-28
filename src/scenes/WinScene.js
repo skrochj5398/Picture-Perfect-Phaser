@@ -28,6 +28,17 @@ class WinScene extends Phaser.Scene {
     // this.player.setScale(1.2)
     // this.player.play("grass",true)
 
+
+    // TESTING PURPOSES ONLY: Printing times clicked and then resetting variable
+    // console.log('Times Clicked: ' + CONFIG.timesClicked)
+    // CONFIG.timesClicked = 0;
+    //this.game.time.events.add(Phaser.Timer.SECOND * 2, this.announceScore, this);
+  }
+
+  announceScore () {
+    // TESTING PURPOSES ONLY: Printing times clicked and then resetting variable
+    console.log('Times Clicked: ' + CONFIG.timesClicked)
+    CONFIG.timesClicked = 0;
   }
 
   update () {
