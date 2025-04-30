@@ -1,0 +1,12 @@
+{
+  "resources": [
+    "assets/audio/PicPer_track3-levelsoft_conrade.mp3"
+  ],
+  "spritemap": {
+    "GameMusic1": {
+    	"start": 0,
+    	"end": 120.0,
+    	"loop": true
+  	}
+  }
+}

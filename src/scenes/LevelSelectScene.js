@@ -10,19 +10,30 @@ class LevelSelectScene extends Phaser.Scene {
     this.music = data.music
     // check if music exists
     if (this.music == null) {
+      console.log('making new music')
       // make new music
       this.music = this.sound.addAudioSprite('bgMusic')
       this.music.play('MenuMusic1', { volume: CONFIG.musicVol })
+    } else {
+      console.log('using existing music', this.music)
+      if (!this.music.isPlaying && !this.music.play('MenuMusic1', { volume: CONFIG.musicVol })) {
+        // music couldn't play on this object, so make a new one
+        this.music.destroy()
+        this.music = this.sound.addAudioSprite('bgMusic')
+        this.music.play('MenuMusic1', { volume: CONFIG.musicVol })
+      }
     }
-
-    console.log('making new transition')
-    // make new transition
-    this.transition = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'CurtainsTransition')
-    this.transition.setScale(1.5).setDepth(1000)
-    // initialize currentAnim
-    this.transition.play('Curtains', true)
-    // set transition to be closed curtains
-    this.transition = this.transition.anims.pause(this.transition.anims.currentAnim.frames[22])
+    this.doTransition = data.doTransition
+    if (!this.doTransition) {
+      console.log('making new transition')
+      // make new transition
+      this.transition = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'CurtainsTransition')
+      this.transition.setScale(1.5).setDepth(1000)
+      // start transition end
+      this.transition.play('Curtains', true)
+      // set transition to be closed curtains
+      this.transition = this.transition.anims.pause(this.transition.anims.currentAnim.frames[22])
+    }
   }
 
   preload () {
@@ -85,7 +96,7 @@ class LevelSelectScene extends Phaser.Scene {
         // stop music
         this.music.stop()
         // start transition
-        this.startTransition('GameScene', { levelData: this.data.levels[i], music: this.music })
+        this.startTransition('GameScene', { levelData: this.data.levels[i] })
       })
       const text = this.add.text(x, y, this.data.levels[i].name,
         { font: '16pt Arial', color: '#FFFFFF', align: 'center' })
@@ -104,18 +115,24 @@ class LevelSelectScene extends Phaser.Scene {
 
     this.input.keyboard.on('keyup', this.keyReleased, this)
 
-    // destroy transition so it doesn't stay on screen
-    console.log('DESTROY transition')
-    this.transition.destroy()
-    // make new transition   :'(
-    this.transition = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'CurtainsTransition')
-    this.transition.setScale(1.5).setDepth(1000)
-    // play transition close
-    console.log('play transition')
-    this.transition.play({ key: 'Curtains', startFrame: 23 }, true)
+    if (!this.doTransition) {
+      // destroy transition so it doesn't stay on screen
+      console.log('DESTROY transition')
+      this.transition.destroy()
+      // make new transition   :'(
+      this.transition = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'CurtainsTransition')
+      this.transition.setScale(1.5).setDepth(1000)
+      // play transition close
+      console.log('play transition')
+      this.transition.play({ key: 'Curtains', startFrame: 23 }, true)
+    }
   }
 
   startTransition (transitionTarget, transitionData) {
+    if (this.transition == null) {
+      this.transition = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'CurtainsTransition')
+      this.transition.setScale(1.5).setDepth(1000)
+    }
     // play transition open
     this.transition.play({ key: 'Curtains', startFrame: 0 }, true)
     // save target scene
@@ -124,7 +141,7 @@ class LevelSelectScene extends Phaser.Scene {
   }
 
   update () {
-    if (this.transition.anims.currentFrame.index === 22) {
+    if (this.transition != null && this.transition.anims != null && this.transition.anims.currentFrame.index === 22) {
       // stop this scene to remove assets
       this.game.scene.stop('LevelSelectScene')
       // start game scene, passing json for level

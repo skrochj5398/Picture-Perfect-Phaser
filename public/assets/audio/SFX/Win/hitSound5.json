@@ -1,0 +1,12 @@
+{
+  "resources": [
+    "assets/audio/SFX/Win/AwardSoundUpOctave1.mp3"
+  ],
+  "spritemap": {
+    "sound": {
+      "start": 0,
+      "end": 2.0,
+      "loop": false
+    }
+  }
+}

@@ -33,7 +33,7 @@ class GameScene extends Phaser.Scene {
 
     // change music played
     this.music.stop()
-    // this.music.start('') TODO add gameplay bgMusic
+    //this.music.start('') TODO add gameplay bgMusic
 
     console.log('making new transition')
     // make new transition
@@ -331,6 +331,8 @@ class GameScene extends Phaser.Scene {
     if (this.numStickersLeft === 0) {
       this.startTransition()
     }
+    // play sound effect
+    this.pickRandomSfx()
   }
 
   update () {
@@ -342,10 +344,10 @@ class GameScene extends Phaser.Scene {
         // go to win scene
         console.log('you win!')
         // start win scene
-        this.game.scene.start('WinScene', { music: this.music, levelId: this.levelData.name })
+        this.game.scene.start('WinScene', { levelId: this.levelData.name })
       } else {
         // start level select scene
-        this.game.scene.start('LevelSelectScene', { music: this.music })
+        this.game.scene.start('LevelSelectScene')
       }
       console.log('started next scene')
     }
@@ -390,6 +392,21 @@ class GameScene extends Phaser.Scene {
     this.currentPainting.setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2)
     const width = this.currentPainting.getWidth()
     this.paintingFrame.width = width + 160
+  }
+
+  pickRandomSfx () {
+    // check if array already exists
+    if (this.sfxArray == null) {
+      this.sfxArray = [
+        this.sound.addAudioSprite('hitSound1'), this.sound.addAudioSprite('hitSound2'),
+        this.sound.addAudioSprite('hitSound3'), this.sound.addAudioSprite('hitSound4'),
+        this.sound.addAudioSprite('hitSound5')]
+    }
+    // pick a random sfx from the array
+    const randomIndex = Math.floor(Math.random() * this.sfxArray.length)
+    const randomSfx = this.sfxArray[randomIndex]
+    // play the sound
+    randomSfx.play('sound', { volume: CONFIG.sfxVol })
   }
 
   loadPaintingsFromJson (levelData) {
