@@ -84,6 +84,7 @@ class WinScene extends Phaser.Scene {
     // save target scene
     this.targetScene = targetScene
     this.transitionData = data
+  }
 
   update () {
     // check if transition is done

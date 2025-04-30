@@ -106,7 +106,7 @@ class GameScene extends Phaser.Scene {
       // Making sure the correct Sticker goes to the correct Silhouette
       for (const sticker of paintingObj.stickers) {
         sticker.image.on('dragend', (pointer) => {
-          if (sticker.image.x >= sticker.silhouette.x + sticker.silhouette.offset.x - (sticker.silhouette.bounds.rightbound - sticker.silhouette.bounds.leftbound) / 2) {
+          if (sticker.image.x >= sticker.silhouette.image.x + sticker.silhouette.offset.x - (sticker.silhouette.bounds.rightbound - sticker.silhouette.bounds.leftbound) / 2) {
             sticker.image.disableInteractive()
           }
         })
@@ -361,6 +361,7 @@ class GameScene extends Phaser.Scene {
       }
       console.log('started next scene')
     }
+  }
 
   nextPainting () {
     // move the current painting offscreen
