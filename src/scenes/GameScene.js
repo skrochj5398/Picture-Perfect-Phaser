@@ -22,18 +22,9 @@ class GameScene extends Phaser.Scene {
     // save json to scene
     this.levelData = data.levelData
 
-    // get music
-    this.music = data.music
-    // check if music exists
-    if (this.music == null) {
-      // make new music
-      this.music = this.sound.addAudioSprite('bgMusic')
-      this.music.play('MenuMusic1', { volume: CONFIG.musicVol })
-    }
-
-    // change music played
-    this.music.stop()
-    //this.music.start('') TODO add gameplay bgMusic
+    // add music to scene
+    this.music = this.sound.addAudioSprite('levelBg')
+    this.music.play('GameMusic1', { volume: CONFIG.musicVol })
 
     console.log('making new transition')
     // make new transition
