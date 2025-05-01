@@ -77,14 +77,16 @@ class GameScene extends Phaser.Scene {
       // fill an array with silhouette keys
       const silhouettes = []
       for (let k = 0; k < painting.numSilhouettes; k++) {
-        //const silhouette = new Silhouette(this.add.image(0, 0, ), null, i * 10 + k)
+        // const silhouette = new Silhouette(this.add.image(0, 0, ), null, i * 10 + k)
         silhouettes.push(painting.name + painting.silhouettes[k])
-        //allSilhouettes.push(silhouette)
+        // allSilhouettes.push(silhouette)
       }
       // pass them to the Painting constructor
       const paintingObj = new Painting(painting.name, stickers, silhouettes, this)
       this.paintings.push(paintingObj)
 
+      // Making the Silhouettes into zones
+      const zone = this.add.zone(targetSilhouettes.x, targetSilhouettes.y, targetSilhouettes.width, targetSilhouettes.height).setRectangleDropZone(targetSilhouettes.width, targetSilhouettes.height)
       // Dragging the stickers
       for (const sticker of paintingObj.stickers) {
         sticker.image.on('drag', (pointer, dragX, dragY) => {
@@ -92,12 +94,17 @@ class GameScene extends Phaser.Scene {
           sticker.image.setPosition(dragX, dragY)
         })
       }
-      // Making sure the correct Sticker goes to the correct Silhouette
+      // Dropping the stickers into the silhouettes
       for (const sticker of paintingObj.stickers) {
-        sticker.image.on('dragend', (pointer) => {
-          if (sticker.image.x >= sticker.silhouette.x + sticker.silhouette.offset.x - (sticker.silhouette.bounds.rightbound - sticker.silhouette.bounds.leftbound) / 2) {
-            sticker.image.disableInteractive()
-          }
+        sticker.image.on('drop', (pointer) => {
+          sticker.image.x = zone.x
+          sticker.image.y = zone.y
+
+          sticker.image.input.enabled = false
+
+          console.log('Dropped.')
+          //sticker.image.destroy()
+          //silhouettes.destroy()
         })
       }
     }
@@ -139,7 +146,7 @@ class GameScene extends Phaser.Scene {
         }
         // set the sticker's silhouette to the correct one
         stickerObj.setSilhouette(silhouette)
-        //console.log('sticker: ', stickerObj.image.texture.key, 'silhouette: ', silhouette.image.texture.key)
+        // console.log('sticker: ', stickerObj.image.texture.key, 'silhouette: ', silhouette.image.texture.key)
       }
     }
 
@@ -165,17 +172,6 @@ class GameScene extends Phaser.Scene {
       blendMode: 'ADD',
       emitting: false
     })
-
-    this.emitter.addEmitZone({
-      type: 'edge',
-      source: new Phaser.Geom.Circle(0, 0, 160)
-    })
-
-    /* this.tweens.add({
-      targets: this.emitter,
-      ease: 'linear',
-      yoyo: true
-    }) */
 
     // attach a function to a sticker; should attach all of them
     console.log('about to attach click function')
