@@ -3,6 +3,7 @@ class Silhouette {
     this.image = image
     this.sticker = sticker
     this.id = id
+    this.bounds = null
   }
 
   // test method

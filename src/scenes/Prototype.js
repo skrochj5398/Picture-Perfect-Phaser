@@ -59,12 +59,6 @@ class PrototypeScene extends Phaser.Scene {
       ss.stickerOne.destroy()
       cowNegative.destroy()
     })
-
-    ss.stickerOne.on('dragend', (pointer, dropped) => {
-      if (!dropped) {
-        ss.stickerOne.disableInteractive()
-      }
-    })
   }
 
   handleBlueBoxPointerDown (pointer) {
@@ -73,6 +67,12 @@ class PrototypeScene extends Phaser.Scene {
     ss.stickerOne.off('pointerdown')
     ss.stickerOne.on('drag', (pointer, dragX, dragY) => {
       ss.stickerOne.setPosition(dragX, dragY)
+    })
+    ss.stickerOne.on('dragend', (pointer, dropped) => {
+      if (!dropped) {
+        ss.stickerOne.x = ss.stickerOne.input.dragStartX
+        ss.stickerOne.y = ss.stickerOne.input.dragStartY
+      }
     })
     // doesn't work cuz scope or something
     // this.handlePointerDown(pointer, this.BlueBox, this.RedBox)
