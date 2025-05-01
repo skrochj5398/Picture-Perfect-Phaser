@@ -146,8 +146,8 @@ class GameScene extends Phaser.Scene {
           stickerObj.image.input.enabled = false
 
           console.log('Dropped.')
-          //sticker.image.destroy()
-          //silhouettes.destroy()
+          stickerObj.image.destroy()
+          silhouette.image.destroy()
         })
       }
     }
