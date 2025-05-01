@@ -93,7 +93,8 @@ class GameScene extends Phaser.Scene {
       }
       // pass them to the Painting constructor
       const paintingObj = new Painting(painting.name, stickers, silhouettes, this)
-      paintingObj.img.on('pointerdown', ()=> {this.this.onPlayerClicked()})
+      paintingObj.img.setInteractive()
+      paintingObj.img.on('pointerdown', ()=> {this.onPlayerClicked()})
       this.paintings.push(paintingObj)
 
       // Dragging the stickers

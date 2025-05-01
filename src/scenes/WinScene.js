@@ -32,7 +32,6 @@ class WinScene extends Phaser.Scene {
   }
 
   create () {
-    this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'WinScreen')
 
     // get levelIndex
     for (const level of this.data.levels) {
@@ -42,6 +41,19 @@ class WinScene extends Phaser.Scene {
         break
       }
     }
+
+    // Adding image based on user score
+    if (CONFIG.timesClicked <= this.data.levels[this.levelIndex].GoldRating){
+      this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'WinScreen')
+      console.log('Boo')
+    }
+    else if (CONFIG.timesClicked <= this.data.levels[this.levelIndex].SilverRating){
+      this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'TempWinScreen')
+    }
+    else {
+      this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'RedBox')
+    }
+    //this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'WinScreen')
 
         // create return button
         const returnButtonX = CONFIG.DEFAULT_WIDTH / 5 * 2
@@ -70,11 +82,13 @@ class WinScene extends Phaser.Scene {
     // console.log('Times Clicked: ' + CONFIG.timesClicked)
     // CONFIG.timesClicked = 0;
     //this.game.time.events.add(Phaser.Timer.SECOND * 2, this.announceScore, this);
+    this.announceScore()
   }
 
   announceScore () {
     // TESTING PURPOSES ONLY: Printing times clicked and then resetting variable
     console.log('Times Clicked: ' + CONFIG.timesClicked)
+    console.log('Gold Rating: ' + this.data.levels[this.levelIndex].GoldRating)
     CONFIG.timesClicked = 0;
   }
 

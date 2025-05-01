@@ -2,6 +2,8 @@
 	"numLevels": 7,
 	"levels": [{
 		"name": "Level1",
+		"GoldRating": 5,
+		"SilverRating": 7,
 		"numPaintings": 3,
 		"paintings": [{
 			"name": "basket_of_fruits_1992.51.1.png",
@@ -36,6 +38,8 @@
 		}]
 	},{
 		"name": "Level2",
+		"GoldRating": 11,
+		"SilverRating": 18,
 		"numPaintings": 4,
 		"paintings": [{
 			"name": "wooded_landscape_with_travelers_2020.26.1.png",
@@ -88,6 +92,8 @@
 		}]
 	},{
   		"name": "Level3",
+			"GoldRating": 10,
+			"SilverRating": 15,
 		"numPaintings": 4,
 		"paintings": [{
 			"name": "the_last_of_the_buffalo_2014.79.5.png",
