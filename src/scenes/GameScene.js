@@ -65,7 +65,6 @@ class GameScene extends Phaser.Scene {
     // create an array to fill with Paintings
     this.paintings = []
     const targetSilhouettes = []
-    const allSilhouettes = []
     // read values from this.levelData to know how many stickers/silhouettes to pass
     for (let i = 0; i < this.levelData.numPaintings; i++) {
       const painting = this.levelData.paintings[i]
@@ -117,18 +116,18 @@ class GameScene extends Phaser.Scene {
         const sticker = painting.stickers[j]
         // get the silhouette
         let silhouette = null
-        let silhouetteIndex = 0
-        while (silhouette == null && silhouetteIndex < allSilhouettes.length) {
-          const sil = allSilhouettes[silhouetteIndex]
-          for (const loopPainting of this.levelData.paintings) {
-            console.log('checking: ', loopPainting.name + sticker.silhouette, '\nagainst: ', sil.image.texture.key)
-            if (loopPainting.name + sticker.silhouette === sil.image.texture.key) {
+        for (let k = 0; k < this.paintings.length; k++) {
+          for (const sil of this.paintings[k].silhouettes) {
+            console.log('checking: ', this.levelData.paintings[k].name + sticker.silhouette, '\nagainst: ', sil.image.texture.key)
+            if (this.levelData.paintings[k].name + sticker.silhouette === sil.image.texture.key) {
               console.log('found silhouette: ', sil.image.texture.key)
               silhouette = sil
               break
             }
           }
-          silhouetteIndex++
+        }
+        if (silhouette == null) {
+          console.log('!!!!silhouette not found for sticker!!!!: ', sticker.image.texture.key)
         }
         // now find the sticker 0_0
         let stickerObj = null
