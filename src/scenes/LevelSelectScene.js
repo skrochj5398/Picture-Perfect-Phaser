@@ -70,20 +70,21 @@ class LevelSelectScene extends Phaser.Scene {
     this.pages = []
     // loop through and add buttons
     for (let i = 0; i < numLevels; i++) {
+      // variables
+      const columns = 2
+      const rows = 2
       // check in another page is needed
-      if (i % 6 === 0) {
+      if (i % (rows * columns) === 0) {
         this.pages.push([])
         console.log('pushing a new page: ', this.pages.length)
       }
-      // variables
-      const columns = 2
-      const rows = 3
       // current page
       const currentPage = Math.floor(i / (rows * columns))
       // where to add button
       const levelsPerPage = columns * rows
       const xOffset = CONFIG.DEFAULT_WIDTH / (columns + 1)
       const yOffset = CONFIG.DEFAULT_HEIGHT / (rows + 1)
+      console.log('this page index: ', currentPage, ' this page: ', this.pages[currentPage])
       const pagePos = this.pages[currentPage].length % levelsPerPage
       const xPos = pagePos % columns + 1
       const yPos = Math.floor((pagePos % (rows * columns)) / 2) + 1
@@ -98,20 +99,25 @@ class LevelSelectScene extends Phaser.Scene {
         // start transition
         this.startTransition('GameScene', { levelData: this.data.levels[i] })
       })
-      const text = this.add.text(x, y, this.data.levels[i].name,
+      const text = this.add.text(x - button.displayWidth / 2, y, this.data.levels[i].name,
         { font: '16pt Arial', color: '#FFFFFF', align: 'center' })
       const levelButton = { button: button, text: text }
       // add button to storage structure
       console.log('pushing button')
       this.pages[currentPage].push(levelButton)
       // check if levelButton is on another page
-      console.log(i / 6)
-      if (i / 6 >= 1) {
+      console.log(i / (rows * columns))
+      if (i / (rows * columns) >= 1) {
         // set not active
         this.changeLevelButtonStatus(levelButton, false)
       }
     }
     this.currentPage = 0
+    // disable page turn buttons if only one page
+    if (this.pages.length <= 1) {
+      leftButton.setActive(false).setVisible(false)
+      rightButton.setActive(false).setVisible(false)
+    }
 
     this.input.keyboard.on('keyup', this.keyReleased, this)
 

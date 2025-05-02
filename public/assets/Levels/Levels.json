@@ -1,5 +1,5 @@
 {
-	"numLevels": 7,
+	"numLevels": 6,
 	"levels": [{
 		"name": "Level1",
 		"numPaintings": 3,
@@ -136,12 +136,133 @@
 			"silhouettes": ["Angel Negative.png"]
 		}]
 	},{
-		"name": "haha4"
+		"name": "Gentlemens Gems",
+		"numPaintings": 3,
+		"paintings": [{
+			"name": "poor_artist27s_cupboard_2014.79.24.png",
+			"numStickers": 2,
+			"stickers": [{
+				"name": "Canister Sticker.png",
+				"silhouette": "Canister Negative.png"
+			},{
+				"name": "Pipe Sticker.png",
+				"silhouette": "Pipe Negative.png"
+			}],
+			"numSilhouettes": 2,
+			"silhouettes": ["Bread Negative.png", "Shell Negative.png"]
+		},{
+			"name": "gentlemen27s_still_life_2018.44.27.png",
+			"numStickers": 2,
+			"stickers": [{
+				"name": "Flute Sticker.png",
+				"silhouette": "Flute Negative.png"
+			}, {
+				"name": "Shell Sticker.png",
+				"silhouette": "Shell Negative.png"
+			}],
+			"numSilhouettes": 2,
+			"silhouettes": ["Canister Negative.png", "Cigar Negative.png"]
+		},{
+			"name": "still_life_with_stoneware_jug_and_pipe_2019.13.1.png",
+			"numStickers": 2,
+			"stickers": [{
+				"name": "Bread Sticker.png",
+				"silhouette": "Bread Negative.png"
+			},{
+				"name": "Cigar Sticker.png",
+				"silhouette": "Cigar Negative.png"
+			}],
+			"numSilhouettes": 2,
+			"silhouettes": ["Flute Negative.png", "Pipe Negative.png"]
+		}]
 	},{
-		"name": "haha5"
+		"name": "Hangout",
+		"numPaintings": 3,
+		"paintings": [{
+			"name": "the_longshoremen27s_moon_2014.136.2.png",
+			"numStickers": 3,
+			"stickers": [{
+				"name": "Cat Sticker.png",
+				"silhouette": "Cat Negative.png"
+			},{
+				"name": "Guitar Sticker.png",
+				"silhouette": "Guitar Negative.png"
+			},{
+				"name": "Whiskey Tray Sticker.png",
+				"silhouette": "Whiskey Tray Negative.png"
+			}],
+			"numSilhouettes": 3,
+			"silhouettes": ["Boy Negative.png", "Pully Negative.png", "Tin Kettle Negative.png"]
+		},{
+			"name": "a_pastoral_visit_2014.136.119.png",
+			"numStickers": 3,
+			"stickers": [{
+				"name": "Bag Sticker.png",
+				"silhouette": "Bag Negative.png"
+			}, {
+				"name": "Boy Sticker.png",
+				"silhouette": "Boy Negative.png"
+			}, {
+				"name": "Hat Sticker.png",
+				"silhouette": "Hat Negative.png"
+			}],
+			"numSilhouettes": 3,
+			"silhouettes": ["Cat Negative.png", "Guitar Negative.png", "Umbrella and Hat Negative.png"]
+		},{
+			"name": "waiting_for_the_stage_2014.79.36.png",
+			"numStickers": 3,
+			"stickers": [{
+				"name": "Pully Sticker.png",
+				"silhouette": "Pully Negative.png"
+			},{
+				"name": "Tin Kettle Sticker.png",
+				"silhouette": "Tin Kettle Negative.png"
+			},{
+				"name": "Umbrella and Hat Sticker.png",
+				"silhouette": "Umbrella and Hat Negative.png"
+			}],
+			"numSilhouettes": 3,
+			"silhouettes": ["Bag Negative.png", "Hat Negative.png", "Whiskey Tray Negative.png"]
+		}]
 	},{
-		"name": "haha6"
-	},{
-		"name": "haha7"
+		"name": "Maids",
+		"numPaintings": 3,
+		"paintings": [{
+			"name": "the_attentive_nurse_1952.5.37.png",
+			"numStickers": 2,
+			"stickers": [{
+				"name": "Bucket Sticker.png",
+				"silhouette": "Bucket Negative.png"
+			},{
+				"name": "Knife Sticker.png",
+				"silhouette": "Knife Negative.png"
+			}],
+			"numSilhouettes": 2,
+			"silhouettes": ["Bread Negative.png", "Pot Negative.png"]
+		},{
+			"name": "the_kitchen_maid_1952.5.38.png",
+			"numStickers": 2,
+			"stickers": [{
+				"name": "Bread Sticker.png",
+				"silhouette": "Bread Negative.png"
+			},{
+				"name": "Pan Sticker.png",
+				"silhouette": "Pan Negative.png"
+			}],
+			"numSilhouettes": 2,
+			"silhouettes": ["Bowl Negative.png", "Knife Negative.png"]
+		},{
+			"name": "the_scullery_maid_2014.79.708.png",
+			"numStickers": 2,
+			"stickers": [{
+				"name": "Bowl Sticker.png",
+				"silhouette": "Bowl Negative.png"
+			},{
+				"name": "Pot Sticker.png",
+				"silhouette": "Pot Negative.png"
+			}],
+			"numSilhouettes": 2,
+			"silhouettes": ["Bucket Negative.png", "Pan Negative.png"]
+		}]
 	}]
 }
