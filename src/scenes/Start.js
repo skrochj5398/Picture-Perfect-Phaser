@@ -33,6 +33,10 @@ class StartScene extends Phaser.Scene {
     this.load.image('RedBox', 'assets/RedBox.png')
     this.load.image('BlueBox', 'assets/BlueBox.png')
 
+    // Load Light ray Video
+    this.load.video('Light Ray', 'assets/Animation/light rays.mp4', true);
+  
+
     // load back button
     this.load.image('ReturnButton', '/assets/UI/UI_Return_Claire_4_16_2025_v2.png')
 
@@ -140,9 +144,10 @@ class StartScene extends Phaser.Scene {
   }
 
   create () {
+
     // Remove loading text
     this.loadingText.destroy()
-
+    
     this.anims.create({
       key: 'Curtains',
       frames: this.anims.generateFrameNumbers('CurtainsTransition', { frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31] }),
@@ -168,16 +173,16 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / startScreen_1.height
     )
 
-    this.anims.create({
-      key: "grass",
-      frames: this.anims.generateFrameNumbers("Test anim", {frames:[0,1,2,3,4,5,6,7]}),
-      frameRate: 8,
-      repeat: -1
-    })
+     //Add Light ray video
+     const Light_Rays = this.add.video(1000, 500,).loadURL('assets/Animation/Light Rays.webm');
+      Light_Rays.alpha = 0.35
+     let loops = 0
+    Light_Rays.on('loops', () => {
 
-    this.player = this.add.sprite(1000, 500, "Test anim")
-    this.player.setScale(1.2)
-    this.player.play("grass",true)
+      loops++;
+    });
+
+    Light_Rays.play (true)
 
     // Add background image 2
     const startScreen_2 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'startScreen_2')
@@ -187,9 +192,11 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / startScreen_2.height
     )
 
+
     // Add background image 3
     const startScreen_3 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.7, 'startScreen_3')
     startScreen_3.setScale(0.8)
+
 
     // start button
     this.startButton = new HoverableButton(
@@ -217,6 +224,7 @@ class StartScene extends Phaser.Scene {
       'CreditsButton',
       () => { this.toCredits() }
     ).setInteractive().on('pointerup', () => { this.pickRandomSfx() })
+    
 
     // Add a callback when a key is released
     this.input.keyboard.on('keyup', this.keyReleased, this)
