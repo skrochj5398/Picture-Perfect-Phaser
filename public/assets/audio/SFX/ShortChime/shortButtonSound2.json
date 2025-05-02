@@ -1,0 +1,12 @@
+{
+  "resources": [
+    "assets/audio/SFX/ShortChime/ShortChimeMain1.mp3"
+  ],
+  "spritemap": {
+    "sound": {
+      "start": 0,
+      "end": 2.0,
+      "loop": false
+    }
+  }
+}

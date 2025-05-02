@@ -22,7 +22,7 @@ class PrototypeScene extends Phaser.Scene {
     this.load.image('Frame4', 'assets/Picture perfect- Frame2.png')
     this.load.image('Frame2', 'assets/sprites/Picture perfect- Frame2 (extra).png')
     this.load.image('Frame3', 'assets/sprites/Picture perfect- Frame3.png')
-    this.load.image('cowNegative', 'assets/Levels/CustomLevel1/Painting1/Buffalo Negative.png')
+    this.load.image('cowNegative', 'assets/Buffalo Negative.png')
 
     // Load in particle effects
     this.load.image('red', 'assets/particles/red.png')
@@ -39,10 +39,10 @@ class PrototypeScene extends Phaser.Scene {
     //Slicing the frame to make it not distorted
     //const Frame = this.add.nineslice(CONFIG.DEFAULT_WIDTH / 1.98, CONFIG.DEFAULT_HEIGHT / 1.96, 'Frame', 0, 1920, 1080, 32, 32, 32, 32)
 
-    
-    //ss.silhouetteOne = this.add.nineslice(1000, 1010, 'Inventory', 0, 1000, 300, 32, 32, 32, 32).setScale(.5)
-    //ss.stickerOne = this.add.image(400, 700, 'BuffaloSticker').setInteractive().setScale(.8)
-    //ss.stickerOne.on('pointerdown', () => {this.onPlayerClicked()})
+    ss.silhouetteOne = this.add.nineslice(1000, 1010, 'Inventory', 0, 1000, 300, 32, 32, 32, 32).setScale(0.5)
+    const cowNegative = this.add.image(1000, 800, 'cowNegative').setScale(0.6)
+    const zone = this.add.zone(cowNegative.x, cowNegative.y, cowNegative.width, cowNegative.height).setRectangleDropZone(cowNegative.width, cowNegative.height)
+    ss.stickerOne = this.add.image(400, 700, 'BuffaloSticker').setInteractive({ draggable: true }).setScale(0.8)
 
     // Create and configure a particle emitter
     this.emitter = this.add.particles(0, 0, 'red', {
@@ -54,9 +54,16 @@ class PrototypeScene extends Phaser.Scene {
     })
     ss.stickerOne.on('pointerdown', () => { this.handleBlueBoxPointerDown() })
 
+    ss.stickerOne.on('drop', (pointer) => {
+      ss.stickerOne.x = zone.x
+      ss.stickerOne.y = zone.y
 
-    //ss.stickerOne.on('pointerdown', () => {this.handleBlueBoxPointerDown()})
-    
+      ss.stickerOne.input.enabled = false
+
+      console.log('Dropped.')
+      ss.stickerOne.destroy()
+      cowNegative.destroy()
+    })
   }
 
   // TODO:: Debug painting clicking
@@ -68,15 +75,18 @@ class PrototypeScene extends Phaser.Scene {
   handleBlueBoxPointerDown (pointer) {
     this.emitter.emitParticleAt(ss.stickerOne.x, ss.stickerOne.y)
     Util.handlePointerDown(pointer, ss.stickerOne, ss.silhouetteOne)
-    ss.stickerOne.disableInteractive()
-    //doesn't work cuz scope or something
-    //this.handlePointerDown(pointer, this.BlueBox, this.RedBox)
-  } 
-
-  // Method for paintings and stickers to handle clicks for scoring
-  onPlayerClicked(){
-    CONFIG.timesClicked++;
-    console.log('Click!');
+    ss.stickerOne.off('pointerdown')
+    ss.stickerOne.on('drag', (pointer, dragX, dragY) => {
+      ss.stickerOne.setPosition(dragX, dragY)
+    })
+    ss.stickerOne.on('dragend', (pointer, dropped) => {
+      if (!dropped) {
+        ss.stickerOne.x = ss.stickerOne.input.dragStartX
+        ss.stickerOne.y = ss.stickerOne.input.dragStartY
+      }
+    })
+    // doesn't work cuz scope or something
+    // this.handlePointerDown(pointer, this.BlueBox, this.RedBox)
   }
 
 }

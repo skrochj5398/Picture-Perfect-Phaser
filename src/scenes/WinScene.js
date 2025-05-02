@@ -4,13 +4,8 @@ import HoverableButton from '../models/HoverableButton.js'
 
 class WinScene extends Phaser.Scene {
   init (data) {
-    // get music
-    this.music = data.music
-    // check if music exists
-    if (this.music == null) {
-      // make new music
-      this.music = this.sound.addAudioSprite('bgMusic')
-    }
+    // make music
+    this.music = this.sound.addAudioSprite('bgMusic')
     this.music.play('MenuMusic1', { volume: CONFIG.musicVol })
 
     console.log('making new transition')
@@ -64,7 +59,7 @@ class WinScene extends Phaser.Scene {
         // create return button
         const replayButtonX = CONFIG.DEFAULT_WIDTH / 5 * 3
         const replayButtonY = CONFIG.DEFAULT_HEIGHT / 4 * 3
-        const replayButton = new HoverableButton(this, 0, 0, 'ReplayButton', () => { this.startTransition('GameScene', { levelData: this.data.levels[this.levelIndex], music: this.music }) })
+        const replayButton = new HoverableButton(this, 0, 0, 'ReplayButton', () => { this.startTransition('GameScene', { levelData: this.data.levels[this.levelIndex] }) })
         replayButton.setPosition(replayButtonX, replayButtonY)
     
         // destroy transition so it doesn't stay on screen
@@ -104,6 +99,10 @@ class WinScene extends Phaser.Scene {
     // check if transition is done
     if (this.transition.anims.currentFrame.index === 22) {
       // go to target scene
+      // stop music if playing another level
+      if (this.targetScene === 'GameScene') {
+        this.music.stop()
+      }
       // stop this scene
       this.game.scene.stop('WinScene')
       // start level select scene
