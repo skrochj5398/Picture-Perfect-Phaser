@@ -4,7 +4,7 @@ export const CONFIG = {
   DEFAULT_GRAVITY: 200,
   DEFAULT_MINWIDTH: 800,
   DEFAULT_MINHEIGHT: 600,
-  HUD_MARGIN: 10,
+  HUD_MARGIN: 15,
   musicVol: 0.3,
   sfxVol: 0.3
 }

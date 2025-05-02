@@ -207,7 +207,8 @@ class GameScene extends Phaser.Scene {
     // create button to bring up options menu
     this.optionsButton = new HoverableButton(this, 0, 0, 'optionsButton', () => { this.setOptionsVisibility(!this.optionsBackground.visible) })
     // set position
-    this.optionsButton.setPosition(returnButton.x + returnButton.displayWidth / 2 + CONFIG.HUD_MARGIN * 2 + this.optionsButton.width / 2, this.optionsButton.height / 2 + CONFIG.HUD_MARGIN)
+    //this.optionsButton.setPosition(returnButton.x + returnButton.displayWidth / 2 + CONFIG.HUD_MARGIN * 2 + this.optionsButton.width / 2, this.optionsButton.height / 2 + CONFIG.HUD_MARGIN)
+    this.optionsButton.setPosition(this.optionsButton.width / 2 + CONFIG.HUD_MARGIN, returnButton.y + returnButton.displayHeight / 2 + CONFIG.HUD_MARGIN * 2 + this.optionsButton.height / 2)
 
     // create options menu
     const labelToSliderOffset = 90
