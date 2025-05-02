@@ -84,27 +84,11 @@ class GameScene extends Phaser.Scene {
       // pass them to the Painting constructor
       const paintingObj = new Painting(painting.name, stickers, silhouettes, this)
       this.paintings.push(paintingObj)
-
-      // Making the Silhouettes into zones
-      const zone = this.add.zone(targetSilhouettes.x, targetSilhouettes.y, targetSilhouettes.width, targetSilhouettes.height).setRectangleDropZone(targetSilhouettes.width, targetSilhouettes.height)
       // Dragging the stickers
       for (const sticker of paintingObj.stickers) {
         sticker.image.on('drag', (pointer, dragX, dragY) => {
           sticker.image.off('pointerdown')
           sticker.image.setPosition(dragX, dragY)
-        })
-      }
-      // Dropping the stickers into the silhouettes
-      for (const sticker of paintingObj.stickers) {
-        sticker.image.on('drop', (pointer) => {
-          sticker.image.x = zone.x
-          sticker.image.y = zone.y
-
-          sticker.image.input.enabled = false
-
-          console.log('Dropped.')
-          //sticker.image.destroy()
-          //silhouettes.destroy()
         })
       }
     }
@@ -118,6 +102,7 @@ class GameScene extends Phaser.Scene {
     // use targetSilhouettes to find the correct silhouette for each sticker
     for (let i = 0; i < this.levelData.paintings.length; i++) {
       const painting = this.levelData.paintings[i]
+      const paintingObj = this.paintings[i]
       for (let j = 0; j < painting.stickers.length; j++) {
         // get the sticker
         const sticker = painting.stickers[j]
@@ -146,7 +131,24 @@ class GameScene extends Phaser.Scene {
         }
         // set the sticker's silhouette to the correct one
         stickerObj.setSilhouette(silhouette)
-        // console.log('sticker: ', stickerObj.image.texture.key, 'silhouette: ', silhouette.image.texture.key)
+        console.log('sticker: ', stickerObj.image.texture.key, 'silhouette: ', silhouette.image.texture.key)
+        // Making the Silhouettes into zones with x,y,w,h
+        const paintingObjX = silhouette.gameOrigin.x
+        const paintingObjY = silhouette.gameOrigin.y
+        const paintingObjW = silhouette.bounds.rightBound - silhouette.bounds.leftBound
+        const paintingObjH = silhouette.bounds.bottomBound - silhouette.bounds.topBound
+        const zone = this.add.zone(paintingObjX, paintingObjY, paintingObjW, paintingObjH)
+          .setRectangleDropZone(paintingObjW, paintingObjH)
+        stickerObj.image.on('drop', (pointer) => {
+          stickerObj.image.x = zone.x
+          stickerObj.image.y = zone.y
+
+          stickerObj.image.input.enabled = false
+
+          console.log('Dropped.')
+          stickerObj.image.destroy()
+          silhouette.image.destroy()
+        })
       }
     }
 
