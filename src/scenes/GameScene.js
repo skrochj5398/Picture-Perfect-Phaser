@@ -308,12 +308,14 @@ class GameScene extends Phaser.Scene {
   onStickerPointerDown (index) {
     // This is where the clicking for sticker is happening
     console.log('running click function')
-    console.log('targetSilhouette: ', this.currentPainting.stickers[index].silhouette)
-    this.inventoryView.drawNewSticker(this.currentPainting.stickers[index], this)
-    this.emitter.emitParticleAt(this.currentPainting.stickers[index].gameOrigin.x, this.currentPainting.stickers[index].gameOrigin.y)
-    console.log('particle emitted at: ', this.currentPainting.stickers[index].gameOrigin)
+    const sticker = this.currentPainting.stickers[index]
+    sticker.image.off('pointerdown')
+    console.log('targetSilhouette: ', sticker.silhouette)
+    this.inventoryView.drawNewSticker(sticker, this)
+    this.emitter.emitParticleAt(sticker.gameOrigin.x, sticker.gameOrigin.y)
+    console.log('particle emitted at: ', sticker.gameOrigin)
     // this.currentPainting.stickers[index].image.setPosition(-5000, 0)
-    this.currentPainting.removeSticker(this.currentPainting.stickers[index])
+    this.currentPainting.removeSticker(sticker)
     // decrement num stickers left
     this.numStickersLeft--
     console.log(this.numStickersLeft)
