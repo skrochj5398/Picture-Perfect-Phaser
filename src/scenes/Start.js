@@ -240,7 +240,7 @@ class StartScene extends Phaser.Scene {
     this.optionsCloseButton = new HoverableButton(
       this,
       OPTIONS_MENU.X,
-      OPTIONS_MENU.Y + this.optionsBackground.height / 2 - 25,
+      OPTIONS_MENU.Y + 270,
       'optionsCloseButton',
       () => { this.setOptionsVisibility(!this.optionsBackground.visible) }
     )
