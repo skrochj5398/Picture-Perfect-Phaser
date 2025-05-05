@@ -148,6 +148,17 @@ class GameScene extends Phaser.Scene {
           console.log('Dropped.')
           stickerObj.image.destroy()
           silhouette.image.destroy()
+
+          // decrement num stickers left
+          this.numStickersLeft--
+          console.log(this.numStickersLeft)
+          // decrement num stickers left per painting
+          this.numStickersLeftPerPainting[this.paintings.indexOf(this.currentPainting)]--
+          console.log(this.numStickersLeftPerPainting)
+          // check if any stickers are left
+          if (this.numStickersLeft === 0) {
+            this.startTransition()
+          }
         })
 
         stickerObj.image.on('dragend', (pointer, dragX, dragY, dropped) => {
@@ -324,16 +335,6 @@ class GameScene extends Phaser.Scene {
     console.log('particle emitted at: ', sticker.gameOrigin)
     // this.currentPainting.stickers[index].image.setPosition(-5000, 0)
     this.currentPainting.removeSticker(sticker)
-    // decrement num stickers left
-    this.numStickersLeft--
-    console.log(this.numStickersLeft)
-    // decrement num stickers left per painting
-    this.numStickersLeftPerPainting[this.paintings.indexOf(this.currentPainting)]--
-    console.log(this.numStickersLeftPerPainting)
-    // check if any stickers are left
-    if (this.numStickersLeft === 0) {
-      this.startTransition()
-    }
     // play sound effect
     this.pickRandomSfx()
   }
