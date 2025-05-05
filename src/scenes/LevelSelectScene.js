@@ -46,6 +46,9 @@ class LevelSelectScene extends Phaser.Scene {
     this.load.image('LevelButtonSilver', 'assets/UI/UI_Level_Select_Frame_Silver_Claire_4_22_2025_v1.png')
     this.load.image('LevelButtonGold', 'assets/UI/UI_Level_Select_Frame_Gold_Claire_4_22_2025_v1.png')
     this.load.image('BlueBox', 'assets/BlueBox.png')
+    // Preview1
+    this.load.video('Lv1Preview', 'assets/Animation/basket_of_fruits.mp4', true)
+
   }
 
   create () {
@@ -53,6 +56,7 @@ class LevelSelectScene extends Phaser.Scene {
     const background = this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'Background')
     background.setScale(CONFIG.DEFAULT_WIDTH / background.width, CONFIG.DEFAULT_HEIGHT / background.height)
     // add stationary UI objects
+
     // left button
     const leftButton = new HoverableButton(this, 0, 0, 'ArrowLeftButton', () => { this.scrollLeft() })
     leftButton.setPosition(leftButton.displayWidth / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0)
@@ -64,6 +68,16 @@ class LevelSelectScene extends Phaser.Scene {
     // return button
     const returnButton = new HoverableButton(this, 0, 0, 'ReturnButton', () => { this.goBack() })
     returnButton.setPosition(returnButton.displayWidth / 2.0 + CONFIG.HUD_MARGIN, returnButton.displayHeight / 2.0 + CONFIG.HUD_MARGIN)
+   
+    //Add Lv1 Preview
+   const Preview1 = this.add.video(640, 350,).loadURL('assets/Animation/basket_of_fruits.mp4');
+   Preview1.scale = 1.5
+   let loops = 0
+   Preview1.on('loops', () => {
+
+      loops++;
+    });
+    Preview1.play (true)
 
     // get number of levels from json
     const numLevels = this.data.numLevels
