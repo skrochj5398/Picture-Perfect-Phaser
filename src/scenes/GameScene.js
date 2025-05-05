@@ -60,6 +60,9 @@ class GameScene extends Phaser.Scene {
     // destroy loading text
     this.loadingText.destroy()
 
+    // create background
+    const background = this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'Background')
+
     // pass silhouettes too, in an array of Silhouettes with ids concat(painting#, silhouette#)
     // define after Frame so frame doesn't block click events (must more blood be shed!?)
     // create an array to fill with Paintings
@@ -222,7 +225,7 @@ class GameScene extends Phaser.Scene {
     this.optionsCloseButton = new HoverableButton(
       this,
       centerOfMenuX,
-      centerOfMenuY + this.optionsBackground.height / 2 - 25,
+      centerOfMenuY + 270,
       'optionsCloseButton',
       () => { this.setOptionsVisibility(!this.optionsBackground.visible) }
     )
