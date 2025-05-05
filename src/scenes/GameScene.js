@@ -139,19 +139,35 @@ class GameScene extends Phaser.Scene {
         const paintingObjH = silhouette.bounds.bottomBound - silhouette.bounds.topBound
         const zone = this.add.zone(paintingObjX, paintingObjY, paintingObjW, paintingObjH)
           .setRectangleDropZone(paintingObjW, paintingObjH)
+        zone.silhouette = silhouette
+        stickerObj.image.on('dragenter', (pointer, target) => {
+          console.log(stickerObj)
+          if (stickerObj.silhouette === target.silhouette) {
+            stickerObj.isDraggedOverTarget = true
+            console.log('setting true')
+          } else {
+            stickerObj.isDraggedOverTarget = false
+            console.log('setting false')
+          }
+        })
+        stickerObj.image.on('dragleave', (pointer, gameObject, target) => {
+          stickerObj.isDraggedOverTarget = false
+          console.log('setting false')
+        })
         stickerObj.image.on('drop', (pointer) => {
-          stickerObj.image.x = zone.x
-          stickerObj.image.y = zone.y
-
-          stickerObj.image.input.enabled = false
-
-          console.log('Dropped.')
-          stickerObj.image.destroy()
-          silhouette.image.destroy()
+          if (stickerObj.isDraggedOverTarget) {
+            stickerObj.image.x = zone.x
+            stickerObj.image.y = zone.y
+            stickerObj.image.input.enabled = false
+            console.log('Dropped.')
+            stickerObj.image.destroy()
+            silhouette.image.destroy()
+          }
         })
 
         stickerObj.image.on('dragend', (pointer, dragX, dragY, dropped) => {
-          if (!dropped) {
+          console.log(!dropped)
+          if (!dropped || !stickerObj.isDraggedOverTarget) {
             stickerObj.image.x = stickerObj.image.input.dragStartX
             stickerObj.image.y = stickerObj.image.input.dragStartY
           }
@@ -217,7 +233,7 @@ class GameScene extends Phaser.Scene {
     // create button to bring up options menu
     this.optionsButton = new HoverableButton(this, 0, 0, 'optionsButton', () => { this.setOptionsVisibility(!this.optionsBackground.visible) })
     // set position
-    //this.optionsButton.setPosition(returnButton.x + returnButton.displayWidth / 2 + CONFIG.HUD_MARGIN * 2 + this.optionsButton.width / 2, this.optionsButton.height / 2 + CONFIG.HUD_MARGIN)
+    // this.optionsButton.setPosition(returnButton.x + returnButton.displayWidth / 2 + CONFIG.HUD_MARGIN * 2 + this.optionsButton.width / 2, this.optionsButton.height / 2 + CONFIG.HUD_MARGIN)
     this.optionsButton.setPosition(this.optionsButton.width / 2 + CONFIG.HUD_MARGIN, returnButton.y + returnButton.displayHeight / 2 + CONFIG.HUD_MARGIN * 2 + this.optionsButton.height / 2)
 
     // create options menu
