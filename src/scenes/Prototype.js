@@ -47,7 +47,7 @@ class PrototypeScene extends Phaser.Scene {
       blendMode: 'ADD',
       emitting: false
     })
-    ss.stickerOne.on('pointerdown', () => { this.handleBlueBoxPointerDown() })
+    ss.stickerOne.on('pointerup', () => { this.handleBlueBoxPointerDown() })
 
     ss.stickerOne.on('drop', (pointer) => {
       ss.stickerOne.x = zone.x
@@ -59,20 +59,23 @@ class PrototypeScene extends Phaser.Scene {
       ss.stickerOne.destroy()
       cowNegative.destroy()
     })
+
+    ss.stickerOne.on('dragend', (pointer, dragX, dragY, dropped) => {
+      console.log(dropped)
+      if (!dropped) {
+        ss.stickerOne.x = ss.stickerOne.input.dragStartX
+        ss.stickerOne.y = ss.stickerOne.input.dragStartY
+        console.log('running my code')
+      }
+    })
   }
 
   handleBlueBoxPointerDown (pointer) {
     this.emitter.emitParticleAt(ss.stickerOne.x, ss.stickerOne.y)
     Util.handlePointerDown(pointer, ss.stickerOne, ss.silhouetteOne)
-    ss.stickerOne.off('pointerdown')
+    ss.stickerOne.off('pointerup')
     ss.stickerOne.on('drag', (pointer, dragX, dragY) => {
       ss.stickerOne.setPosition(dragX, dragY)
-    })
-    ss.stickerOne.on('dragend', (pointer, dropped) => {
-      if (!dropped) {
-        ss.stickerOne.x = ss.stickerOne.input.dragStartX
-        ss.stickerOne.y = ss.stickerOne.input.dragStartY
-      }
     })
     // doesn't work cuz scope or something
     // this.handlePointerDown(pointer, this.BlueBox, this.RedBox)

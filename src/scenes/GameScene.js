@@ -87,7 +87,7 @@ class GameScene extends Phaser.Scene {
       // Dragging the stickers
       for (const sticker of paintingObj.stickers) {
         sticker.image.on('drag', (pointer, dragX, dragY) => {
-          sticker.image.off('pointerdown')
+          sticker.image.off('pointerup')
           sticker.image.setPosition(dragX, dragY)
         })
       }
@@ -149,6 +149,13 @@ class GameScene extends Phaser.Scene {
           stickerObj.image.destroy()
           silhouette.image.destroy()
         })
+
+        stickerObj.image.on('dragend', (pointer, dragX, dragY, dropped) => {
+          if (!dropped) {
+            stickerObj.image.x = stickerObj.image.input.dragStartX
+            stickerObj.image.y = stickerObj.image.input.dragStartY
+          }
+        })
       }
     }
 
@@ -180,8 +187,9 @@ class GameScene extends Phaser.Scene {
     for (const painting of this.paintings) {
       for (let i = 0; i < painting.stickers.length; i++) {
         console.log('attaching event to sticker ', i)
-        painting.stickers[i].image.on('pointerdown', () => { this.onStickerPointerDown(i) })
+        painting.stickers[i].image.on('pointerup', () => { this.onStickerPointerDown(i) })
         realInventory.addSticker(painting.stickers[i], this)
+        painting.stickers[i].image.setDepth(100)
       }
     }
 
@@ -309,7 +317,7 @@ class GameScene extends Phaser.Scene {
     // This is where the clicking for sticker is happening
     console.log('running click function')
     const sticker = this.currentPainting.stickers[index]
-    sticker.image.off('pointerdown')
+    sticker.image.off('pointerup')
     console.log('targetSilhouette: ', sticker.silhouette)
     this.inventoryView.drawNewSticker(sticker, this)
     this.emitter.emitParticleAt(sticker.gameOrigin.x, sticker.gameOrigin.y)
