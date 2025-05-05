@@ -41,7 +41,12 @@ class LevelSelectScene extends Phaser.Scene {
     this.load.image('ArrowLeftButton', 'assets/UI/UI_Arrow_Left_Claire_4_9_2025_v1.png')
     this.load.image('ArrowRightButton', 'assets/UI/UI_Arrow_Right_Claire_4_9_2025_v1.png')
     // load level buttons
+    this.load.image('LevelButtonWood', 'assets/UI/UI_Level_Select_Frame_Wood_Claire_4_22_2025_v1.png')
+    this.load.image('LevelButtonBronze', 'assets/UI/UI_Level_Select_Frame_Bronze_Claire_4_22_2025_v1.png')
+    this.load.image('LevelButtonSilver', 'assets/UI/UI_Level_Select_Frame_Silver_Claire_4_22_2025_v1.png')
+    this.load.image('LevelButtonGold', 'assets/UI/UI_Level_Select_Frame_Gold_Claire_4_22_2025_v1.png')
     this.load.image('BlueBox', 'assets/BlueBox.png')
+
     // load background image
     this.load.image('Background', 'assets/Background_Claire_4_9_2025_v1.png')
   }
@@ -93,14 +98,14 @@ class LevelSelectScene extends Phaser.Scene {
       const y = yOffset * yPos
       // create a  button
       console.log('adding button')
-      const button = new HoverableButton(this, x, y, 'BlueBox', () => {
+      const button = new HoverableButton(this, x, y, 'LevelButtonWood', () => {
         // stop music
         this.music.stop()
         // start transition
         this.startTransition('GameScene', { levelData: this.data.levels[i] })
       })
-      const text = this.add.text(x - button.displayWidth / 2, y, this.data.levels[i].name,
-        { font: '16pt Arial', color: '#FFFFFF', align: 'center' })
+      const text = this.add.text(x - button.displayWidth / 2 + 100, y, this.data.levels[i].name,
+        { font: '32pt Arial', color: '#FFFFFF', align: 'center' })
       const levelButton = { button: button, text: text }
       // add button to storage structure
       console.log('pushing button')

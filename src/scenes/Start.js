@@ -38,7 +38,7 @@ class StartScene extends Phaser.Scene {
   
 
     // load back button
-    this.load.image('ReturnButton', '/assets/UI/UI_Return_Claire_4_16_2025_v2.png')
+    this.load.image('ReturnButton', 'assets/UI/UI_Return_Claire_4_16_2025_v2.png')
 
     // Load the image assets needed for 'ExampleScene'
     this.load.image('sky', 'assets/skies/space3.png')
