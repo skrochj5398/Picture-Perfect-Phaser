@@ -13,7 +13,7 @@ class TutorialScene extends GameScene {
     // add text telling what to do
     this.tutorialText = this.add.text(
       450, 150,
-      'Find objects that are out of place in the paintings.\nClick them to send them to the inventory.\nOnce you find them all, you beat the level!',
+      'Find objects that are out of place in the paintings.\nClick them to send them to the inventory.\nMatch the objects you find to their silhouettes to win!',
       { font: '28pt Arial', color: '#FFFFFF', align: 'left' }
     )
     // disable swapping paintings
