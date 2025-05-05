@@ -36,19 +36,18 @@ class WinScene extends Phaser.Scene {
         break
       }
     }
-
+    this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'WinScreen')
     // Adding image based on user score
     if (CONFIG.timesClicked <= this.data.levels[this.levelIndex].GoldRating){
-      this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'WinScreen')
+      this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'GoldScreen')
       console.log('Boo')
     }
     else if (CONFIG.timesClicked <= this.data.levels[this.levelIndex].SilverRating){
-      this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'TempWinScreen')
+      this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'SilverScreen')
     }
     else {
-      this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'RedBox')
+      this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'BronzeScreen')
     }
-    //this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'WinScreen')
 
         // create return button
         const returnButtonX = CONFIG.DEFAULT_WIDTH / 5 * 2

@@ -24,6 +24,10 @@ class InventoryView {
     // this.slotsDirection * -1;
   }
 
+  removeSticker (index) {
+    this.Inventory.foundStickers.splice(index, 1);
+  }
+
   reset () {
     this.Inventory.emptyInventory()
     this.stickers.length = 0
