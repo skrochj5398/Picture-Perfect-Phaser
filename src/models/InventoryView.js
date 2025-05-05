@@ -15,6 +15,7 @@ class InventoryView {
     this.slotsDirection = -1
     this.slots = []
     this.stickersFound = 0
+    this.evenOffset = 57.5
   }
 
   addSticker (newSticker) {
@@ -33,6 +34,9 @@ class InventoryView {
   // method to draw inventory slots at beginning of play
   draw (scene) {
     const tempX = this.xPos
+    if (this.Inventory.getLength() % 2 == 0){
+      this.xPos -= this.evenOffset;
+    }
     const tempSpace = this.spacing
     // console.log('Drawing inventory');
     // console.log('Slots: ' + this.Inventory.getLength() + ' gap: ' + this.spacing)
