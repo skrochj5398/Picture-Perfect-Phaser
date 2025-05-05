@@ -34,8 +34,10 @@ class StartScene extends Phaser.Scene {
     this.load.image('BlueBox', 'assets/BlueBox.png')
 
     // Load Light ray Video
-    this.load.video('Light Ray', 'assets/Animation/light rays.mp4', true);
-  
+    this.load.video('Light Ray', 'assets/Animation/light rays.mp4', true)
+
+    // load background image
+    this.load.image('Background', 'assets/Background_Claire_4_9_2025_v1.png')
 
     // load back button
     this.load.image('ReturnButton', 'assets/UI/UI_Return_Claire_4_16_2025_v2.png')

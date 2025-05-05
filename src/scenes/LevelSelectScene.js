@@ -46,9 +46,6 @@ class LevelSelectScene extends Phaser.Scene {
     this.load.image('LevelButtonSilver', 'assets/UI/UI_Level_Select_Frame_Silver_Claire_4_22_2025_v1.png')
     this.load.image('LevelButtonGold', 'assets/UI/UI_Level_Select_Frame_Gold_Claire_4_22_2025_v1.png')
     this.load.image('BlueBox', 'assets/BlueBox.png')
-
-    // load background image
-    this.load.image('Background', 'assets/Background_Claire_4_9_2025_v1.png')
   }
 
   create () {
