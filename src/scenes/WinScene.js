@@ -38,17 +38,30 @@ class WinScene extends Phaser.Scene {
       }
     }
 
-    // create return button
-    const returnButtonX = CONFIG.DEFAULT_WIDTH / 5 * 2
-    const returnButtonY = CONFIG.DEFAULT_HEIGHT / 4 * 3
-    const returnButton = new HoverableButton(this, 0, 0, 'ReturnButton', () => { this.startTransition('LevelSelectScene', { json: this.data, music: this.music }) })
-    returnButton.setPosition(returnButtonX, returnButtonY)
+    // create buttons
+    const returnButton = new HoverableButton(this, 0, 0, 'WinReturnButton', () => { this.startTransition('LevelSelectScene', { json: this.data, music: this.music }) })
+    const replayButton = new HoverableButton(this, 0, 0, 'WinReplayButton', () => { this.startTransition('GameScene', { levelData: this.data.levels[this.levelIndex] }) })
 
-    // create return button
-    const replayButtonX = CONFIG.DEFAULT_WIDTH / 5 * 3
-    const replayButtonY = CONFIG.DEFAULT_HEIGHT / 4 * 3
-    const replayButton = new HoverableButton(this, 0, 0, 'ReplayButton', () => { this.startTransition('GameScene', { levelData: this.data.levels[this.levelIndex] }) })
-    replayButton.setPosition(replayButtonX, replayButtonY)
+    const counterCenterOffset = 90
+    // set initial button positions
+    let returnButtonX = CONFIG.DEFAULT_WIDTH / 5 * 2 - counterCenterOffset
+    let replayButtonX = CONFIG.DEFAULT_WIDTH / 5 * 3 + counterCenterOffset
+    const buttonY = CONFIG.DEFAULT_HEIGHT / 4 * 3
+
+    // check if continue button is needed
+    if (this.data.levels[this.levelIndex + 1] != null) {
+      const continueButton = new HoverableButton(this, 0, 0, 'WinContinueButton', () => { this.startTransition('GameScene', { levelData: this.data.levels[this.levelIndex + 1] }) })
+      const centerOffset = 70
+      // update button positions
+      returnButtonX = CONFIG.DEFAULT_WIDTH / 6 * 1 + centerOffset
+      replayButtonX = CONFIG.DEFAULT_WIDTH / 6 * 3
+      const continueButtonX = CONFIG.DEFAULT_WIDTH / 6 * 5 - centerOffset
+      continueButton.setPosition(continueButtonX, buttonY).setScale(0.9)
+      returnButton.setScale(0.9)
+      replayButton.setScale(0.9)
+    }
+    returnButton.setPosition(returnButtonX, buttonY)
+    replayButton.setPosition(replayButtonX, buttonY)
 
     // destroy transition so it doesn't stay on screen
     console.log('DESTROY transition')

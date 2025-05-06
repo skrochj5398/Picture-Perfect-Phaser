@@ -61,6 +61,11 @@ class StartScene extends Phaser.Scene {
     // load replay button
     this.load.image('ReplayButton', 'assets/UI/UI_Replay_Claire_4_16_2025_v2.png')
 
+    // load win screen buttons
+    this.load.image('WinContinueButton', 'assets/UI/Win_Screen_Continue_Claire_5_2_2025_v1.png')
+    this.load.image('WinReturnButton', 'assets/UI/Win_Screen_Levels_Claire_5_2_2025_v1.png')
+    this.load.image('WinReplayButton', 'assets/UI/Win_Screen_Replay_Claire_5_2_2025_v1.png')
+
     // load music
     this.load.audioSprite('bgMusic', 'assets/audio/menuMusic1.json', [
       'assets/audio/MUS_GameTheme1_PP_demo1.wav'
