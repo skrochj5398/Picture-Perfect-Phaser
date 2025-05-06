@@ -58,6 +58,11 @@ class StartScene extends Phaser.Scene {
     })
     // load winScene background
     this.load.image('WinScreen', 'assets/WinScreen.png')
+    this.load.image('BronzeScreen', 'assets/UI/BronzeScreen.png')
+    this.load.image('SilverScreen', 'assets/UI/SilverScreen.png')
+    this.load.image('GoldScreen', 'assets/UI/GoldScreen.png')
+    // loading temp win screen for the lulz
+    this.load.image('TempWinScreen', 'assets/TempWinScreen.png')
     // load replay button
     this.load.image('ReplayButton', 'assets/UI/UI_Replay_Claire_4_16_2025_v2.png')
 

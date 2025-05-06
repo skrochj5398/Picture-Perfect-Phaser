@@ -28,11 +28,16 @@ class PrototypeScene extends Phaser.Scene {
     this.load.image('red', 'assets/particles/red.png')
   }
 
+    static inventory1 = new Inventory()
+    static slots = new InventoryView('InventorySlot');
+
   create () {
     const cowFarm = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.06, 'CowFarm')
+    cowFarm.on('pointerdown', () => {this.onPlayerClicked()})
+    cowFarm.setInteractive();
 
-    // Slicing the frame to make it not distorted
-    const Frame = this.add.nineslice(CONFIG.DEFAULT_WIDTH / 1.98, CONFIG.DEFAULT_HEIGHT / 1.96, 'Frame', 0, 1920, 1080, 32, 32, 32, 32)
+    //Slicing the frame to make it not distorted
+    //const Frame = this.add.nineslice(CONFIG.DEFAULT_WIDTH / 1.98, CONFIG.DEFAULT_HEIGHT / 1.96, 'Frame', 0, 1920, 1080, 32, 32, 32, 32)
 
     ss.silhouetteOne = this.add.nineslice(1000, 1010, 'Inventory', 0, 1000, 300, 32, 32, 32, 32).setScale(0.5)
     const cowNegative = this.add.image(1000, 800, 'cowNegative').setScale(0.6)
@@ -70,6 +75,12 @@ class PrototypeScene extends Phaser.Scene {
     })
   }
 
+  // TODO:: Debug painting clicking
+
+  // function registerStickerPointerDown(sticker){
+   // sticker.on('pointerdown', (pointer) => this.handleBlueBoxPointerDown(pointer, sticker))
+// }
+
   handleBlueBoxPointerDown (pointer) {
     this.emitter.emitParticleAt(ss.stickerOne.x, ss.stickerOne.y)
     Util.handlePointerDown(pointer, ss.stickerOne, ss.silhouetteOne)
@@ -80,5 +91,6 @@ class PrototypeScene extends Phaser.Scene {
     // doesn't work cuz scope or something
     // this.handlePointerDown(pointer, this.BlueBox, this.RedBox)
   }
+
 }
 export default PrototypeScene

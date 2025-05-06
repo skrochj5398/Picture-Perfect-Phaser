@@ -86,12 +86,22 @@ class GameScene extends Phaser.Scene {
       }
       // pass them to the Painting constructor
       const paintingObj = new Painting(painting.name, stickers, silhouettes, this)
+      paintingObj.img.setInteractive()
+      paintingObj.img.on('pointerdown', ()=> {this.onPlayerClicked()})
       this.paintings.push(paintingObj)
       // Dragging the stickers
       for (const sticker of paintingObj.stickers) {
         sticker.image.on('drag', (pointer, dragX, dragY) => {
           sticker.image.off('pointerup')
           sticker.image.setPosition(dragX, dragY)
+        })
+      }
+      // Making sure the correct Sticker goes to the correct Silhouette
+      for (const sticker of paintingObj.stickers) {
+        sticker.image.on('dragend', (pointer) => {
+          if (sticker.image.x >= sticker.silhouette.image.x + sticker.silhouette.offset.x - (sticker.silhouette.bounds.rightbound - sticker.silhouette.bounds.leftbound) / 2) {
+            sticker.image.disableInteractive()
+          }
         })
       }
     }
@@ -202,6 +212,8 @@ class GameScene extends Phaser.Scene {
       for (let i = 0; i < painting.stickers.length; i++) {
         console.log('attaching event to sticker ', i)
         painting.stickers[i].image.on('pointerup', () => { this.onStickerPointerDown(i) })
+        // add sticker to rating system
+        painting.stickers[i].image.on('pointerdown', () => {this.onPlayerClicked()})
         realInventory.addSticker(painting.stickers[i], this)
         painting.stickers[i].image.setDepth(100)
       }
@@ -342,6 +354,11 @@ class GameScene extends Phaser.Scene {
     this.pickRandomSfx()
   }
 
+  // Method for paintings and stickers to handle clicks for scoring
+  onPlayerClicked(){
+    CONFIG.timesClicked++;
+    console.log('Click!');
+  }
   update () {
     if (this.transition != null && this.transition.anims.currentFrame.index === 22) {
       this.music.stop()

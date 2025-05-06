@@ -27,7 +27,6 @@ class WinScene extends Phaser.Scene {
   }
 
   create () {
-    this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'WinScreen')
 
     // get levelIndex
     for (const level of this.data.levels) {
