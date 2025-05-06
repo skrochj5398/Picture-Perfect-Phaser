@@ -162,6 +162,7 @@ class GameScene extends Phaser.Scene {
             console.log('Dropped.')
             stickerObj.image.destroy()
             silhouette.image.destroy()
+            this.emitter.emitParticleAt(zone.x, zone.y)
           }
         })
 
@@ -189,14 +190,20 @@ class GameScene extends Phaser.Scene {
     // Create and configure a particle emitter
     this.emitter = this.add.particles(0, 0, 'star', {
       speed: 500,
-      lifespan: 1000,
+      lifespan: 400,
       quantity: 20,
       frequency: 20,
-      // gravityY: 3000,
-      scale: { start: 0.3, end: 1 },
+      scale: { start: 0.4, end: 0.1 },
       blendMode: 'ADD',
       emitting: false
     })
+
+    /*this.add.tween({
+      targets: this.emitter,
+      alpha: 0,
+      duration: 3000,
+      loop: true
+    })*/
 
     // attach a function to a sticker; should attach all of them
     console.log('about to attach click function')
@@ -334,6 +341,7 @@ class GameScene extends Phaser.Scene {
     console.log('running click function')
     const sticker = this.currentPainting.stickers[index]
     sticker.image.off('pointerup')
+    this.input.setDraggable(sticker.image)
     console.log('targetSilhouette: ', sticker.silhouette)
     this.inventoryView.drawNewSticker(sticker, this)
     this.emitter.emitParticleAt(sticker.gameOrigin.x, sticker.gameOrigin.y)
