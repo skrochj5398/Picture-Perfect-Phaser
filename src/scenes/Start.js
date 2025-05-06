@@ -34,11 +34,13 @@ class StartScene extends Phaser.Scene {
     this.load.image('BlueBox', 'assets/BlueBox.png')
 
     // Load Light ray Video
-    this.load.video('Light Ray', 'assets/Animation/light rays.mp4', true);
-  
+    this.load.video('Light Ray', 'assets/Animation/light rays.mp4', true)
+
+    // load background image
+    this.load.image('Background', 'assets/Background_Claire_4_9_2025_v1.png')
 
     // load back button
-    this.load.image('ReturnButton', '/assets/UI/UI_Return_Claire_4_16_2025_v2.png')
+    this.load.image('ReturnButton', 'assets/UI/UI_Return_Claire_4_16_2025_v2.png')
 
     // Load the image assets needed for 'ExampleScene'
     this.load.image('sky', 'assets/skies/space3.png')
@@ -245,7 +247,7 @@ class StartScene extends Phaser.Scene {
     this.optionsCloseButton = new HoverableButton(
       this,
       OPTIONS_MENU.X,
-      OPTIONS_MENU.Y + this.optionsBackground.height / 2 - 25,
+      OPTIONS_MENU.Y + 270,
       'optionsCloseButton',
       () => { this.setOptionsVisibility(!this.optionsBackground.visible) }
     )
