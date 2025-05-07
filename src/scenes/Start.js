@@ -218,7 +218,7 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / 1.65,
       'StartButton',
       () => { this.toLevelSelect() }
-    ).on('pointerup', () => { this.pickRandomSfx() })
+    )
 
     // options button
     this.optionsButton = new HoverableButton(
@@ -227,7 +227,7 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / 1.4,
       'OptionsButton',
       () => { this.toOptions() }
-    ).on('pointerup', () => { this.pickRandomSfx() })
+    )
 
     // credits button
     this.creditsButton = new HoverableButton(
@@ -236,7 +236,7 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / 1.23,
       'CreditsButton',
       () => { this.toCredits() }
-    ).on('pointerup', () => { this.pickRandomSfx() })
+    )
 
     // Add a callback when a key is released
     this.input.keyboard.on('keyup', this.keyReleased, this)
@@ -255,7 +255,7 @@ class StartScene extends Phaser.Scene {
       OPTIONS_MENU.Y + 270,
       'optionsCloseButton',
       () => { this.setOptionsVisibility(!this.optionsBackground.visible) }
-    ).on('pointerup', () => { this.pickRandomSfx() })
+    )
     // create music label
     this.optionsMusicLabel = this.add.image(OPTIONS_MENU.X, OPTIONS_MENU.Y - 150, 'optionsMusicLabel')
     // create music slider
@@ -273,7 +273,7 @@ class StartScene extends Phaser.Scene {
         this.music.volume = CONFIG.musicVol
       },
       CONFIG.musicVol
-    ).on('pointerup', () => { this.pickRandomSfx() })
+    )
     // create sound label
     this.optionsSoundLabel = this.add.image(OPTIONS_MENU.X, OPTIONS_MENU.Y + 60, 'optionsSoundLabel')
     // create sound slider
@@ -291,7 +291,7 @@ class StartScene extends Phaser.Scene {
         //this.sfx.volume = CONFIG.sfxVol
       },
       CONFIG.sfxVol
-    ).on('pointerup', () => { this.pickRandomSfx() })
+    )
     // make options menu invisible
     this.setOptionsVisibility(false)
     this.setOptionsDepth(10)
@@ -418,24 +418,6 @@ class StartScene extends Phaser.Scene {
     console.log('toCredits')
     //this.scene.stop('StartScene')
     //this.scene.start('')
-  }
-
-  pickRandomSfx () {
-    // check if array already exists
-    if (this.sfxArray == null) {
-      // choose from all button sfx
-      // this.sfxArray = [
-      //   this.sound.addAudioSprite('shortButtonSound1'), this.sound.addAudioSprite('shortButtonSound2'),
-      //   this.sound.addAudioSprite('shortButtonSound3'), this.sound.addAudioSprite('shortButtonSound4'),
-      //   this.sound.addAudioSprite('shortButtonSound5')]
-      // choose from down shifted button sfx
-      this.sfxArray = [this.sound.addAudioSprite('newButtonSound1')]
-    }
-    // pick a random sfx from the array
-    const randomIndex = Math.floor(Math.random() * this.sfxArray.length)
-    const randomSfx = this.sfxArray[randomIndex]
-    // play the sound
-    randomSfx.play('sound', { volume: CONFIG.sfxVol })
   }
 }
 

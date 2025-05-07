@@ -39,6 +39,7 @@ class HoverableButton extends Phaser.GameObjects.Image {
     this.on('pointerup', () => { this.clickFunction() })
     this.on('pointerup', () => { this.onPointerUp() })
     this.on('pointerdown', () => { this.onPointerDown() })
+    this.on('pointerup', () => { this.playClickSfx() })
   }
 
   /**
@@ -70,6 +71,18 @@ class HoverableButton extends Phaser.GameObjects.Image {
    */
   onPointerUp () {
     this.setTint(0xffffff)
+  }
+
+  playClickSfx () {
+    console.log(this.scene)
+    console.log(this)
+    // check if array already exists
+    if (this.scene.clickSfx == null) {
+      // choose from down shifted button sfx
+      this.scene.clickSfx = this.scene.sound.addAudioSprite('newButtonSound1')
+    }
+    // play the sound
+    this.scene.clickSfx.play('sound', { volume: CONFIG.sfxVol })
   }
 }
 

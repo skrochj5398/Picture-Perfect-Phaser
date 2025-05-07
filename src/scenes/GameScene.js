@@ -292,7 +292,7 @@ class GameScene extends Phaser.Scene {
       0, 100,
       () => {
         CONFIG.sfxVol = this.optionsSoundSlider.value / 100
-        this.sfx.volume = CONFIG.sfxVol
+        //this.sfx.volume = CONFIG.sfxVol
       },
       CONFIG.sfxVol
     )
