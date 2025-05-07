@@ -87,7 +87,7 @@ class GameScene extends Phaser.Scene {
       // pass them to the Painting constructor
       const paintingObj = new Painting(painting.name, stickers, silhouettes, this)
       paintingObj.img.setInteractive()
-      paintingObj.img.on('pointerdown', ()=> {this.onPlayerClicked()})
+      paintingObj.img.on('pointerdown', () => { this.onPlayerClicked() })
       this.paintings.push(paintingObj)
       // Dragging the stickers
       for (const sticker of paintingObj.stickers) {
@@ -176,6 +176,17 @@ class GameScene extends Phaser.Scene {
             stickerObj.image.destroy()
             silhouette.image.destroy()
             this.emitter.emitParticleAt(zone.x, zone.y)
+
+            // decrement num stickers left
+            this.numStickersLeft--
+            console.log(this.numStickersLeft)
+            // decrement num stickers left per painting
+            this.numStickersLeftPerPainting[this.paintings.indexOf(this.currentPainting)]--
+            console.log(this.numStickersLeftPerPainting)
+            // check if any stickers are left
+            if (this.numStickersLeft === 0) {
+              this.startTransition()
+            }
           }
         })
 
@@ -211,12 +222,12 @@ class GameScene extends Phaser.Scene {
       emitting: false
     })
 
-    /*this.add.tween({
+    /* this.add.tween({
       targets: this.emitter,
       alpha: 0,
       duration: 3000,
       loop: true
-    })*/
+    }) */
 
     // attach a function to a sticker; should attach all of them
     console.log('about to attach click function')
@@ -225,7 +236,7 @@ class GameScene extends Phaser.Scene {
         console.log('attaching event to sticker ', i)
         painting.stickers[i].image.on('pointerup', () => { this.onStickerPointerDown(i) })
         // add sticker to rating system
-        painting.stickers[i].image.on('pointerdown', () => {this.onPlayerClicked()})
+        painting.stickers[i].image.on('pointerdown', () => { this.onPlayerClicked() })
         realInventory.addSticker(painting.stickers[i], this)
         painting.stickers[i].image.setDepth(100)
       }
@@ -368,10 +379,11 @@ class GameScene extends Phaser.Scene {
   }
 
   // Method for paintings and stickers to handle clicks for scoring
-  onPlayerClicked(){
-    CONFIG.timesClicked++;
-    console.log('Click!');
+  onPlayerClicked () {
+    CONFIG.timesClicked++
+    console.log('Click!')
   }
+
   update () {
     if (this.transition != null && this.transition.anims.currentFrame.index === 22) {
       this.music.stop()
