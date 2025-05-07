@@ -80,6 +80,9 @@ class StartScene extends Phaser.Scene {
     ])
 
     // load sfx
+    this.load.audioSprite('newButtonSound1', 'assets/audio/SFX/ShortChime/buttonSound1.json', [
+      'assets/audio/SFX/ShortChime/click-151673.mp3'
+    ])
     this.load.audioSprite('buttonSound1', 'assets/audio/SFX/LongChime/buttonSound1.json', [
       'assets/audio/SFX/LongChime/LongChimeDownOctave1.mp3'
     ])
@@ -204,11 +207,9 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / startScreen_2.height
     )
 
-
     // Add background image 3
     const startScreen_3 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.7, 'startScreen_3')
     startScreen_3.setScale(0.8)
-
 
     // start button
     this.startButton = new HoverableButton(
@@ -217,7 +218,7 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / 1.65,
       'StartButton',
       () => { this.toLevelSelect() }
-    ).setInteractive().on('pointerup', () => { this.pickRandomSfx() })
+    ).on('pointerup', () => { this.pickRandomSfx() })
 
     // options button
     this.optionsButton = new HoverableButton(
@@ -226,7 +227,7 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / 1.4,
       'OptionsButton',
       () => { this.toOptions() }
-    ).setInteractive().on('pointerup', () => { this.pickRandomSfx() })
+    ).on('pointerup', () => { this.pickRandomSfx() })
 
     // credits button
     this.creditsButton = new HoverableButton(
@@ -235,8 +236,7 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / 1.23,
       'CreditsButton',
       () => { this.toCredits() }
-    ).setInteractive().on('pointerup', () => { this.pickRandomSfx() })
-    
+    ).on('pointerup', () => { this.pickRandomSfx() })
 
     // Add a callback when a key is released
     this.input.keyboard.on('keyup', this.keyReleased, this)
@@ -255,7 +255,7 @@ class StartScene extends Phaser.Scene {
       OPTIONS_MENU.Y + 270,
       'optionsCloseButton',
       () => { this.setOptionsVisibility(!this.optionsBackground.visible) }
-    )
+    ).on('pointerup', () => { this.pickRandomSfx() })
     // create music label
     this.optionsMusicLabel = this.add.image(OPTIONS_MENU.X, OPTIONS_MENU.Y - 150, 'optionsMusicLabel')
     // create music slider
@@ -273,7 +273,7 @@ class StartScene extends Phaser.Scene {
         this.music.volume = CONFIG.musicVol
       },
       CONFIG.musicVol
-    )
+    ).on('pointerup', () => { this.pickRandomSfx() })
     // create sound label
     this.optionsSoundLabel = this.add.image(OPTIONS_MENU.X, OPTIONS_MENU.Y + 60, 'optionsSoundLabel')
     // create sound slider
@@ -288,10 +288,10 @@ class StartScene extends Phaser.Scene {
       0, 100,
       () => {
         CONFIG.sfxVol = this.optionsSoundSlider.value / 100
-        this.sfx.volume = CONFIG.sfxVol
+        //this.sfx.volume = CONFIG.sfxVol
       },
       CONFIG.sfxVol
-    )
+    ).on('pointerup', () => { this.pickRandomSfx() })
     // make options menu invisible
     this.setOptionsVisibility(false)
     this.setOptionsDepth(10)
@@ -423,10 +423,13 @@ class StartScene extends Phaser.Scene {
   pickRandomSfx () {
     // check if array already exists
     if (this.sfxArray == null) {
-      this.sfxArray = [
-        this.sound.addAudioSprite('shortButtonSound1'), this.sound.addAudioSprite('shortButtonSound2'),
-        this.sound.addAudioSprite('shortButtonSound3'), this.sound.addAudioSprite('shortButtonSound4'),
-        this.sound.addAudioSprite('shortButtonSound5')]
+      // choose from all button sfx
+      // this.sfxArray = [
+      //   this.sound.addAudioSprite('shortButtonSound1'), this.sound.addAudioSprite('shortButtonSound2'),
+      //   this.sound.addAudioSprite('shortButtonSound3'), this.sound.addAudioSprite('shortButtonSound4'),
+      //   this.sound.addAudioSprite('shortButtonSound5')]
+      // choose from down shifted button sfx
+      this.sfxArray = [this.sound.addAudioSprite('newButtonSound1')]
     }
     // pick a random sfx from the array
     const randomIndex = Math.floor(Math.random() * this.sfxArray.length)

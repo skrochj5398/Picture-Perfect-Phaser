@@ -421,6 +421,7 @@ class GameScene extends Phaser.Scene {
   pickRandomSfx () {
     // check if array already exists
     if (this.sfxArray == null) {
+      // randomly play any sound effect from the array
       this.sfxArray = [
         this.sound.addAudioSprite('hitSound1'), this.sound.addAudioSprite('hitSound2'),
         this.sound.addAudioSprite('hitSound3'), this.sound.addAudioSprite('hitSound4'),

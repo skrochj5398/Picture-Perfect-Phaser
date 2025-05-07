@@ -45,7 +45,10 @@ class HoverableButton extends Phaser.GameObjects.Image {
    * handles tinting when pointer hovers over this object
    */
   onPointerMove () {
+    // brighten the image
     this.setTint(0xffffff)
+    // save scale
+    this.originalScale = this.scale
   }
 
   /**
