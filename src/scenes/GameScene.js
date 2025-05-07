@@ -87,7 +87,7 @@ class GameScene extends Phaser.Scene {
       // pass them to the Painting constructor
       const paintingObj = new Painting(painting.name, stickers, silhouettes, this)
       paintingObj.img.setInteractive()
-      paintingObj.img.on('pointerdown', ()=> {this.onPlayerClicked()})
+      paintingObj.img.on('pointerdown', () => { this.onPlayerClicked() })
       this.paintings.push(paintingObj)
       // Dragging the stickers
       for (const sticker of paintingObj.stickers) {
@@ -152,30 +152,47 @@ class GameScene extends Phaser.Scene {
         const paintingObjH = silhouette.bounds.bottomBound - silhouette.bounds.topBound
         const zone = this.add.zone(paintingObjX, paintingObjY, paintingObjW, paintingObjH)
           .setRectangleDropZone(paintingObjW, paintingObjH)
+        zone.silhouette = silhouette
+        stickerObj.image.on('dragenter', (pointer, target) => {
+          console.log(stickerObj)
+          if (stickerObj.silhouette === target.silhouette) {
+            stickerObj.isDraggedOverTarget = true
+            console.log('setting true')
+          } else {
+            stickerObj.isDraggedOverTarget = false
+            console.log('setting false')
+          }
+        })
+        stickerObj.image.on('dragleave', (pointer, gameObject, target) => {
+          stickerObj.isDraggedOverTarget = false
+          console.log('setting false')
+        })
         stickerObj.image.on('drop', (pointer) => {
-          stickerObj.image.x = zone.x
-          stickerObj.image.y = zone.y
+          if (stickerObj.isDraggedOverTarget) {
+            stickerObj.image.x = zone.x
+            stickerObj.image.y = zone.y
+            stickerObj.image.input.enabled = false
+            console.log('Dropped.')
+            stickerObj.image.destroy()
+            silhouette.image.destroy()
+            this.emitter.emitParticleAt(zone.x, zone.y)
 
-          stickerObj.image.input.enabled = false
-
-          console.log('Dropped.')
-          stickerObj.image.destroy()
-          silhouette.image.destroy()
-
-          // decrement num stickers left
-          this.numStickersLeft--
-          console.log(this.numStickersLeft)
-          // decrement num stickers left per painting
-          this.numStickersLeftPerPainting[this.paintings.indexOf(this.currentPainting)]--
-          console.log(this.numStickersLeftPerPainting)
-          // check if any stickers are left
-          if (this.numStickersLeft === 0) {
-            this.startTransition()
+            // decrement num stickers left
+            this.numStickersLeft--
+            console.log(this.numStickersLeft)
+            // decrement num stickers left per painting
+            this.numStickersLeftPerPainting[this.paintings.indexOf(this.currentPainting)]--
+            console.log(this.numStickersLeftPerPainting)
+            // check if any stickers are left
+            if (this.numStickersLeft === 0) {
+              this.startTransition()
+            }
           }
         })
 
         stickerObj.image.on('dragend', (pointer, dragX, dragY, dropped) => {
-          if (!dropped) {
+          console.log(!dropped)
+          if (!dropped || !stickerObj.isDraggedOverTarget) {
             stickerObj.image.x = stickerObj.image.input.dragStartX
             stickerObj.image.y = stickerObj.image.input.dragStartY
           }
@@ -197,14 +214,20 @@ class GameScene extends Phaser.Scene {
     // Create and configure a particle emitter
     this.emitter = this.add.particles(0, 0, 'star', {
       speed: 500,
-      lifespan: 1000,
+      lifespan: 400,
       quantity: 20,
       frequency: 20,
-      // gravityY: 3000,
-      scale: { start: 0.3, end: 1 },
+      scale: { start: 0.4, end: 0.1 },
       blendMode: 'ADD',
       emitting: false
     })
+
+    /* this.add.tween({
+      targets: this.emitter,
+      alpha: 0,
+      duration: 3000,
+      loop: true
+    }) */
 
     // attach a function to a sticker; should attach all of them
     console.log('about to attach click function')
@@ -213,7 +236,7 @@ class GameScene extends Phaser.Scene {
         console.log('attaching event to sticker ', i)
         painting.stickers[i].image.on('pointerup', () => { this.onStickerPointerDown(i) })
         // add sticker to rating system
-        painting.stickers[i].image.on('pointerdown', () => {this.onPlayerClicked()})
+        painting.stickers[i].image.on('pointerdown', () => { this.onPlayerClicked() })
         realInventory.addSticker(painting.stickers[i], this)
         painting.stickers[i].image.setDepth(100)
       }
@@ -243,7 +266,7 @@ class GameScene extends Phaser.Scene {
     // create button to bring up options menu
     this.optionsButton = new HoverableButton(this, 0, 0, 'optionsButton', () => { this.setOptionsVisibility(!this.optionsBackground.visible) })
     // set position
-    //this.optionsButton.setPosition(returnButton.x + returnButton.displayWidth / 2 + CONFIG.HUD_MARGIN * 2 + this.optionsButton.width / 2, this.optionsButton.height / 2 + CONFIG.HUD_MARGIN)
+    // this.optionsButton.setPosition(returnButton.x + returnButton.displayWidth / 2 + CONFIG.HUD_MARGIN * 2 + this.optionsButton.width / 2, this.optionsButton.height / 2 + CONFIG.HUD_MARGIN)
     this.optionsButton.setPosition(this.optionsButton.width / 2 + CONFIG.HUD_MARGIN, returnButton.y + returnButton.displayHeight / 2 + CONFIG.HUD_MARGIN * 2 + this.optionsButton.height / 2)
 
     // create options menu
@@ -344,6 +367,7 @@ class GameScene extends Phaser.Scene {
     console.log('running click function')
     const sticker = this.currentPainting.stickers[index]
     sticker.image.off('pointerup')
+    this.input.setDraggable(sticker.image)
     console.log('targetSilhouette: ', sticker.silhouette)
     this.inventoryView.drawNewSticker(sticker, this)
     this.emitter.emitParticleAt(sticker.gameOrigin.x, sticker.gameOrigin.y)
@@ -355,10 +379,11 @@ class GameScene extends Phaser.Scene {
   }
 
   // Method for paintings and stickers to handle clicks for scoring
-  onPlayerClicked(){
-    CONFIG.timesClicked++;
-    console.log('Click!');
+  onPlayerClicked () {
+    CONFIG.timesClicked++
+    console.log('Click!')
   }
+
   update () {
     if (this.transition != null && this.transition.anims.currentFrame.index === 22) {
       this.music.stop()
