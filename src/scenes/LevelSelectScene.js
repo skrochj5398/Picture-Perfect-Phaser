@@ -33,6 +33,8 @@ class LevelSelectScene extends Phaser.Scene {
       this.transition.play('Curtains', true)
       // set transition to be closed curtains
       this.transition = this.transition.anims.pause(this.transition.anims.currentAnim.frames[22])
+    } else {
+      this.transition = null
     }
   }
 
