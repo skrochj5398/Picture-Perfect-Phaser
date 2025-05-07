@@ -27,7 +27,6 @@ class WinScene extends Phaser.Scene {
   }
 
   create () {
-
     // get levelIndex
     for (const level of this.data.levels) {
       if (level.name === this.levelCompleted) {
@@ -37,40 +36,51 @@ class WinScene extends Phaser.Scene {
       }
     }
     this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'WinScreen')
-    // Adding image based on user score
-    if (CONFIG.timesClicked <= this.data.levels[this.levelIndex].GoldRating){
+    // adding image based on user score
+    if (CONFIG.timesClicked <= this.data.levels[this.levelIndex].GoldRating) {
       this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'GoldScreen')
-      //console.log('Boo')
     }
-    else if (CONFIG.timesClicked <= this.data.levels[this.levelIndex].SilverRating){
+    else if (CONFIG.timesClicked <= this.data.levels[this.levelIndex].SilverRating) {
       this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'SilverScreen')
     }
     else {
       this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'BronzeScreen')
     }
 
-        // create return button
-        const returnButtonX = CONFIG.DEFAULT_WIDTH / 5 * 2
-        const returnButtonY = CONFIG.DEFAULT_HEIGHT / 4 * 3
-        const returnButton = new HoverableButton(this, 0, 0, 'ReturnButton', () => { this.startTransition('LevelSelectScene', { json: this.data, music: this.music }) })
-        returnButton.setPosition(returnButtonX, returnButtonY)
-    
-        // create return button
-        const replayButtonX = CONFIG.DEFAULT_WIDTH / 5 * 3
-        const replayButtonY = CONFIG.DEFAULT_HEIGHT / 4 * 3
-        const replayButton = new HoverableButton(this, 0, 0, 'ReplayButton', () => { this.startTransition('GameScene', { levelData: this.data.levels[this.levelIndex] }) })
-        replayButton.setPosition(replayButtonX, replayButtonY)
-    
-        // destroy transition so it doesn't stay on screen
-        console.log('DESTROY transition')
-        this.transition.destroy()
-        // make new transition   :'(
-        this.transition = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'CurtainsTransition')
-        this.transition.setScale(1.5).setDepth(1000)
-        // play transition close
-        console.log('play transition')
-        this.transition.play({ key: 'Curtains', startFrame: 23 }, true)
+    // create buttons
+    const returnButton = new HoverableButton(this, 0, 0, 'WinReturnButton', () => { this.startTransition('LevelSelectScene', { json: this.data, music: this.music }) })
+    const replayButton = new HoverableButton(this, 0, 0, 'WinReplayButton', () => { this.startTransition('GameScene', { levelData: this.data.levels[this.levelIndex] }) })
 
+    const counterCenterOffset = 90
+    // set initial button positions
+    let returnButtonX = CONFIG.DEFAULT_WIDTH / 5 * 2 - counterCenterOffset
+    let replayButtonX = CONFIG.DEFAULT_WIDTH / 5 * 3 + counterCenterOffset
+    const buttonY = CONFIG.DEFAULT_HEIGHT / 4 * 3
+
+    // check if continue button is needed
+    if (this.data.levels[this.levelIndex + 1] != null) {
+      const continueButton = new HoverableButton(this, 0, 0, 'WinContinueButton', () => { this.startTransition('GameScene', { levelData: this.data.levels[this.levelIndex + 1] }) })
+      const centerOffset = 70
+      // update button positions
+      returnButtonX = CONFIG.DEFAULT_WIDTH / 6 * 1 + centerOffset
+      replayButtonX = CONFIG.DEFAULT_WIDTH / 6 * 3
+      const continueButtonX = CONFIG.DEFAULT_WIDTH / 6 * 5 - centerOffset
+      continueButton.setPosition(continueButtonX, buttonY).setScale(0.9)
+      returnButton.setScale(0.9)
+      replayButton.setScale(0.9)
+    }
+    returnButton.setPosition(returnButtonX, buttonY)
+    replayButton.setPosition(replayButtonX, buttonY)
+
+    // destroy transition so it doesn't stay on screen
+    console.log('DESTROY transition')
+    this.transition.destroy()
+    // make new transition   :'(
+    this.transition = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'CurtainsTransition')
+    this.transition.setScale(1.5).setDepth(1000)
+    // play transition close
+    console.log('play transition')
+    this.transition.play({ key: 'Curtains', startFrame: 23 }, true)
 
     // TESTING PURPOSES ONLY: Printing times clicked and then resetting variable
     // console.log('Times Clicked: ' + CONFIG.timesClicked)

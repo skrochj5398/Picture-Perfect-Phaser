@@ -66,6 +66,11 @@ class StartScene extends Phaser.Scene {
     // load replay button
     this.load.image('ReplayButton', 'assets/UI/UI_Replay_Claire_4_16_2025_v2.png')
 
+    // load win screen buttons
+    this.load.image('WinContinueButton', 'assets/UI/Win_Screen_Continue_Claire_5_2_2025_v1.png')
+    this.load.image('WinReturnButton', 'assets/UI/Win_Screen_Levels_Claire_5_2_2025_v1.png')
+    this.load.image('WinReplayButton', 'assets/UI/Win_Screen_Replay_Claire_5_2_2025_v1.png')
+
     // load music
     this.load.audioSprite('bgMusic', 'assets/audio/menuMusic1.json', [
       'assets/audio/MUS_GameTheme1_PP_demo1.wav'
@@ -75,6 +80,9 @@ class StartScene extends Phaser.Scene {
     ])
 
     // load sfx
+    this.load.audioSprite('newButtonSound1', 'assets/audio/SFX/ShortChime/buttonSound1.json', [
+      'assets/audio/SFX/ShortChime/click-151673.mp3'
+    ])
     this.load.audioSprite('buttonSound1', 'assets/audio/SFX/LongChime/buttonSound1.json', [
       'assets/audio/SFX/LongChime/LongChimeDownOctave1.mp3'
     ])
@@ -199,11 +207,9 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / startScreen_2.height
     )
 
-
     // Add background image 3
     const startScreen_3 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2.7, 'startScreen_3')
     startScreen_3.setScale(0.8)
-
 
     // start button
     this.startButton = new HoverableButton(
@@ -212,7 +218,7 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / 1.65,
       'StartButton',
       () => { this.toLevelSelect() }
-    ).setInteractive().on('pointerup', () => { this.pickRandomSfx() })
+    )
 
     // options button
     this.optionsButton = new HoverableButton(
@@ -221,7 +227,7 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / 1.4,
       'OptionsButton',
       () => { this.toOptions() }
-    ).setInteractive().on('pointerup', () => { this.pickRandomSfx() })
+    )
 
     // credits button
     this.creditsButton = new HoverableButton(
@@ -230,8 +236,7 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / 1.23,
       'CreditsButton',
       () => { this.toCredits() }
-    ).setInteractive().on('pointerup', () => { this.pickRandomSfx() })
-    
+    )
 
     // Add a callback when a key is released
     this.input.keyboard.on('keyup', this.keyReleased, this)
@@ -283,7 +288,7 @@ class StartScene extends Phaser.Scene {
       0, 100,
       () => {
         CONFIG.sfxVol = this.optionsSoundSlider.value / 100
-        this.sfx.volume = CONFIG.sfxVol
+        //this.sfx.volume = CONFIG.sfxVol
       },
       CONFIG.sfxVol
     )
@@ -413,21 +418,6 @@ class StartScene extends Phaser.Scene {
     console.log('toCredits')
     //this.scene.stop('StartScene')
     //this.scene.start('')
-  }
-
-  pickRandomSfx () {
-    // check if array already exists
-    if (this.sfxArray == null) {
-      this.sfxArray = [
-        this.sound.addAudioSprite('shortButtonSound1'), this.sound.addAudioSprite('shortButtonSound2'),
-        this.sound.addAudioSprite('shortButtonSound3'), this.sound.addAudioSprite('shortButtonSound4'),
-        this.sound.addAudioSprite('shortButtonSound5')]
-    }
-    // pick a random sfx from the array
-    const randomIndex = Math.floor(Math.random() * this.sfxArray.length)
-    const randomSfx = this.sfxArray[randomIndex]
-    // play the sound
-    randomSfx.play('sound', { volume: CONFIG.sfxVol })
   }
 }
 

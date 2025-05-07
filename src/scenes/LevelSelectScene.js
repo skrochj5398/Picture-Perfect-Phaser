@@ -33,6 +33,8 @@ class LevelSelectScene extends Phaser.Scene {
       this.transition.play('Curtains', true)
       // set transition to be closed curtains
       this.transition = this.transition.anims.pause(this.transition.anims.currentAnim.frames[22])
+    } else {
+      this.transition = null
     }
   }
 
@@ -103,7 +105,7 @@ class LevelSelectScene extends Phaser.Scene {
       })
       const text = this.add.text(x - button.displayWidth / 2 + 100, y, this.data.levels[i].name,
         { font: '32pt Arial', color: '#FFFFFF', align: 'center' })
-      const levelButton = { button: button, text: text }
+      const levelButton = { button, text }
       // add button to storage structure
       console.log('pushing button')
       this.pages[currentPage].push(levelButton)
@@ -216,7 +218,7 @@ class LevelSelectScene extends Phaser.Scene {
   }
 
   goBack () {
-    this.game.scene.stop('LevelSelectScene')
+    this.game.scene.sleep('LevelSelectScene')
     this.game.scene.start('StartScene', { music: this.music, tut: true })
   }
 
