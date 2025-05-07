@@ -46,7 +46,7 @@ class StartScene extends Phaser.Scene {
     this.load.image('sky', 'assets/skies/space3.png')
     this.load.image('logo', 'assets/sprites/phaser3-logo.png')
     this.load.image('red', 'assets/particles/red.png')
-    this.load.spritesheet("Test anim", "assets/Animation/Spritesheet.png", {
+    this.load.spritesheet('Test anim', 'assets/Animation/Spritesheet.png', {
       frameWidth: 1920,
       frameHeight: 1080
     })
@@ -157,15 +157,17 @@ class StartScene extends Phaser.Scene {
     // load silhouette backdrop
     this.load.image('silhouetteBackdrop', 'assets/UI/Highlight_Variant_02_Claire_5_6_2025_v1.png')
 
+    // load credit screen
+    this.load.image('creditsScreen', 'assets/UI/Credits_Claire_5_7_2025_v1.png')
+
     // load json
     this.load.json('levelData', 'assets/Levels/Levels.json')
   }
 
   create () {
-
     // Remove loading text
     this.loadingText.destroy()
-    
+
     this.anims.create({
       key: 'Curtains',
       frames: this.anims.generateFrameNumbers('CurtainsTransition', { frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31] }),
@@ -191,16 +193,22 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / startScreen_1.height
     )
 
-     //Add Light ray video
-     const Light_Rays = this.add.video(1000, 500,).loadURL('assets/Animation/Light Rays.webm');
-      Light_Rays.alpha = 0.35
-     let loops = 0
+    // create credits screen
+    this.creditsScreen = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'creditsScreen').setDepth(10).setInteractive()
+    // add listener to turn off on click
+    this.creditsScreen.on('pointerup', () => { this.setCreditsActive(false) })
+    // toggle credits off
+    this.setCreditsActive(false)
+
+    // Add Light ray video
+    const Light_Rays = this.add.video(1000, 500).loadURL('assets/Animation/Light Rays.webm')
+    Light_Rays.alpha = 0.35
+    let loops = 0
     Light_Rays.on('loops', () => {
+      loops++
+    })
 
-      loops++;
-    });
-
-    Light_Rays.play (true)
+    Light_Rays.play(true)
 
     // Add background image 2
     const startScreen_2 = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'startScreen_2')
@@ -216,7 +224,7 @@ class StartScene extends Phaser.Scene {
 
     // start button
     this.startButton = new HoverableButton(
-      this, 
+      this,
       CONFIG.DEFAULT_WIDTH / 2.0,
       CONFIG.DEFAULT_HEIGHT / 1.65,
       'StartButton',
@@ -375,8 +383,11 @@ class StartScene extends Phaser.Scene {
    */
   toCredits () {
     console.log('toCredits')
-    //this.scene.stop('StartScene')
-    //this.scene.start('')
+    this.setCreditsActive(true)
+  }
+
+  setCreditsActive (isActive) {
+    this.creditsScreen.setActive(isActive).setVisible(isActive)
   }
 }
 
