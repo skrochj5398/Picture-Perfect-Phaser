@@ -175,6 +175,7 @@ class GameScene extends Phaser.Scene {
             console.log('Dropped.')
             stickerObj.image.destroy()
             silhouette.image.destroy()
+            zone.destroy()
             this.emitter.emitParticleAt(zone.x, zone.y)
 
             // decrement num stickers left
@@ -216,18 +217,19 @@ class GameScene extends Phaser.Scene {
       speed: 500,
       lifespan: 400,
       quantity: 20,
+      alpha: 1,
       frequency: 20,
       scale: { start: 0.4, end: 0.1 },
       blendMode: 'ADD',
       emitting: false
     })
 
-    /* this.add.tween({
+    this.add.tween({
       targets: this.emitter,
       alpha: 0,
       duration: 3000,
-      loop: true
-    }) */
+      repeat: -1
+    })
 
     // attach a function to a sticker; should attach all of them
     console.log('about to attach click function')
