@@ -7,7 +7,7 @@ class HUDScene extends Phaser.Scene {
     this.loadingText = this.add.text(
       CONFIG.DEFAULT_WIDTH - 10,
       CONFIG.DEFAULT_HEIGHT - 10,
-      'INFORMATION', { font: '16pt Arial', color: '#FF0000', align: 'center' }
+      'INFORMATION', { font: '16pt Book Antiqua', color: '#FF0000', align: 'center' }
     )
     this.loadingText.setOrigin(1, 1)
   }

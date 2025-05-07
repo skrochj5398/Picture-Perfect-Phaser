@@ -8,7 +8,7 @@ class StartScene extends Phaser.Scene {
     this.loadingText = this.add.text(
       CONFIG.DEFAULT_WIDTH / 2,
       CONFIG.DEFAULT_HEIGHT / 2,
-      'Loading...', { font: '16pt Arial', color: '#FFFFFF', align: 'center' }
+      'Loading...', { font: '16pt Book Antiqua', color: '#FFFFFF', align: 'center' }
     )
     this.loadingText.setOrigin(0.5, 0.5)
 
@@ -241,13 +241,6 @@ class StartScene extends Phaser.Scene {
       () => { this.toCredits() }
     )
 
-    // Add a callback when a key is released
-    this.input.keyboard.on('keyup', this.keyReleased, this)
-
-    // Load and play background music
-    // this.music = this.sound.addAudioSprite('bgMusic')
-    // this.music.play('MenuMusic1', { volume: 0.5 })
-
     // create options menu
     // create background
     this.optionsBackground = this.add.image(OPTIONS_MENU.X, OPTIONS_MENU.Y, 'optionsBackground')
@@ -291,7 +284,6 @@ class StartScene extends Phaser.Scene {
       0, 100,
       () => {
         CONFIG.sfxVol = this.optionsSoundSlider.value / 100
-        //this.sfx.volume = CONFIG.sfxVol
       },
       CONFIG.sfxVol
     )
@@ -318,39 +310,6 @@ class StartScene extends Phaser.Scene {
     this.optionsSoundSlider.setActive(isVisible).setVisible(isVisible)
   }
 
-  // use this just to enter test scenes
-  keyReleased (event) {
-    console.log('Key released', event.code)
-    if (event.code === 'KeyP') {
-      this.scene.stop('StartScene')
-      this.scene.start('JessieTestScene')
-    } if (event.code == 'KeyA') {
-      this.scene.start('BetaScene')
-    } if (event.code == 'Space') {
-      this.scene.start('PrototypeScene')
-    }
-    if (event.code === 'KeyG') {
-      this.scene.stop('StartScene')
-      // pass the json to init
-      this.scene.start('GameScene', { levelData: this.data.levels[0] })
-    }
-    if (event.code === 'Digit1') {
-      this.scene.stop('StartScene')
-      this.scene.start('GameScene', { levelData: this.data.levels[0] })
-    }
-    if (event.code === 'Digit2') {
-      this.scene.stop('StartScene')
-      this.scene.start('GameScene', { levelData: this.data.levels[1] })
-    }
-    if (event.code === 'Digit3') {
-      this.scene.stop('StartScene')
-      this.scene.start('GameScene', { levelData: this.data.levels[2] })
-    }
-    if (event.code === 'Digit0') {
-      this.music.stop()
-    }
-  }
-
   /**
    * Runs when pointerup event triggers on startButton.
    * Runs when Start Button is clicked.
@@ -358,9 +317,6 @@ class StartScene extends Phaser.Scene {
    */
   toLevelSelect () {
     console.log('toLevelSelect')
-    // music keeps playing until entering a level
-    // stop scene so assets clear
-    //this.scene.stop('StartScene')
     // check if tutorial has been done
     if (this.isTutCompleted) {
       console.log('tutorial complete')

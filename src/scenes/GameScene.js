@@ -15,7 +15,7 @@ class GameScene extends Phaser.Scene {
     this.loadingText = this.add.text(
       CONFIG.DEFAULT_WIDTH / 2,
       CONFIG.DEFAULT_HEIGHT / 2,
-      'Loading...', { font: '16pt Arial', color: '#FFFFFF', align: 'center' }
+      'Loading...', { font: '16pt Book Antiqua', color: '#FFFFFF', align: 'center' }
     )
     this.loadingText.setOrigin(0.5, 0.5)
 
@@ -157,34 +157,60 @@ class GameScene extends Phaser.Scene {
         const zone = this.add.zone(paintingObjX, paintingObjY, paintingObjW, paintingObjH)
           .setRectangleDropZone(paintingObjW, paintingObjH)
         zone.silhouette = silhouette
-        zone.backdrop = this.add.image(paintingObjX, paintingObjY, 'silhouetteBackdrop').setActive(false).setVisible(false).setDepth(3)
-        zone.on('pointermove', () => { 
+        // connect the two
+        silhouette.zone = zone.setDepth(4)
+        zone.backdrop = this.add.image(paintingObjX, paintingObjY, 'silhouetteBackdrop').setActive(false).setVisible(false).setDepth(6)
+        // create boolean to verify not dragging on pointerout
+        zone.backdrop.isDragActive = false
+        zone.on('pointermove', () => {
           if (zone.scene.currentPainting.silhouettes.indexOf(zone.silhouette) !== -1) {
-            console.log('silhouette in current painting')
             zone.backdrop.setActive(true).setVisible(true)
-          }
-        })
-        zone.on('pointerout', () => { zone.backdrop.setActive(false).setVisible(false) })
-        stickerObj.image.on('dragenter', (pointer, target) => {
-          if (zone.scene.currentPainting.silhouettes.indexOf(zone.silhouette) !== -1) {
-            console.log('silhouette in current painting')
-            zone.backdrop.setActive(true).setVisible(true)
-          }
-          console.log(stickerObj)
-          if (stickerObj.silhouette === target.silhouette) {
-            stickerObj.isDraggedOverTarget = true
-            console.log('setting true')
           } else {
-            stickerObj.isDraggedOverTarget = false
-            console.log('setting false')
+            // not in current painting, so move backdrop back
+            zone.backdrop.setDepth(2)
           }
         })
-        stickerObj.image.on('dragleave', (pointer, gameObject, target) => {
-          zone.backdrop.setActive(false).setVisible(false)
+        zone.on('pointerout', () => {
+          console.log(zone.backdrop.isDragActive)
+          // check if player is dragging over the zone
+          if (!zone.backdrop.isDragActive) {
+            // not dragging over, so hide the backdrop
+            zone.backdrop.setActive(false).setVisible(false)
+          }
+        })
+        stickerObj.image.on('dragenter', (pointer, target) => {
+          // check if target zone's silhouette is in current painting
+          if (target.scene.currentPainting.silhouettes.indexOf(target.silhouette) !== -1) {
+            console.log('silhouette in current painting')
+            target.backdrop.setActive(true).setVisible(true)
+            target.backdrop.isDragActive = true
+            console.log(stickerObj)
+            // only check if silhouette matches if zone's silhouette is in current painting
+            if (stickerObj.silhouette === target.silhouette) {
+              stickerObj.isDraggedOverTarget = true
+              console.log('setting true')
+              // bring zone to the front
+              target.setDepth(4)
+              console.log('bringing in front')
+            } else {
+              stickerObj.isDraggedOverTarget = false
+              console.log('setting false')
+              // bring zone to the back
+              target.setDepth(3)
+              console.log('bringing behind')
+            }
+          } else {
+            // not in current painting, so move backdrop back
+            target.setDepth(2)
+          }
+        })
+        stickerObj.image.on('dragleave', (pointer, target) => {
+          target.backdrop.setActive(false).setVisible(false)
+          target.backdrop.isDragActive = false
           stickerObj.isDraggedOverTarget = false
           console.log('setting false')
         })
-        stickerObj.image.on('drop', (pointer) => {
+        stickerObj.image.on('drop', (pointer, target) => {
           if (stickerObj.isDraggedOverTarget) {
             stickerObj.image.x = zone.x
             stickerObj.image.y = zone.y
@@ -195,6 +221,8 @@ class GameScene extends Phaser.Scene {
             zone.backdrop.destroy()
             zone.destroy()
             this.emitter.emitParticleAt(zone.x, zone.y)
+            // play sound effect
+            this.pickRandomSfx()
 
             // decrement num stickers left
             this.numStickersLeft--
@@ -206,6 +234,10 @@ class GameScene extends Phaser.Scene {
             if (this.numStickersLeft === 0) {
               this.startTransition()
             }
+          } else {
+            // incorrect sticker, so hide backdrop and update isDragActive
+            target.backdrop.isDragActive = false
+            target.backdrop.setActive(false).setVisible(false)
           }
         })
 
@@ -336,7 +368,7 @@ class GameScene extends Phaser.Scene {
       0, 100,
       () => {
         CONFIG.sfxVol = this.optionsSoundSlider.value / 100
-        //this.sfx.volume = CONFIG.sfxVol
+        // this.sfx.volume = CONFIG.sfxVol
       },
       CONFIG.sfxVol
     )
@@ -355,9 +387,6 @@ class GameScene extends Phaser.Scene {
     console.log('play transition')
     this.transition.play({ key: 'Curtains', startFrame: 23 }, true)
 
-    /*this.guideText = this.add.text (this.guideTextX, this.guideTextY,
-      'Stickers Remaining: ' + this.stickersGuide[this.paintings.indexOf(this.currentPainting)],
-      { font: '28pt Arial', color: '#FFFFFF', align: 'left'}) */
     this.updateGuideText()
   }
 
@@ -405,7 +434,7 @@ class GameScene extends Phaser.Scene {
     // reduce the visible number of stickers left for the player to find in the current painting
     this.stickersGuide[this.paintings.indexOf(this.currentPainting)]--
     console.log('stickers left: ' + this.stickersGuide[this.paintings.indexOf(this.currentPainting)])
-    this.updateGuideText();
+    this.updateGuideText()
     // play sound effect
     this.pickRandomSfx()
   }
@@ -473,7 +502,7 @@ class GameScene extends Phaser.Scene {
     this.currentPainting.setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2)
     const width = this.currentPainting.getWidth()
     this.paintingFrame.width = width + 160
-    
+
     // update guide text
     this.updateGuideText()
   }
@@ -578,19 +607,16 @@ class GameScene extends Phaser.Scene {
     }
   }
 
-  updateGuideText (){
-    //console.log('guideText placement: ' + this.guideTextX + ' ' + this.guideTextY)
-    //console.log('stickersGuide: ' + this.stickersGuide)
+  updateGuideText () {
     // check if guide text already exists; if it does, destroy it
-    if (this.guideText != null){
-      this.guideText.destroy();
+    if (this.guideText != null) {
+      this.guideText.destroy()
     }
-    //console.log(this.paintings.indexOf(this.currentPainting));
     // create new guide text
     // TODO look up how to track whenever a value of stickersGuide changes
-    this.guideText = this.add.text (this.guideTextX, this.guideTextY,
+    this.guideText = this.add.text(this.guideTextX, this.guideTextY,
       'Stickers Remaining: ' + this.stickersGuide[this.paintings.indexOf(this.currentPainting)],
-      { font: '28pt Arial', color: '#FFFFFF', align: 'left'});
+      { font: '28pt Book Antiqua', color: '#FFFFFF', align: 'left' })
   }
 }
 

@@ -18,7 +18,7 @@ class TutorialScene extends GameScene {
     this.tutorialText = this.add.text(
       this.textX, this.textY,
       'Find objects that are out of place in the paintings.\nClick them to send them to the inventory.',
-      { font: '28pt Arial', color: '#FFFFFF', align: 'left' }
+      { font: '28pt Book Antiqua', color: '#FFFFFF', align: 'left' }
     )
     // disable swapping paintings
     this.setArrowsVisibility(false)
@@ -36,7 +36,7 @@ class TutorialScene extends GameScene {
       this.tutorialText = this.add.text(
         this.textX, this.textY,
         'Use the arrows on the sides of the screen to swap paintings.\nWhen you find the silhouette of the object, drag it into place!',
-        { font: '28pt Arial', color: '#FFFFFF', align: 'left' }
+        { font: '28pt Book Antiqua', color: '#FFFFFF', align: 'left' }
       )
       // make arrow buttons visible
       this.setArrowsVisibility(true)

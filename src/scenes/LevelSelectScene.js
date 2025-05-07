@@ -104,7 +104,7 @@ class LevelSelectScene extends Phaser.Scene {
         this.startTransition('GameScene', { levelData: this.data.levels[i] })
       })
       const text = this.add.text(x - button.displayWidth / 2 + 100, y, this.data.levels[i].name,
-        { font: '32pt Arial', color: '#FFFFFF', align: 'center' })
+        { font: '32pt Book Antiqua', color: '#FFFFFF', align: 'center' })
       const levelButton = { button, text }
       // add button to storage structure
       console.log('pushing button')
