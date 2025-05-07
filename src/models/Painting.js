@@ -57,7 +57,7 @@ class Painting {
           bounds.rightBound - bounds.leftBound,
           bounds.bottomBound - bounds.topBound
         )
-        silhouettesImage.depth = 2
+        silhouettesImage.setDepth(4)
         // create a Sticker around this sticker
         const silhouette = new Silhouette(silhouettesImage, null, 0)
         silhouette.bounds = bounds
@@ -107,7 +107,7 @@ class Painting {
           bounds.rightBound - bounds.leftBound,
           bounds.bottomBound - bounds.topBound
         )
-        stickerImage.depth = 2
+        stickerImage.setDepth(2)
 
         // create a new hitArea for clicking interaction; the real fix
         stickerImage.input.hitArea = new Phaser.Geom.Rectangle(

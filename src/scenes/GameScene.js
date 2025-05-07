@@ -157,7 +157,7 @@ class GameScene extends Phaser.Scene {
         const zone = this.add.zone(paintingObjX, paintingObjY, paintingObjW, paintingObjH)
           .setRectangleDropZone(paintingObjW, paintingObjH)
         zone.silhouette = silhouette
-        zone.backdrop = this.add.image(paintingObjX, paintingObjY, 'silhouetteBackdrop').setActive(false).setVisible(false)
+        zone.backdrop = this.add.image(paintingObjX, paintingObjY, 'silhouetteBackdrop').setActive(false).setVisible(false).setDepth(3)
         zone.on('pointermove', () => { 
           if (zone.scene.currentPainting.silhouettes.indexOf(zone.silhouette) !== -1) {
             console.log('silhouette in current painting')
@@ -258,7 +258,6 @@ class GameScene extends Phaser.Scene {
         // add sticker to rating system
         painting.stickers[i].image.on('pointerup', () => { this.onPlayerClicked() })
         realInventory.addSticker(painting.stickers[i], this)
-        painting.stickers[i].image.setDepth(100)
       }
     }
 

@@ -46,7 +46,7 @@ class InventoryView {
     // console.log('Slots: ' + this.Inventory.getLength() + ' gap: ' + this.spacing)
     // console.log(this.slotsDirection);
     for (let i = 0; i < this.Inventory.getLength(); ++i) {
-      this.slots.push(scene.add.image(this.xPos, this.yPos, this.image).setScale(0.5))
+      this.slots.push(scene.add.image(this.xPos, this.yPos, this.image).setScale(0.5).setDepth(99))
       this.slotsDirection = this.slotsDirection * -1
       // console.log(this.slotsDirection);
       // console.log(this.xPos);
@@ -62,6 +62,7 @@ class InventoryView {
     // console.log(sticker.image);
     console.log('Drawing new sticker')
     this.addSticker(sticker)
+    sticker.image.setDepth(100)
     // console.log(this.stickers[this.stickersFound]);
     const location = new Phaser.Math.Vector2(this.slots[this.stickersFound].x,
       this.slots[this.stickersFound].y)
