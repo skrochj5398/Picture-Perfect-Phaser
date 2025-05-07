@@ -154,6 +154,9 @@ class StartScene extends Phaser.Scene {
     this.load.image('optionsMusicLabel', 'assets/UI/UI_Options_Music_Claire_4_16_2025_v2.png')
     this.load.image('optionsSoundLabel', 'assets/UI/UI_Options_Sound_Claire_4_16_2025_v2.png')
 
+    // load silhouette backdrop
+    this.load.image('silhouetteBackdrop', 'assets/UI/Highlight_Variant_02_Claire_5_6_2025_v1.png')
+
     // load json
     this.load.json('levelData', 'assets/Levels/Levels.json')
   }

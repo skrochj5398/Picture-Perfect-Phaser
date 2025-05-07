@@ -153,7 +153,19 @@ class GameScene extends Phaser.Scene {
         const zone = this.add.zone(paintingObjX, paintingObjY, paintingObjW, paintingObjH)
           .setRectangleDropZone(paintingObjW, paintingObjH)
         zone.silhouette = silhouette
+        zone.backdrop = this.add.image(paintingObjX, paintingObjY, 'silhouetteBackdrop').setActive(false).setVisible(false)
+        zone.on('pointermove', () => { 
+          if (zone.scene.currentPainting.silhouettes.indexOf(zone.silhouette) !== -1) {
+            console.log('silhouette in current painting')
+            zone.backdrop.setActive(true).setVisible(true)
+          }
+        })
+        zone.on('pointerout', () => { zone.backdrop.setActive(false).setVisible(false) })
         stickerObj.image.on('dragenter', (pointer, target) => {
+          if (zone.scene.currentPainting.silhouettes.indexOf(zone.silhouette) !== -1) {
+            console.log('silhouette in current painting')
+            zone.backdrop.setActive(true).setVisible(true)
+          }
           console.log(stickerObj)
           if (stickerObj.silhouette === target.silhouette) {
             stickerObj.isDraggedOverTarget = true
@@ -164,6 +176,7 @@ class GameScene extends Phaser.Scene {
           }
         })
         stickerObj.image.on('dragleave', (pointer, gameObject, target) => {
+          zone.backdrop.setActive(false).setVisible(false)
           stickerObj.isDraggedOverTarget = false
           console.log('setting false')
         })
@@ -336,12 +349,14 @@ class GameScene extends Phaser.Scene {
   }
 
   startTransition () {
-    // create transition
-    this.transition = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'CurtainsTransition')
-    this.transition.setScale(1.5).setDepth(1000)
-    // play transition open
-    console.log('play transition')
-    this.transition.play({ key: 'Curtains', startFrame: 0 }, true)
+    if (!this.transition.anims.isPlaying) {
+      // create transition
+      this.transition = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'CurtainsTransition')
+      this.transition.setScale(1.5).setDepth(1000)
+      // play transition open
+      console.log('play transition')
+      this.transition.play({ key: 'Curtains', startFrame: 0 }, true)
+    }
   }
 
   setOptionsDepth (depth) {
