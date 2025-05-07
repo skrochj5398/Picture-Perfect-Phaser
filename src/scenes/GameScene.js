@@ -63,6 +63,10 @@ class GameScene extends Phaser.Scene {
     // create background
     const background = this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'Background')
 
+    // creating stickers guide text object
+    this.guideTextX = 1550
+    this.guideTextY = 25
+
     // pass silhouettes too, in an array of Silhouettes with ids concat(painting#, silhouette#)
     // define after Frame so frame doesn't block click events (must more blood be shed!?)
     // create an array to fill with Paintings
@@ -87,7 +91,7 @@ class GameScene extends Phaser.Scene {
       // pass them to the Painting constructor
       const paintingObj = new Painting(painting.name, stickers, silhouettes, this)
       paintingObj.img.setInteractive()
-      paintingObj.img.on('pointerdown', ()=> {this.onPlayerClicked()})
+      paintingObj.img.on('pointerup', ()=> {this.onPlayerClicked()})
       this.paintings.push(paintingObj)
       // Dragging the stickers
       for (const sticker of paintingObj.stickers) {
@@ -213,7 +217,7 @@ class GameScene extends Phaser.Scene {
         console.log('attaching event to sticker ', i)
         painting.stickers[i].image.on('pointerup', () => { this.onStickerPointerDown(i) })
         // add sticker to rating system
-        painting.stickers[i].image.on('pointerdown', () => {this.onPlayerClicked()})
+        painting.stickers[i].image.on('pointerup', () => {this.onPlayerClicked()})
         realInventory.addSticker(painting.stickers[i], this)
         painting.stickers[i].image.setDepth(100)
       }
@@ -222,6 +226,8 @@ class GameScene extends Phaser.Scene {
     // create Inventory View
     this.inventoryView = new InventoryView('InventorySlot', 960, 1035, 125, realInventory)
     this.inventoryView.draw(this)
+
+    this.stickersGuide = this.numStickersPerPainting.slice()
 
     // set first painting and position it
     this.updatePainting(0)
@@ -310,6 +316,11 @@ class GameScene extends Phaser.Scene {
     // play transition close
     console.log('play transition')
     this.transition.play({ key: 'Curtains', startFrame: 23 }, true)
+
+    /*this.guideText = this.add.text (this.guideTextX, this.guideTextY,
+      'Stickers Remaining: ' + this.stickersGuide[this.paintings.indexOf(this.currentPainting)],
+      { font: '28pt Arial', color: '#FFFFFF', align: 'left'}) */
+    this.updateGuideText()
   }
 
   startTransition () {
@@ -350,6 +361,10 @@ class GameScene extends Phaser.Scene {
     console.log('particle emitted at: ', sticker.gameOrigin)
     // this.currentPainting.stickers[index].image.setPosition(-5000, 0)
     this.currentPainting.removeSticker(sticker)
+    // reduce the visible number of stickers left for the player to find in the current painting
+    this.stickersGuide[this.paintings.indexOf(this.currentPainting)]--
+    console.log('stickers left: ' + this.stickersGuide[this.paintings.indexOf(this.currentPainting)])
+    this.updateGuideText();
     // play sound effect
     this.pickRandomSfx()
   }
@@ -416,6 +431,9 @@ class GameScene extends Phaser.Scene {
     this.currentPainting.setPosition(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2)
     const width = this.currentPainting.getWidth()
     this.paintingFrame.width = width + 160
+    
+    // update guide text
+    this.updateGuideText()
   }
 
   pickRandomSfx () {
@@ -515,6 +533,21 @@ class GameScene extends Phaser.Scene {
         this.textures.remove('Painting' + (i + 1) + 'Silhouette' + (k + 1))
       }
     }
+  }
+
+  updateGuideText (){
+    //console.log('guideText placement: ' + this.guideTextX + ' ' + this.guideTextY)
+    //console.log('stickersGuide: ' + this.stickersGuide)
+    // check if guide text already exists; if it does, destroy it
+    if (this.guideText != null){
+      this.guideText.destroy();
+    }
+    //console.log(this.paintings.indexOf(this.currentPainting));
+    // create new guide text
+    // TODO look up how to track whenever a value of stickersGuide changes
+    this.guideText = this.add.text (this.guideTextX, this.guideTextY,
+      'Stickers Remaining: ' + this.stickersGuide[this.paintings.indexOf(this.currentPainting)],
+      { font: '28pt Arial', color: '#FFFFFF', align: 'left'});
   }
 }
 

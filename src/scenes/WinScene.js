@@ -40,7 +40,7 @@ class WinScene extends Phaser.Scene {
     // Adding image based on user score
     if (CONFIG.timesClicked <= this.data.levels[this.levelIndex].GoldRating){
       this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'GoldScreen')
-      console.log('Boo')
+      //console.log('Boo')
     }
     else if (CONFIG.timesClicked <= this.data.levels[this.levelIndex].SilverRating){
       this.add.image(CONFIG.DEFAULT_WIDTH / 2.0, CONFIG.DEFAULT_HEIGHT / 2.0, 'SilverScreen')
