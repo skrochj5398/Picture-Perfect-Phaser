@@ -192,6 +192,7 @@ class GameScene extends Phaser.Scene {
             console.log('Dropped.')
             stickerObj.image.destroy()
             silhouette.image.destroy()
+            zone.backdrop.destroy()
             zone.destroy()
             this.emitter.emitParticleAt(zone.x, zone.y)
 
